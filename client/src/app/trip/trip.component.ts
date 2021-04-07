@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-trip',
   templateUrl: './trip.component.html',
-  styleUrls: ['../app.component.css', './trip.component.css' /* ,  */]
+  styleUrls: ['../app.component.scss', './trip.component.scss' /* ,  */]
 })
 export class TripComponent implements OnInit {
   // All the trips are potential cityTrips
