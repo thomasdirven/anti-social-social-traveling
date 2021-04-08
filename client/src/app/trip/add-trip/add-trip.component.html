@@ -1,1 +1,9 @@
-<p>add-trip works!</p>
+<mat-card>
+    <mat-form-field>
+        <input matInput placeholder="city" type="text"
+            #newtripcity />
+    </mat-form-field>
+    <button (click)="addTrip(newtripcity)" mat-raised-button>
+        add trip
+    </button>
+</mat-card>

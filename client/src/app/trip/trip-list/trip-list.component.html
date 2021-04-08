@@ -1,3 +1,5 @@
+<div fxLayout="column" fxLayoutGap="2%">
+    <app-add-trip (newTrip)="addNewTrip($event)"></app-add-trip>
 <div
   fxLayout="row wrap"
   fxLayout.xs="column"
@@ -12,4 +14,5 @@
   >
     <app-trip [trip]="trip"></app-trip>
   </div>
+</div>
 </div>

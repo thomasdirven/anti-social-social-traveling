@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TRIPS } from '../mock-trips';
+import { Trip } from '../trip.model'
 
 @Component({
   selector: 'app-trip-list',
@@ -13,6 +14,10 @@ export class TripListComponent implements OnInit {
 
   get trips(){
     return this._trips;
+  }
+
+  addNewTrip(trip: Trip){
+    this._trips.push(trip);
   }
 
   ngOnInit(): void {
