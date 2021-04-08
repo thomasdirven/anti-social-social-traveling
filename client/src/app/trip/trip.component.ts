@@ -18,6 +18,7 @@ export class TripComponent implements OnInit {
   endDate: Date;
   minDays: number;
   maxDays: number;
+  attractions: string[]; // tourist Attractions you really want to do
   //TODO more attributes
 
   constructor() { 
@@ -27,6 +28,7 @@ export class TripComponent implements OnInit {
     this.endDate = new Date(Date.now() + 12096e5);
     this.minDays = 3;
     this.maxDays = 8;
+    this.attractions = ["La Sagrada Familia", "Park Güell", "Casa Milà", "Plaça de Catalunya"]
   }
 
   ngOnInit(): void {
