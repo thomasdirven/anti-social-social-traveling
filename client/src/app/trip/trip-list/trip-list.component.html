@@ -1,0 +1,15 @@
+<div
+  fxLayout="row wrap"
+  fxLayout.xs="column"
+  fxLayoutGap="5%"
+  fxLayoutAlign="center"
+>
+  <div
+    class="trip"
+    *ngFor="let trip of trips"
+    fxFlex="0 0 calc(25%-0.5%)"
+    fxFlex.xs="100%"
+  >
+    <app-trip [trip]="trip"></app-trip>
+  </div>
+</div>

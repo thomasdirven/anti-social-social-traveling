@@ -3,20 +3,21 @@ import { CommonModule } from '@angular/common';
 import { TripComponent } from './trip/trip.component';
 import { AttractionComponent } from './attraction/attraction.component';
 import { MaterialModule } from '../material/material.module';
-
-
+import { TripListComponent } from './trip-list/trip-list.component';
 
 @NgModule({
   declarations: [
     TripComponent,
-    AttractionComponent
+    AttractionComponent,
+    TripListComponent
   ],
   imports: [
     CommonModule,
     MaterialModule
   ],
   exports: [
-    TripComponent
+    TripListComponent
   ]
 })
+
 export class TripModule { }

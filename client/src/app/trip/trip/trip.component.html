@@ -1,52 +1,28 @@
-<div class="content" role="main">
-  <h2>trip works!</h2>
-  <p>Here are the trips on your wishlist:</p>
-
-  <div class="card-container">
-    <div class="card">
-      <h2>{{ city }}</h2>
-      <h3>{{ country }}</h3>
-      <p>
-        <em>Possible travel period: </em><br />
-        from {{ startDate | date: "longDate" }} <br />
-        till {{ endDate | date: "longDate" }}
-      </p>
-      <p>
-        <em>Length of city trip: </em><br />
-        {{ minDays }} to {{ maxDays }} days
-      </p>
-      Things I really want to see:
-      <ul>
-        <li *ngFor="let attraction of attractions">
-          <app-attraction [name]="attraction"></app-attraction>
-        </li>
-      </ul>
-    </div>
-  </div>
+<div class="content" role="main">  
   <div class="card-container">
     <div class="card">
       <mat-card>
         <mat-card-header>
           <mat-card-title>
-            {{ city }} <mat-icon> flight</mat-icon>
+            {{ trip.city }} <mat-icon>flight</mat-icon>
           </mat-card-title>
           <mat-card-subtitle>
-            {{ country }}
+            {{ trip.country }}
           </mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
           <p>
             <em>Possible travel period: </em><br />
-            from {{ startDate | date: "longDate" }} <br />
-            till {{ endDate | date: "longDate" }}
+            from {{ trip.startDate | date: "longDate" }} <br />
+            till {{ trip.endDate | date: "longDate" }}
           </p>
           <p>
             <em>Length of city trip: </em><br />
-            {{ minDays }} to {{ maxDays }} days
+            {{ trip.minDays }} to {{ trip.maxDays }} days
           </p>
           <h4 mat-subheader>Things I really want to see:</h4>
           <mat-list>
-            <mat-list-item *ngFor="let attraction of attractions">
+            <mat-list-item *ngFor="let attraction of trip.attractions">
               <app-attraction [name]="attraction"></app-attraction>
             </mat-list-item>
           </mat-list>
