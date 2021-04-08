@@ -6,6 +6,7 @@ import { TripComponent } from './trip/trip.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AttractionComponent } from './attraction/attraction.component';
+import { TripModule } from './trip/trip.module';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { AttractionComponent } from './attraction/attraction.component';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    NgbModule
+    NgbModule,
+    TripModule
   ],
   providers: [],
   bootstrap: [AppComponent]
