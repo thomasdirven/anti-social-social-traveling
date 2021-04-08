@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TRIPS } from '../mock-trips';
+import { TripDataService } from '../trip-data.service';
 import { Trip } from '../trip.model'
 
 @Component({
@@ -8,16 +9,15 @@ import { Trip } from '../trip.model'
   styleUrls: ['./trip-list.component.scss']
 })
 export class TripListComponent implements OnInit {
-  private _trips = TRIPS;
+  
+  constructor(private _tripDataService: TripDataService) { }
 
-  constructor() { }
-
-  get trips(){
-    return this._trips;
+  get trips(): Trip[] {
+    return this._tripDataService.trips;
   }
 
   addNewTrip(trip: Trip){
-    this._trips.push(trip);
+    this._tripDataService.addNewTrip(trip);
   }
 
   ngOnInit(): void {
