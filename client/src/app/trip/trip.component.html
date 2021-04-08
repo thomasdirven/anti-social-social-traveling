@@ -15,10 +15,10 @@
         <em>Length of city trip: </em><br />
         {{ minDays }} to {{ maxDays }} days
       </p>
-      Things really want to see:
+      Things I really want to see:
       <ul>
         <li *ngFor="let attraction of attractions">
-          {{ attraction }}
+          <app-attraction [name]="attraction"></app-attraction>
         </li>
       </ul>
     </div>
