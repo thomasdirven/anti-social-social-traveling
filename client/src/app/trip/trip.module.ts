@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TripComponent } from './trip/trip.component';
 import { AttractionComponent } from './attraction/attraction.component';
+import { MaterialModule } from '../material/material.module';
 
 
 
@@ -11,7 +12,8 @@ import { AttractionComponent } from './attraction/attraction.component';
     AttractionComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    MaterialModule
   ],
   exports: [
     TripComponent
