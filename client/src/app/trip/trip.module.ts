@@ -6,6 +6,7 @@ import { MaterialModule } from '../material/material.module';
 import { TripListComponent } from './trip-list/trip-list.component';
 import { AddTripComponent } from './add-trip/add-trip.component';
 import { TripFilterPipe } from './trip-filter.pipe';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { TripFilterPipe } from './trip-filter.pipe';
   ],
   imports: [
     CommonModule,
+    HttpClientModule,
     MaterialModule
   ],
   exports: [

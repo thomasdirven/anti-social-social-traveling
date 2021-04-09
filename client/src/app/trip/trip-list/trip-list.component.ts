@@ -20,9 +20,13 @@ import {
   styleUrls: ['./trip-list.component.scss'],
 })
 export class TripListComponent implements OnInit {
+  // variable to cache the results
+  private _trips: Trip[];
+  // this is needlessly cashing, keeping state, always avoid keeping state if you can
   public filterTripCity: string;
   public filterTrip$ = new Subject<string>();
   constructor(private _tripDataService: TripDataService) {
+    this._tripDataService.trips$.subscribe((res) => (this._trips = res));
     this.filterTrip$
       .pipe(distinctUntilChanged(), debounceTime(150))
       .subscribe((val) => (this.filterTripCity = val));
@@ -33,11 +37,11 @@ export class TripListComponent implements OnInit {
   }
 
   get trips(): Trip[] {
-    return this._tripDataService.trips;
+    return this._trips;
   }
 
   addNewTrip(trip: Trip) {
-    this._tripDataService.addNewTrip(trip);
+    //this._tripDataService.addNewTrip(trip);
   }
 
   ngOnInit(): void {}
