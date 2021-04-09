@@ -18,12 +18,12 @@ namespace TripApi.Data.Repositories
 
         public IEnumerable<Trip> GetAll()
         {
-            return _trips.Include(r => r.Attractions).ToList();
+            return _trips.Include(t => t.Attractions).ToList();
         }
 
         public Trip GetBy(int id)
         {
-            return _trips.Include(r => r.Attractions).SingleOrDefault(r => r.Id == id);
+            return _trips.Include(t => t.Attractions).SingleOrDefault(t => t.Id == id);
         }
 
         public bool TryGetTrip(int id, out Trip trip)
@@ -54,14 +54,16 @@ namespace TripApi.Data.Repositories
 
         public IEnumerable<Trip> GetBy(string city = null, string country = null, string attractionName = null)
         {
-            var trips = _trips.Include(r => r.Attractions).AsQueryable();
+            var trips = _trips.Include(t => t.Attractions).AsQueryable();
             if (!string.IsNullOrEmpty(city))
-                trips = trips.Where(r => r.City.IndexOf(city) >= 0);
+                //trips = trips.Where(t => t.City.Contains(city, System.StringComparison.OrdinalIgnoreCase));
+                // should be the same result but the above method gives errors
+                trips = trips.Where(t => t.City.IndexOf(city) >= 0);
             if (!string.IsNullOrEmpty(country))
-                trips = trips.Where(r => r.Country == country);
+                trips = trips.Where(t => t.Country.IndexOf(country) >= 0);
             if (!string.IsNullOrEmpty(attractionName))
-                trips = trips.Where(r => r.Attractions.Any(i => i.Name == attractionName));
-            return trips.OrderBy(r => r.City).ToList();
+                trips = trips.Where(t => t.Attractions.Any(i => i.Name.IndexOf(attractionName) >= 0));
+            return trips.OrderBy(t => t.StartDate).ToList();
         }
     }
 }

@@ -20,18 +20,24 @@ namespace TripApi.Controllers
         {
             _tripRepository = context;
         }
-
+        
         // GET: api/trips
         /// <summary>
         /// Get all Trips ordered by startDate
+        /// Ability to filter search results with parameters
         /// </summary>
+        /// <param name="city"></param>
+        /// <param name="country"></param>
+        /// <param name="attractionName"></param>
         /// <returns>Array of Trips</returns>
         [HttpGet]
-        public ActionResult<IEnumerable<Trip>> GetTrips()
+        public ActionResult<IEnumerable<Trip>> GetTrips(string city = null, string country = null, string attractionName = null)
         {
             try
             {
-                return _tripRepository.GetAll().OrderBy(r => r.StartDate).ToList();
+                if (string.IsNullOrEmpty(city) && string.IsNullOrEmpty(country) && string.IsNullOrEmpty(attractionName))
+                    return _tripRepository.GetAll().OrderBy(t => t.StartDate).ToList();
+                return _tripRepository.GetBy(city, country, attractionName).ToList();
             }
             catch (Exception ex)
             {
@@ -155,6 +161,8 @@ namespace TripApi.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+
+        //// vvv CORS vvv ////
 
         // GET: api/trips/id/attractions/attractionId
         /// <summary>
