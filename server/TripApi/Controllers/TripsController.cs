@@ -31,5 +31,16 @@ namespace TripApi.Controllers
             if (trip == null) return NotFound();
             return trip;
         }
+
+        // POST: api/Trips
+        [HttpPost]
+        public ActionResult<Trip> PostTrip(Trip trip)
+        {
+            _tripRepository.Add(trip);
+            _tripRepository.SaveChanges();
+
+            return CreatedAtAction(nameof(GetTrip), new { id = trip.Id }, trip);
+        }
+
     }
 }
