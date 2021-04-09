@@ -6,10 +6,14 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using TripApi.Data;
+using TripApi.Data.Repositories;
+using TripApi.Models;
 //using Microsoft.OpenApi.Models;
 
 namespace TripApi
@@ -26,8 +30,13 @@ namespace TripApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
+
+            services.AddDbContext<TripContext>(options =>
+            options.UseSqlServer(Configuration.GetConnectionString("TripContext")));
+
+            services.AddScoped<TripDataInitializer>();
+            services.AddScoped<ITripRepository, TripRepository>();
 
             // <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
             // Swashbuckle.AspNetCore (replaced by NSwag)
@@ -48,7 +57,7 @@ namespace TripApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, TripDataInitializer tripDataInitializer)
         {
             if (env.IsDevelopment())
             {
@@ -72,6 +81,8 @@ namespace TripApi
             {
                 endpoints.MapControllers();
             });
+
+            tripDataInitializer.InitializeData(); //.Wait();
         }
     }
 }
