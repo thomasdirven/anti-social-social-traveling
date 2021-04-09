@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "tripApi": {
+    "TripApi": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
       "launchBrowser": true,

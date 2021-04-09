@@ -1,6 +1,6 @@
 using System;
 
-namespace tripApi
+namespace TripApi
 {
     public class WeatherForecast
     {
