@@ -1,4 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
+//TODO
+// doesn't do anything
+@import '~@angular/material/_theming.scss';
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+@include mat-core();
 
 // html, body { height: 100%; }
 // body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
@@ -6,4 +11,3 @@
 /* Importing Bootstrap SCSS file. */
 // @import '~bootstrap/scss/bootstrap';
 
-@import '@angular/material/prebuilt-themes/indigo-pink.css';
