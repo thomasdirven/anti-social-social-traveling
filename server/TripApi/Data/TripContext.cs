@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TripApi.Models;
 using System;
+using TripApi.Models;
 
 namespace TripApi.Data
 {
@@ -28,7 +28,7 @@ namespace TripApi.Data
             builder.Entity<Trip>().HasData(
                  new Trip { Id = 1, City = "Barcelona", StartDate = DateTime.Now, EndDate = DateTime.Now, MinDays = 2, MaxDays = 5 },
                  new Trip { Id = 2, City = "Paris", StartDate = DateTime.Now, EndDate = DateTime.Now, MinDays = 3, MaxDays = 8 }
-  );
+            );
 
             builder.Entity<Attraction>().HasData(
                     //Shadow property can be used for the foreign key, in combination with anaonymous objects
