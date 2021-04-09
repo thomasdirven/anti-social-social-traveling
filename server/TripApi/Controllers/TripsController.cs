@@ -7,6 +7,8 @@ using TripApi.Models;
 
 namespace TripApi.Controllers
 {
+    [ApiConventionType(typeof(DefaultApiConventions))]
+    [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
     public class TripsController : ControllerBase
@@ -19,13 +21,22 @@ namespace TripApi.Controllers
         }
 
         // GET: api/Trips
+        /// <summary>
+        /// Get all Trips ordered by startDate
+        /// </summary>
+        /// <returns>Array of Trips</returns>
         [HttpGet]
         public IEnumerable<Trip> GetTrips()
         {
-            return _tripRepository.GetAll().OrderBy(r => r.City);
+            return _tripRepository.GetAll().OrderBy(r => r.StartDate);
         }
 
         // GET: api/Trips/id
+        /// <summary>
+        /// Get Trip with given id
+        /// </summary>
+        /// <param name="id">The id of the Trip</param>
+        /// <returns>The Trip</returns>
         [HttpGet("{id}")]
         public ActionResult<Trip> GetTrip(int id)
         {
@@ -42,6 +53,10 @@ namespace TripApi.Controllers
         }
 
         // POST: api/Trips
+        /// <summary>
+        /// Adds a new Trip
+        /// </summary>
+        /// <param name="trip">The new Trip</param>
         [HttpPost]
         public ActionResult<Trip> PostTrip(Trip trip)
         {
@@ -60,6 +75,11 @@ namespace TripApi.Controllers
         }
 
         // PUT: api/Trips/id
+        /// <summary>
+        /// Modifies a Trip
+        /// </summary>
+        /// <param name="id">The id of the Trip</param>
+        /// <param name="trip">The modified Trip</param>
         [HttpPut("{id}")]
         public IActionResult PutTrip(int id, Trip trip)
         {
@@ -82,6 +102,11 @@ namespace TripApi.Controllers
         }
 
         // DELETE: api/Trips/id
+        /// <summary>
+        /// Deletes a Trip
+        /// </summary>
+        /// <param name="id">The id of the Trip to be deleted</param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public IActionResult DeleteTrip(int id)
         {
