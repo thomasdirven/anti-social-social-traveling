@@ -42,5 +42,19 @@ namespace TripApi.Controllers
             return CreatedAtAction(nameof(GetTrip), new { id = trip.Id }, trip);
         }
 
+        // PUT: api/Trips/id
+        [HttpPut("{id}")]
+        public IActionResult PutTrip(int id, Trip trip)
+        {
+            // 404 if trip with id doesn't exist
+            if (_tripRepository.GetBy(id) == null) return NotFound();
+            // 204 (No Content) or 400 (Bad Request) when ModelState validation fails or id’s don’t match
+            if (id != trip.Id) return BadRequest();
+            
+            _tripRepository.Update(trip);
+            _tripRepository.SaveChanges();
+            return NoContent();
+        }
+
     }
 }
