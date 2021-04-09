@@ -21,23 +21,22 @@ import {
 })
 export class TripListComponent implements OnInit {
   // variable to cache the results
-  private _trips: Trip[];
+  private _fetchTrips$: Observable<Trip[]> = this._tripDataService.trips$;
   // this is needlessly cashing, keeping state, always avoid keeping state if you can
   public filterTripCity: string;
   public filterTrip$ = new Subject<string>();
   constructor(private _tripDataService: TripDataService) {
-    this._tripDataService.trips$.subscribe((res) => (this._trips = res));
     this.filterTrip$
       .pipe(distinctUntilChanged(), debounceTime(150))
       .subscribe((val) => (this.filterTripCity = val));
   }
-
+ 
   applyFilter(filter: string) {
     this.filterTripCity = filter;
   }
 
-  get trips(): Trip[] {
-    return this._trips;
+  get trips$(): Observable<Trip[]> {
+    return this._fetchTrips$;
   }
 
   addNewTrip(trip: Trip) {

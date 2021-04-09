@@ -18,7 +18,7 @@
   >
     <div
       class="trip"
-      *ngFor="let trip of trips | tripFilter: filterTripCity"
+      *ngFor="let trip of (trips$ | async | tripFilter: filterTripCity)"
       fxFlex="0 0 calc(25%-0.5%)"
       fxFlex.xs="100%"
     >
