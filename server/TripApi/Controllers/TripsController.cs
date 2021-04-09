@@ -20,7 +20,7 @@ namespace TripApi.Controllers
             _tripRepository = context;
         }
 
-        // GET: api/Trips
+        // GET: api/trips
         /// <summary>
         /// Get all Trips ordered by startDate
         /// </summary>
@@ -31,7 +31,7 @@ namespace TripApi.Controllers
             return _tripRepository.GetAll().OrderBy(r => r.StartDate);
         }
 
-        // GET: api/Trips/id
+        // GET: api/trips/id
         /// <summary>
         /// Get Trip with given id
         /// </summary>
@@ -52,7 +52,7 @@ namespace TripApi.Controllers
             }
         }
 
-        // POST: api/Trips
+        // POST: api/trips
         /// <summary>
         /// Adds a new Trip
         /// </summary>
@@ -74,7 +74,7 @@ namespace TripApi.Controllers
             }
         }
 
-        // PUT: api/Trips/id
+        // PUT: api/trips/id
         /// <summary>
         /// Modifies a Trip
         /// </summary>
@@ -101,7 +101,7 @@ namespace TripApi.Controllers
             }
         }
 
-        // DELETE: api/Trips/id
+        // DELETE: api/trips/id
         /// <summary>
         /// Deletes a Trip
         /// </summary>
@@ -117,6 +117,54 @@ namespace TripApi.Controllers
                 _tripRepository.Delete(trip);
                 _tripRepository.SaveChanges();
                 return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        // GET: api/trips/id/attractions/attractionId
+        /// <summary>
+        /// Get an Attraction for a Trip
+        /// </summary>
+        /// <param name="id">id of the Trip</param>
+        /// <param name="attractionId">id of the Attraction</param>
+        /// <returns>An Attraction of the Trip</returns>
+        [HttpGet("{id}/attractions/{attractionId}")]
+        public ActionResult<Attraction> GetAttraction(int id, int attractionId)
+        {
+            try
+            {
+                if (!_tripRepository.TryGetTrip(id, out var trip)) return NotFound();
+                Attraction attraction = trip.GetAttraction(attractionId);
+                if (attraction == null) return NotFound();
+                return attraction;
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        // POST: api/trip/id/attractions
+        /// <summary>
+        /// Adds an attraction to a trip
+        /// </summary>
+        /// <param name="id">id of the Trip</param>
+        /// <param name="attraction">the Attraction to be added</param>
+        /// <returns></returns>
+        [HttpPost("{id}/attractions")]
+        public ActionResult<Attraction> PostAttraction(int id, Attraction attraction)
+        {
+            try
+            {
+                if (!_tripRepository.TryGetTrip(id, out var trip)) return NotFound();
+                var attractionToCreate = new Attraction(attraction.Name, attraction.Type, attraction.Budget);
+                trip.AddAttraction(attractionToCreate);
+                _tripRepository.SaveChanges();
+                return CreatedAtAction("GetAttraction", new { id = attraction.Id, attractionId = attractionToCreate.Id }, attractionToCreate);
+
             }
             catch (Exception ex)
             {
