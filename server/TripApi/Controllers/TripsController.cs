@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TripApi.DTOs;
 using TripApi.Models;
 
 namespace TripApi.Controllers
@@ -65,15 +66,18 @@ namespace TripApi.Controllers
         /// </summary>
         /// <param name="trip">The new Trip</param>
         [HttpPost]
-        public ActionResult<Trip> PostTrip(Trip trip)
+        public ActionResult<Trip> PostTrip(TripDTO trip)
         {
             try
             {
-                _tripRepository.Add(trip);
+                Trip tripToCreate = new Trip() { City = trip.City, Country = trip.Country, StartDate = trip.StartDate, EndDate = trip.EndDate, MinDays = trip.MinDays, MaxDays = trip.MaxDays };
+                foreach (var a in trip.Attractions)
+                    tripToCreate.AddAttraction(new Attraction(a.Name, a.Type, a.Budget));
+                _tripRepository.Add(tripToCreate);
                 _tripRepository.SaveChanges();
 
                 // 201 - link to get new Trip
-                return CreatedAtAction(nameof(GetTrip), new { id = trip.Id }, trip);
+                return CreatedAtAction(nameof(GetTrip), new { id = tripToCreate.Id }, tripToCreate);
             }
             catch (Exception ex)
             {
@@ -182,7 +186,7 @@ namespace TripApi.Controllers
         /// <param name="id">id of the Trip</param>
         /// <param name="attraction">the Attraction to be added</param>
         [HttpPost("{id}/attractions")]
-        public ActionResult<Attraction> PostAttraction(int id, Attraction attraction)
+        public ActionResult<Attraction> PostAttraction(int id, AttractionDTO attraction)
         {
             try
             {
@@ -190,8 +194,7 @@ namespace TripApi.Controllers
                 var attractionToCreate = new Attraction(attraction.Name, attraction.Type, attraction.Budget);
                 trip.AddAttraction(attractionToCreate);
                 _tripRepository.SaveChanges();
-                return CreatedAtAction("GetAttraction", new { id = attraction.Id, attractionId = attractionToCreate.Id }, attractionToCreate);
-
+                return CreatedAtAction("GetAttraction", new { id = trip.Id, attractionId = attractionToCreate.Id }, attractionToCreate);
             }
             catch (Exception ex)
             {
