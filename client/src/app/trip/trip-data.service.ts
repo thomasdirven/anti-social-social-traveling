@@ -15,6 +15,9 @@ export class TripDataService {
   }
 
   addNewTrip(trip: Trip){
-    this._trips.push(trip);
+    // this._trips.push(trip);
+    // Necessary for DOM changes
+    // Didn't notice the differnce
+    this._trips = [...this._trips, trip]
   }
 }

@@ -9,8 +9,12 @@ import { Trip } from '../trip.model'
   styleUrls: ['./trip-list.component.scss']
 })
 export class TripListComponent implements OnInit {
-  
+  public filterTripCity: string;
   constructor(private _tripDataService: TripDataService) { }
+
+  applyFilter(filter: string){
+    this.filterTripCity = filter;
+  }
 
   get trips(): Trip[] {
     return this._tripDataService.trips;
