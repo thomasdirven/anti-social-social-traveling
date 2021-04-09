@@ -39,6 +39,7 @@ namespace TripApi.Models
 
         #region Methods
         public void AddAttraction(Attraction attration) => Attractions.Add(attration);
+        public void DeleteAttraction(Attraction attraction) => Attractions.Remove(attraction);
 
         public Attraction GetAttraction(int id) => Attractions.SingleOrDefault(i => i.Id == id);
         #endregion

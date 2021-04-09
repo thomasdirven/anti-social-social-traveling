@@ -198,5 +198,28 @@ namespace TripApi.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+
+        // DELETE: api/trip/id/attractions/attractionId
+        /// <summary>
+        /// Deletes an Attraction of a Trip
+        /// </summary>
+        /// <param name="id">id of the Trip</param>
+        /// <param name="attractionId">id of the Attraction</param>
+        [HttpDelete("{id}/attractions/{attractionId}")]
+        public IActionResult DeleteAttraction(int id, int attractionId)
+        {
+            try
+            {
+                if (!_tripRepository.TryGetTrip(id, out var trip)) return NotFound();
+                trip.DeleteAttraction(trip.GetAttraction(attractionId));
+                _tripRepository.Update(trip);
+                _tripRepository.SaveChanges();
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
     }
 }
