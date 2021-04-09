@@ -14,7 +14,7 @@ export class TripFilterPipe implements PipeTransform {
       return trips;
     }
     return trips.filter(rec => 
-      rec.city.toLowerCase().startsWith(city.toLowerCase())
+      rec.city.toLowerCase().includes(city.toLowerCase())
     );
   }
 
