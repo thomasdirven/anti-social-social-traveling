@@ -26,9 +26,16 @@ namespace TripApi.Controllers
         /// </summary>
         /// <returns>Array of Trips</returns>
         [HttpGet]
-        public IEnumerable<Trip> GetTrips()
+        public ActionResult<IEnumerable<Trip>> GetTrips()
         {
-            return _tripRepository.GetAll().OrderBy(r => r.StartDate);
+            try
+            {
+                return _tripRepository.GetAll().OrderBy(r => r.StartDate).ToList();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         // GET: api/trips/id
@@ -124,6 +131,27 @@ namespace TripApi.Controllers
             }
         }
 
+        // GET: api/trips/id/attractions
+        /// <summary>
+        /// Get all Attractions for a Trip
+        /// </summary>
+        /// <param name="id">id of the Trip</param>
+        /// <returns>all Attractions of the Trip</returns>
+        [HttpGet("{id}/attractions")]
+        public ActionResult<IEnumerable<Attraction>> GetAttractions(int id)
+        //public ICollection<Attraction> GetAttractions(int id)
+        {
+            try
+            {
+                if (!_tripRepository.TryGetTrip(id, out var trip)) return NotFound();
+                return trip.Attractions.ToList();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
         // GET: api/trips/id/attractions/attractionId
         /// <summary>
         /// Get an Attraction for a Trip
@@ -153,7 +181,6 @@ namespace TripApi.Controllers
         /// </summary>
         /// <param name="id">id of the Trip</param>
         /// <param name="attraction">the Attraction to be added</param>
-        /// <returns></returns>
         [HttpPost("{id}/attractions")]
         public ActionResult<Attraction> PostAttraction(int id, Attraction attraction)
         {
