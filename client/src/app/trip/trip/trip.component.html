@@ -23,7 +23,7 @@
           <h4 mat-subheader>Things I really want to see:</h4>
           <mat-list>
             <mat-list-item *ngFor="let attraction of trip.attractions">
-              <app-attraction [name]="attraction"></app-attraction>
+              <app-attraction [attraction]="attraction"></app-attraction>
             </mat-list-item>
           </mat-list>
         </mat-card-content>

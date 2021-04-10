@@ -3,14 +3,12 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { TRIPS } from './mock-trips';
 import { Trip } from './trip.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TripDataService {
-  // private _trips = TRIPS;
 
   constructor(private http: HttpClient) {}
 

@@ -73,6 +73,9 @@ namespace TripApi
             app.UseOpenApi(); // https://localhost:5001/swagger/tripapidocs/swagger.json
             app.UseSwaggerUi3(); // https://localhost:5001/swagger/
 
+            // Apply CORS policies globally to the app via middleware in Startup.cs, Configure
+            app.UseCors("AllowAllOrigins");
+
             app.UseRouting();
 
             app.UseAuthorization();

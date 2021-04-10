@@ -1,11 +1,14 @@
+import { Attraction, AttractionJson } from './attraction.model';
+
 interface TripJson {
+  id: number;
   city: string;
   country: string;
   startDate: string;
   endDate: string;
-  minDays: string;
-  maxDays: string;
-  attractions: string[];
+  minDays: number;
+  maxDays: number;
+  attractions: AttractionJson[];
 }
 
 export class Trip {
@@ -15,6 +18,7 @@ export class Trip {
   // This is not the start and endDate of the actual trip (but it can be)
   // You give a minLength and maxLength (in days)
 
+  private _id: number;
   constructor(
     private _city: string,
     private _country: string,
@@ -22,7 +26,7 @@ export class Trip {
     private _endDate = new Date(),
     private _minDays: number,
     private _maxDays: number,
-    private _attractions = new Array<string>() // tourist Attractions you really want to do
+    private _attractions = new Array<Attraction>(), // tourist Attractions you really want to do
   ) //TODO more attributes
   {}
 
@@ -38,11 +42,27 @@ export class Trip {
       new Date(json.endDate),
       minDays,
       maxDays,
-      json.attractions
+      json.attractions.map(Attraction.fromJSON)
     );
+    trip._id = json.id;
     return trip;
   }
 
+  toJSON(): TripJson{
+      return <TripJson>{
+          city: this.city,
+          country: this.country,
+          startDate: this.startDate.toString(),
+          endDate: this.endDate.toString(),
+          minDays: this.minDays,
+          maxDays: this.maxDays,
+          attractions: this.attractions.map(att => att.toJSON())
+      }
+  }
+
+  get id(): number{
+    return this._id;
+  }
   get city(): string {
     return this._city;
   }
@@ -61,11 +81,11 @@ export class Trip {
   get maxDays(): number {
     return this._maxDays;
   }
-  get attractions(): string[] {
+  get attractions(): Attraction[] {
     return this._attractions;
   }
 
   addAttraction(name: string, type?: string, budget?: number) {
-    this._attractions.push(`${type || 'other'} ${budget || 0} ${name}`);
+    this._attractions.push(new Attraction(name, type, budget));
   }
 }

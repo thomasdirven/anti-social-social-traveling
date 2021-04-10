@@ -29,4 +29,4 @@ import { Trip } from './trip.model';
         attractions : ["La Sagrada Familia", "Park Güell", "Casa Milà", "Plaça de Catalunya"]
     },
 ];
-export const TRIPS: Trip[] = JsonTrips.map(Trip.fromJSON);
+// export const TRIPS: Trip[] = JsonTrips.map(Trip.fromJSON);

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { TRIPS } from '../mock-trips';
 import { TripDataService } from '../trip-data.service';
 import { Trip } from '../trip.model';
 import { Subject, Observable, of, EMPTY, merge } from 'rxjs';
