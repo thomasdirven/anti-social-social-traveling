@@ -8,21 +8,25 @@
         type="text"
         (keyup)="this.filterTrip$.next($event.target.value)"
       />
-    </mat-form-field>    
+    </mat-form-field>
   </mat-card>
+  <div *ngIf="trips$ | async as trips; else loading"></div>
   <div
     fxLayout="row wrap"
     fxLayout.xs="column"
-    fxLayoutGap="5%"
+    fxLayoutGap=""
     fxLayoutAlign="center"
   >
     <div
       class="trip"
-      *ngFor="let trip of (trips$ | async | tripFilter: filterTripCity)"
-      fxFlex="0 0 calc(25%-0.5%)"
+      *ngFor="let trip of trips$ | async | tripFilter: filterTripCity"
+      fxFlex="0 0 calc(33%-0.5)"
       fxFlex.xs="100%"
     >
       <app-trip [trip]="trip"></app-trip>
     </div>
   </div>
 </div>
+<ng-template #loading>
+  <mat-spinner></mat-spinner>
+</ng-template>

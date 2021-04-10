@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, delay } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Trip } from './trip.model';
 
@@ -16,6 +16,7 @@ export class TripDataService {
     // return this._trips;
     return this.http.get(`${environment.apiUrl}/trips/`)
     .pipe(
+      // delay(2000), // to test mat-spinner loading
       map((list : any[]): Trip[] => list.map(Trip.fromJSON))
     );
   }
