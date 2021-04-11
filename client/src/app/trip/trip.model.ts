@@ -52,8 +52,8 @@ export class Trip {
       return <TripJson>{
           city: this.city,
           country: this.country,
-          startDate: this.startDate.toString(),
-          endDate: this.endDate.toString(),
+          startDate: this.startDate.toJSON(),
+          endDate: this.endDate.toJSON(),
           minDays: this.minDays,
           maxDays: this.maxDays,
           attractions: this.attractions.map(att => att.toJSON())

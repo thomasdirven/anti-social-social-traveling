@@ -24,8 +24,6 @@ export class TripListComponent implements OnInit {
   // this is needlessly cashing, keeping state, always avoid keeping state if you can
   public errorMessage: string = "";
 
-  test = "clear";
-
   public filterTripCity: string;
   public filterTrip$ = new Subject<string>();
   constructor(private _tripDataService: TripDataService) {
@@ -43,11 +41,11 @@ export class TripListComponent implements OnInit {
   }
 
   addNewTrip(trip: Trip) {
-    //this._tripDataService.addNewTrip(trip);
+    this._tripDataService.addNewTrip(trip);
   }
 
   ngOnInit(): void {
-    this._fetchTrips$ = this._tripDataService.trips$.pipe(
+    this._fetchTrips$ = this._tripDataService.allTrips$.pipe(
       catchError(err => {
         this.errorMessage = err;
         return EMPTY;
