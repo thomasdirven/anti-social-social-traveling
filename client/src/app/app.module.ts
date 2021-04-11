@@ -6,6 +6,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TripModule } from './trip/trip.module';
 
+// Google API key
+// AIzaSyByzFs-RMMy83HcDPftNNp_JddxVD4rurM
+
 @NgModule({
   declarations: [
     AppComponent
