@@ -35,6 +35,7 @@ namespace TripApi.Controllers
         {
             try
             {
+                //return StatusCode(StatusCodes.Status500InternalServerError, "test error");
                 if (string.IsNullOrEmpty(city) && string.IsNullOrEmpty(country) && string.IsNullOrEmpty(attractionName))
                     return _tripRepository.GetAll().OrderBy(t => t.StartDate).ToList();
                 return _tripRepository.GetBy(city, country, attractionName).ToList();

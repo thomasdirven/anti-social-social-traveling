@@ -20,8 +20,12 @@ import {
 })
 export class TripListComponent implements OnInit {
   // variable to cache the results
-  private _fetchTrips$: Observable<Trip[]> = this._tripDataService.trips$;
+  private _fetchTrips$: Observable<Trip[]>;
   // this is needlessly cashing, keeping state, always avoid keeping state if you can
+  public errorMessage: string = "";
+
+  test = "clear";
+
   public filterTripCity: string;
   public filterTrip$ = new Subject<string>();
   constructor(private _tripDataService: TripDataService) {
@@ -42,5 +46,13 @@ export class TripListComponent implements OnInit {
     //this._tripDataService.addNewTrip(trip);
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this._fetchTrips$ = this._tripDataService.trips$.pipe(
+      catchError(err => {
+        this.errorMessage = err;
+        return EMPTY;
+      })
+    );    
+  }
+
 }
