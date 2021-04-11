@@ -76,7 +76,6 @@ namespace TripApi.Controllers
         [HttpPost]
         public ActionResult<Trip> PostTrip(TripDTO trip)
         {
-            Console.WriteLine("test");
             try
             {
                 Trip tripToCreate = new Trip() { City = trip.City, Country = trip.Country, StartDate = trip.StartDate, EndDate = trip.EndDate, MinDays = trip.MinDays, MaxDays = trip.MaxDays };
