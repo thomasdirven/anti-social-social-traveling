@@ -22,30 +22,35 @@
       </button>
     </mat-form-field>
   </mat-card>
-  <div *ngIf="trips$ | async as trips; else loadingOrError">
-    <div
-      fxLayout="row wrap"
-      fxLayout.xs="column"
-      fxLayoutGap=""
-      fxLayoutAlign="center"
-    >
+  <!-- if statement no longer working -->
+  <!-- because behaviorObservables are never empty? -->
+  <!-- <div *ngIf="trips$ | async as trips; else loadingOrError"> -->
+  <div *ngIf="trips$ | async as trips">
+    <div *ngIf="trips.length > 0; else loadingOrError">
       <div
-        class="trip"
-        *ngFor="let trip of trips | tripFilter: filterTripCity"
-        fxFlex="0 0 calc(33%-0.5)"
-        fxFlex.xs="100%"
+        fxLayout="row wrap"
+        fxLayout.xs="column"
+        fxLayoutGap=""
+        fxLayoutAlign="center"
       >
-        <app-trip [trip]="trip"></app-trip>
+        <div
+          class="trip"
+          *ngFor="let trip of trips | tripFilter: filterTripCity"
+          fxFlex="0 0 calc(33%-0.5)"
+          fxFlex.xs="100%"
+        >
+          <app-trip [trip]="trip"></app-trip>
+        </div>
       </div>
     </div>
+    <ng-template #loadingOrError>
+      <mat-card class="error" *ngIf="errorMessage; else loading">
+        Error loading the city trip list: {{ errorMessage }}. <br />
+        Please try again later.
+      </mat-card>
+      <ng-template #loading>
+        <mat-spinner></mat-spinner>
+      </ng-template>
+    </ng-template>
   </div>
 </div>
-<ng-template #loadingOrError>
-  <mat-card class="error" *ngIf="errorMessage; else loading">
-    Error loading the city trip list: {{ errorMessage }}. <br />
-    Please try again later.
-  </mat-card>
-  <ng-template #loading>
-    <mat-spinner></mat-spinner>
-  </ng-template>
-</ng-template>

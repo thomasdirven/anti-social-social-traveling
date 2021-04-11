@@ -27,23 +27,12 @@ export class TripDataService {
   get trips$(): Observable<Trip[]> {
     // return this._trips;
     return this.http.get(`${environment.apiUrl}/trips/`).pipe(
-      // delay(2000), // to test mat-spinner loading
+      delay(2000), // to test mat-spinner loading
       // tap(console.log), // for debugging in console
       shareReplay(1),
       catchError(this.handleError),
       map((list: any[]): Trip[] => list.map(Trip.fromJSON))
     );
-  }
-
-  handleError(err: any): Observable<never> {
-    let errorMessage: string;
-    if (err instanceof HttpErrorResponse) {
-      errorMessage = `"${err.status} ${err.statusText}" when accessing "${err.url}"`;
-    } else {
-      errorMessage = `an unknown error occurred ${err}`;
-    }
-    console.error(err);
-    return throwError(errorMessage);
   }
 
   addNewTrip(trip: Trip) {
@@ -58,6 +47,28 @@ export class TripDataService {
         this._trips = [...this._trips, trip];
         this._trips$.next(this._trips);
       });
+  }  
+
+  deleteTrip(trip: Trip) {
+    return this.http
+      .delete(`${environment.apiUrl}/trips/${trip.id}`)
+      .pipe(tap(console.log), catchError(this.handleError))
+      .subscribe(() => {
+        this._trips = this._trips.filter(rec => rec.id != trip.id);
+        this._trips$.next(this._trips);
+      });
+  }
+
+  handleError(err: any): Observable<never> {
+    let errorMessage: string;    
+    if (err instanceof HttpErrorResponse) {
+      errorMessage = `"${err.status} ${err.statusText}" when accessing "${err.url}"`;
+    } else {
+      errorMessage = `an unknown error occurred ${err}`;
+    }
+    console.log("hier is em");
+    console.error(err);
+    return throwError(errorMessage);
   }
 
 }

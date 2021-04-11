@@ -48,9 +48,11 @@ export class TripListComponent implements OnInit {
     this._fetchTrips$ = this._tripDataService.allTrips$.pipe(
       catchError(err => {
         this.errorMessage = err;
+        console.log("hier jong")
+        console.log(err);
         return EMPTY;
       })
-    );    
+    ); 
   }
 
 }

@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { TripDataService } from '../trip-data.service';
 import { Trip } from '../trip.model';
 
 @Component({
@@ -9,9 +10,13 @@ import { Trip } from '../trip.model';
 export class TripComponent implements OnInit {
   @Input() public trip: Trip;
 
-  constructor() { }
+  constructor(private _tripDataService: TripDataService) { }
 
   ngOnInit(): void {
+  }
+
+  deleteTrip() {
+    this._tripDataService.deleteTrip(this.trip);
   }
 
 }
