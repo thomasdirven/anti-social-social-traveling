@@ -22,7 +22,12 @@
       </button>
     </mat-form-field>
   </mat-card>
-  <app-geocode></app-geocode>
+
+  <!-- card that allows you to geocode location and put marker on map -->
+  <!-- <app-geocode></app-geocode> -->
+  <!-- turned of to save free credit on https://console.cloud.google.com/ -->
+
+
   <!-- if statement no longer working -->
   <!-- because behaviorObservables are never empty? -->
   <!-- <div *ngIf="trips$ | async as trips; else loadingOrError"> -->
@@ -55,4 +60,7 @@
     </ng-template>
   </div>
 </div>
-<app-gmap></app-gmap>
+
+<!-- shows google maps on webpage with markers of trip locations -->
+<!-- <app-gmap></app-gmap> -->
+<!-- turned of to save free credit on https://console.cloud.google.com/ -->
