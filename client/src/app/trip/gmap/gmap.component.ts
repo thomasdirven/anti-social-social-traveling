@@ -30,7 +30,7 @@ export class GmapComponent implements OnInit {
   }
 
   mapClicked($event: google.maps.MouseEvent): void {
-    this.markers.push({
+    GmapComponent.markers.push({
       lat: $event.latLng.lat(),
       lng: $event.latLng.lng(),
       draggable: true,
@@ -41,7 +41,7 @@ export class GmapComponent implements OnInit {
     console.log('dragEnd', m, $event);
   }
 
-  markers: marker[] = [
+  public static markers: marker[] = [
     {
       lat: 51.673858,
       lng: 7.815982,
@@ -85,4 +85,19 @@ export class GmapComponent implements OnInit {
       this.mapClickListener.remove();
     }
   }
+
+  public static addNewMarker(lat, lng) {
+    this.markers = [...this.markers, 
+      {
+        lat: lat,
+        lng: lng,
+        label: 'D',
+        draggable: false,
+      }];
+  }  
+
+  get staticMarkers() {
+    return GmapComponent.markers;
+  }
+
 }

@@ -3,6 +3,7 @@ import { NgModel } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { GeocodeService } from '../geocode.service';
 import { Location } from '../geocode.service';
+import { GmapComponent } from '../gmap/gmap.component'
 
 @Component({
   selector: 'app-geocode',
@@ -22,7 +23,7 @@ export class GeocodeComponent implements OnInit {
   ngOnInit() {
   }
 
-    showLocation(address: string) {
+  showLocation(address: string) {
     this.address = address;
     this.addressToCoordinates();
   }
@@ -33,9 +34,14 @@ export class GeocodeComponent implements OnInit {
     .subscribe((location: Location) => {
         this.location = location;
         this.loading = false;
-        this.ref.detectChanges();  
+        this.ref.detectChanges();
+        this.addNewMarker(location);
       }      
     );     
+  }
+
+  addNewMarker(location: Location) {
+    GmapComponent.addNewMarker(location.lat, location.lng);
   }
 
 }
