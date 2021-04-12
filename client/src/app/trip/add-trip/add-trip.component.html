@@ -5,14 +5,27 @@
       <mat-form-field>
         <input
           matInput
-          aria-label="city"
-          placeholder="city"
+          aria-label="City"
+          placeholder="City"
           type="text"
           formControlName="city"
+          required
+          #spy
         />
+        <mat-error *ngIf="tripFG.get('city')['errors']">
+            {{ getErrorMessages(tripFG.get('city')['errors']) }}
+        </mat-error>
       </mat-form-field>
-      <button type="submit" mat-raised-button>Add Trip</button>
+      <button 
+        type="submit" 
+        mat-raised-button 
+        [disabled]="!tripFG.valid">
+      Add Trip
+      </button>
     </form>
   </mat-card-content>
 </mat-card>
 REMOVE {{ tripFG.value | json }}
+{{ tripFG.status }} <br>
+{{ spy.className }} <br>
+{{ tripFG.get('city')['errors'] | json }}

@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Attraction } from '../attraction.model';
 import { Trip } from '../trip.model';
 
@@ -15,7 +15,7 @@ export class AddTripComponent implements OnInit {
 
   ngOnInit(): void {
     this.tripFG = new FormGroup({
-      city: new FormControl('Rome'),
+      city: new FormControl('Rome', [Validators.required, Validators.minLength(5)]),
       // country: new FormControl('Rome'),
       // startDate: new FormControl('Rome'),
       // endDate: new FormControl('Rome'),
@@ -31,6 +31,15 @@ export class AddTripComponent implements OnInit {
     console.log(trip);
     this.newTrip.emit(trip);
     return false;
+  }
+
+  getErrorMessages(errors: any): string {
+    if (errors.required) {
+      return "is required";
+    } else if (errors.minlength) {
+      return `needs at least ${errors.minlength.requiredLength}
+        characters (got ${errors.minlength.actualLength})`
+    }
   }
 
 }
