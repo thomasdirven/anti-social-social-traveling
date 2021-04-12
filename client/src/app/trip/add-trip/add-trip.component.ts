@@ -50,8 +50,8 @@ export class AddTripComponent implements OnInit {
     this.tripFG = this.fb.group({
       city: ['Rome', [Validators.required, Validators.minLength(3)]],
       // country: new FormControl('Rome'),
-      // startDate: new FormControl('Rome'),
-      // endDate: new FormControl('Rome'),
+      startDate: [''],
+      endDate: [''],
       // minDays: new FormControl('Rome'),
       // maxDays: new FormControl('Rome'),
       attractions: this.fb.array([this.createAttractions()]),
