@@ -1,1 +1,14 @@
-<p>geocode works!</p>
+<!-- <form (ngSubmit)="showLocation()">
+    <input type="text" [(ngModel)]="address" required [ngModelOptions]="{standalone: true}">
+    <button type="submit">Show Location</button>
+</form> -->
+
+<mat-card>
+    <mat-form-field>
+        <input matInput placeholder="location" type="text"
+            #newAddress />
+    </mat-form-field>
+    <button (click)="showLocation(newAddress.value)" mat-raised-button>
+        Show Location
+    </button>
+</mat-card>

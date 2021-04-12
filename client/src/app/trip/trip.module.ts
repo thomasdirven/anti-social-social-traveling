@@ -11,6 +11,7 @@ import { AgmCoreModule } from '@agm/core';
 import { GmapComponent } from './gmap/gmap.component';
 import { GeocodeService } from './geocode.service';
 import { GeocodeComponent } from './geocode/geocode.component';
+import { FormsModule } from '@angular/forms';
 
 // Google API key
 // AIzaSyByzFs-RMMy83HcDPftNNp_JddxVD4rurM
@@ -31,7 +32,8 @@ import { GeocodeComponent } from './geocode/geocode.component';
     MaterialModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyByzFs-RMMy83HcDPftNNp_JddxVD4rurM'
-    })
+    }),
+    FormsModule,
   ],
   providers: [GeocodeService],
   exports: [
