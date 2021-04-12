@@ -11,10 +11,11 @@ import { AgmCoreModule } from '@agm/core';
 import { GmapComponent } from './gmap/gmap.component';
 import { GeocodeService } from './geocode.service';
 import { GeocodeComponent } from './geocode/geocode.component';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
 // Google API key
 // AIzaSyByzFs-RMMy83HcDPftNNp_JddxVD4rurM
+// used for Maps JavaScript API and Geocoding API
 
 @NgModule({
   declarations: [
@@ -24,21 +25,18 @@ import { FormsModule } from '@angular/forms';
     AddTripComponent,
     TripFilterPipe,
     GmapComponent,
-    GeocodeComponent
+    GeocodeComponent,
   ],
   imports: [
     CommonModule,
     HttpClientModule,
     MaterialModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyByzFs-RMMy83HcDPftNNp_JddxVD4rurM'
+      apiKey: 'AIzaSyByzFs-RMMy83HcDPftNNp_JddxVD4rurM',
     }),
-    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [GeocodeService],
-  exports: [
-    TripListComponent
-  ]
+  exports: [TripListComponent],
 })
-
-export class TripModule { }
+export class TripModule {}
