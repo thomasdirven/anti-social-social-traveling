@@ -13,19 +13,57 @@
           #spy
         />
         <mat-error *ngIf="tripFG.get('city')['errors']">
-            {{ getErrorMessages(tripFG.get('city')['errors']) }}
+          {{ getErrorMessages(tripFG.get("city")["errors"]) }}
         </mat-error>
       </mat-form-field>
-      <button 
-        type="submit" 
-        mat-raised-button 
-        [disabled]="!tripFG.valid">
-      Add Trip
+      <div
+        formArrayName="attractions"
+        *ngFor="
+          let item of tripFG.get('attractions')['controls'];
+          let i = index
+        "
+      >
+        <div [formGroupName]="i">
+          <mat-form-field>
+            <input
+              matInput
+              type="text"
+              aria-label="name"
+              placeholder="Name"
+              formControlName="name"
+            />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-select
+              placeholder="Attraction Type"
+              aria-label="attraction type"
+              formControlName="type"
+            >
+              <mat-option *ngFor="let type of attractionTypes" [value]="type">
+                {{ type }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="budget"
+              aria-label="attraction budget"
+              type="text"
+              formControlName="budget"
+            />
+          </mat-form-field>
+        </div>
+        <mat-error *ngIf="item.errors && item.get('name').touched">
+            {{ getErrorMessage(item.errors) }}
+        </mat-error>
+      </div>
+      <button type="submit" mat-raised-button [disabled]="!tripFG.valid">
+        Add Trip
       </button>
     </form>
   </mat-card-content>
 </mat-card>
-REMOVE {{ tripFG.value | json }}
-{{ tripFG.status }} <br>
-{{ spy.className }} <br>
-{{ tripFG.get('city')['errors'] | json }}
+REMOVE {{ tripFG.value | json }} {{ tripFG.status }} <br />
+{{ spy.className }} <br />
+{{ tripFG.get("city")["errors"] | json }}
