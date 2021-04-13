@@ -49,11 +49,11 @@ export class AddTripComponent implements OnInit {
   newFormGroup() {
     this.tripFG = this.fb.group({
       city: ['Rome', [Validators.required, Validators.minLength(3)]],
-      // country: new FormControl('Rome'),
+      country: ['Italy', [Validators.required, Validators.minLength(3)]],
       startDate: [''],
       endDate: [''],
-      // minDays: new FormControl('Rome'),
-      // maxDays: new FormControl('Rome'),
+      minDays: [''],
+      maxDays: [''],
       attractions: this.fb.array([this.createAttractions()]),
     });
     this.attractions.valueChanges
@@ -64,8 +64,18 @@ export class AddTripComponent implements OnInit {
         const lastElement = attList[attList.length - 1];
         if (lastElement.name && lastElement.name.length > 2) {
           this.attractions.push(this.createAttractions());
+        } else if (attList.length >= 2) {
+          const secondToLast = attList[attList.length - 2];
+          if (
+            !lastElement.name &&
+            !lastElement.type &&
+            !lastElement.budget &&
+            (!secondToLast.name || secondToLast.name.length < 2)
+          ) {
+            this.attractions.removeAt(this.attractions.length - 1);
+          }
         }
-      });
+      }); 
   }
 
   createAttractions(): FormGroup {
@@ -86,11 +96,11 @@ export class AddTripComponent implements OnInit {
     //const attraction = new Attraction("Test", "Test", 5);
     const trip = new Trip(
       this.tripFG.value.city,
-      'UNKOWN',
-      new Date(),
-      new Date(Date.now() + 12096e5),
-      2,
-      5,
+      this.tripFG.value.country,
+      new Date(this.tripFG.value.startDate),
+      new Date(this.tripFG.value.endDate),
+      this.tripFG.value.minDays,
+      this.tripFG.value.maxDays,
       attractions
     );
     console.log(trip);
@@ -98,6 +108,9 @@ export class AddTripComponent implements OnInit {
 
     // reset form with new form group after submit
     this.newFormGroup();
+    //this.tripFG.markAsUntouched();
+    //this.tripFG.get('maxDays').markAsUntouched();
+    //this.tripFG.reset(this.tripFG.getRawValue(), {emitEvent: false});    
   }
 
   getErrorMessages(errors: any): string {

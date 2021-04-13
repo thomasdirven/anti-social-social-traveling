@@ -2,37 +2,104 @@
   <mat-card-title>Add City Trip</mat-card-title>
   <mat-card-content>
     <form [formGroup]="tripFG" (ngSubmit)="onSubmit()">
-      <mat-form-field>
-        <input
-          matInput
-          aria-label="City"
-          placeholder="City"
-          type="text"
-          formControlName="city"
-          required
-          #spy
-        />
-        <mat-error *ngIf="tripFG.get('city')['errors']">
-          {{ getErrorMessages(tripFG.get("city")["errors"]) }}
-        </mat-error>
-      </mat-form-field>
+      <!-- City the user wants to go to -->
+      <div>
+        <mat-form-field>
+          <input
+            matInput
+            aria-label="City"
+            placeholder="City"
+            type="text"
+            formControlName="city"
+            required
+          />
+          <mat-error *ngIf="tripFG.get('city')['errors']">
+            {{ getErrorMessages(tripFG.get("city")["errors"]) }}
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Country the chosen city is located in -->
+      <div>
+        <mat-form-field>
+          <input
+            matInput
+            aria-label="Country"
+            placeholder="Country"
+            type="text"
+            formControlName="country"
+            required
+          />
+          <mat-error *ngIf="tripFG.get('country')['errors']">
+            {{ getErrorMessages(tripFG.get("country")["errors"]) }}
+          </mat-error>
+        </mat-form-field>
+      </div>
 
       <!-- Date range input forms integration -->
       <div>
-      <mat-form-field appearance="fill">
-        <mat-label>Enter a date range</mat-label>
-        <mat-date-range-input [rangePicker]="picker">
-          <input matStartDate formControlName="startDate" placeholder="Start date">
-          <input matEndDate formControlName="endDate" placeholder="End date">
-        </mat-date-range-input>
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-date-range-picker #picker></mat-date-range-picker>
-      
-        <mat-error *ngIf="tripFG.controls.startDate.hasError('matStartDateInvalid')">Invalid start date</mat-error>
-        <mat-error *ngIf="tripFG.controls.endDate.hasError('matEndDateInvalid')">Invalid end date</mat-error>
-      </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Enter a date range</mat-label>
+          <mat-date-range-input [rangePicker]="picker">
+            <input
+              matStartDate
+              formControlName="startDate"
+              placeholder="Start date"
+            />
+            <input
+              matEndDate
+              formControlName="endDate"
+              placeholder="End date"
+            />
+          </mat-date-range-input>
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+
+          <mat-error
+            *ngIf="tripFG.controls.startDate.hasError('matStartDateInvalid')"
+            >Invalid start date</mat-error
+          >
+          <mat-error
+            *ngIf="tripFG.controls.endDate.hasError('matEndDateInvalid')"
+            >Invalid end date</mat-error
+          >
+        </mat-form-field>
       </div>
 
+      <!-- Min and Max duration of the trip (in days) -->
+      <div>
+        <mat-form-field>
+          <input
+            matInput
+            aria-label="Minimum duration of the trip"
+            placeholder="Minimum duration in Days"
+            type="text"
+            formControlName="minDays"
+            required
+          />
+          <mat-error *ngIf="tripFG.get('minDays')['errors']">
+            {{ getErrorMessages(tripFG.get("minDays")["errors"]) }}
+          </mat-error>
+        </mat-form-field>
+        <span> - &nbsp;</span>
+        <mat-form-field>
+          <input
+            matInput
+            aria-label="Maximum duration of the trip"
+            placeholder="Maximum duration in Days"
+            type="text"
+            formControlName="maxDays"
+            required
+          />
+          <mat-error *ngIf="tripFG.get('maxDays')['errors']">
+            {{ getErrorMessages(tripFG.get("minDays")["errors"]) }}
+          </mat-error>
+        </mat-form-field>
+      </div>
+      
       <div
         formArrayName="attractions"
         *ngFor="
@@ -50,6 +117,7 @@
               formControlName="name"
             />
           </mat-form-field>
+          <span> &nbsp; </span>
           <mat-form-field>
             <mat-select
               placeholder="Attraction Type"
@@ -61,10 +129,11 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
+          <span> &nbsp; </span>
           <mat-form-field>
             <input
               matInput
-              placeholder="budget"
+              placeholder="Budget"
               aria-label="attraction budget"
               type="text"
               formControlName="budget"
@@ -72,7 +141,7 @@
           </mat-form-field>
         </div>
         <mat-error *ngIf="item.errors && item.get('name').touched">
-            {{ getErrorMessage(item.errors) }}
+          {{ getErrorMessage(item.errors) }}
         </mat-error>
       </div>
       <button type="submit" mat-raised-button [disabled]="!tripFG.valid">
@@ -82,5 +151,5 @@
   </mat-card-content>
 </mat-card>
 REMOVE {{ tripFG.value | json }} {{ tripFG.status }} <br />
-{{ spy.className }} <br />
+<!-- {{ spy.className }} <br /> -->
 {{ tripFG.get("city")["errors"] | json }}

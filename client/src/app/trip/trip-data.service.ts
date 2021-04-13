@@ -27,7 +27,7 @@ export class TripDataService {
   get trips$(): Observable<Trip[]> {
     // return this._trips;
     return this.http.get(`${environment.apiUrl}/trips/`).pipe(
-      delay(2000), // to test mat-spinner loading
+      delay(1200), // to test mat-spinner loading
       // tap(console.log), // for debugging in console
       shareReplay(1),
       catchError(this.handleError),
