@@ -11,6 +11,9 @@ import { GmapComponent } from '../gmap/gmap.component'
   styleUrls: ['./geocode.component.scss']
 })
 export class GeocodeComponent implements OnInit {
+
+  // This component could be removed, not used right now
+
   address = 'Dortmund';
   location: Location;
   loading: boolean;
@@ -35,13 +38,13 @@ export class GeocodeComponent implements OnInit {
         this.location = location;
         this.loading = false;
         this.ref.detectChanges();
-        this.addNewMarker(location);
+        // this.addNewMarker(location);
       }      
     );     
   }
 
-  addNewMarker(location: Location) {
-    GmapComponent.addNewMarker(location.lat, location.lng);
-  }
+  // addNewMarker(location: Location) {
+  //   GmapComponent.addNewMarker(location.lat, location.lng);
+  // }
 
 }

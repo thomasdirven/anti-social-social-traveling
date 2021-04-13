@@ -7,7 +7,7 @@
   (mapReady)="mapReadyHandler($event)">
   <!-- (mapClick)="mapClicked($event)" -->
 
-  <agm-marker 
+  <!-- <agm-marker 
       *ngFor="let m of staticMarkers; let i = index"
       (markerClick)="clickedMarker(m.label, i)"
       [latitude]="m.lat"
@@ -20,13 +20,42 @@
       <strong>InfoWindow content</strong>
     </agm-info-window>
     
+  </agm-marker> -->
+
+  <!-- TODO -->
+  <!-- if map type control is enabled, street view gets CORS error -->
+  <!-- will fix this in later commit -->
+  <!-- <agm-map-type-control></agm-map-type-control> -->
+  <agm-marker 
+      *ngFor="let trip of trips; let i = index"
+      (markerClick)="clickedMarker(T, i)"
+      [latitude]="trip.latitude"
+      [longitude]="trip.longtitude"
+      [markerDraggable]="false"
+      [animation]="'DROP'">
+      
+    <agm-info-window>
+      <strong>{{trip.city}}, {{trip.country}}</strong>
+    </agm-info-window>
+    
   </agm-marker>
+
+  <div *ngIf="this.hoverTrip">
+    <agm-marker       
+      [latitude]="hoverTrip.latitude"
+      [longitude]="hoverTrip.longtitude"
+      [label]=""
+      [markerDraggable]="false"
+      [iconUrl]="hoverIcon"
+      [animation]="'BOUNCE'">    
+    </agm-marker>
+  </div>
   
-  <agm-circle [latitude]="lat + 0.3" [longitude]="lng" 
+  <!-- <agm-circle [latitude]="lat + 0.3" [longitude]="lng" 
       [radius]="5000"
       [fillColor]="'red'"
       [circleDraggable]="true"
       [editable]="true">
-  </agm-circle>
+  </agm-circle> -->
 
 </agm-map>

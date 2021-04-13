@@ -27,7 +27,6 @@
   <!-- <app-geocode></app-geocode> -->
   <!-- turned of to save free credit on https://console.cloud.google.com/ -->
 
-
   <!-- if statement no longer working -->
   <!-- because behaviorObservables are never empty? -->
   <!-- <div *ngIf="trips$ | async as trips; else loadingOrError"> -->
@@ -45,7 +44,13 @@
           fxFlex="0 0 calc(33%-0.5)"
           fxFlex.xs="100%"
         >
-          <app-trip [trip]="trip"></app-trip>
+        <!-- is hoverTrip a local variable in this html file?? -->
+        <!-- it works, but how? -->
+          <app-trip
+            [trip]="trip"
+            (mouseenter)="hoverTrip = trip"
+            (mouseleave)="hoverTrip = null"
+          ></app-trip>
         </div>
       </div>
     </div>
@@ -58,9 +63,11 @@
         <mat-spinner></mat-spinner>
       </ng-template>
     </ng-template>
+    <!-- shows google maps on webpage with markers of trip locations -->
+    <app-gmap
+      [trips]="trips | tripFilter: filterTripCity"
+      [hoverTrip]="this.hoverTrip"
+    ></app-gmap>
+    <!-- turned of to save free credit on https://console.cloud.google.com/ -->
   </div>
 </div>
-
-<!-- shows google maps on webpage with markers of trip locations -->
-<!-- <app-gmap></app-gmap> -->
-<!-- turned of to save free credit on https://console.cloud.google.com/ -->
