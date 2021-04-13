@@ -1,4 +1,10 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Output,
+  EventEmitter,
+  ChangeDetectorRef,
+} from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -8,10 +14,12 @@ import {
 } from '@angular/forms';
 import { debounce, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Attraction } from '../attraction.model';
+import { GeocodeService } from '../geocode.service';
 import { Trip } from '../trip.model';
+import { Location } from '../geocode.service';
 
 function validateAttractionName(control: FormGroup): { [key: string]: any } {
-  if(
+  if (
     control.get('budget').value.length >= 1 &&
     control.get('name').value.length < 2
   ) {
@@ -34,16 +42,22 @@ export class AddTripComponent implements OnInit {
     'Other',
   ];
 
+  private location: Location;
+
   public tripFG: FormGroup;
   @Output() public newTrip = new EventEmitter<Trip>();
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private geocodeService: GeocodeService,
+    private ref: ChangeDetectorRef
+  ) {}
 
   get attractions(): FormArray {
     return <FormArray>this.tripFG.get('attractions');
   }
 
   ngOnInit(): void {
-    this.newFormGroup();    
+    this.newFormGroup();
   }
 
   newFormGroup() {
@@ -75,7 +89,7 @@ export class AddTripComponent implements OnInit {
             this.attractions.removeAt(this.attractions.length - 1);
           }
         }
-      }); 
+      });
   }
 
   createAttractions(): FormGroup {
@@ -91,6 +105,22 @@ export class AddTripComponent implements OnInit {
 
   onSubmit() {
     console.log(this.tripFG);
+    this.geocodeOnSubmit();
+  }
+
+  geocodeOnSubmit() {
+    this.geocodeService
+      .geocodeAddress(`${this.tripFG.value.city}, ${this.tripFG.value.country}`)
+      .subscribe((location: Location) => {
+        this.location = location;
+        this.ref.detectChanges();
+        this.emitTripWithCoord(location);
+      });
+  }
+
+  emitTripWithCoord(location: Location) {
+    console.log(location.lat, location.lng);
+    this.location = location;
     let attractions = this.tripFG.value.attractions.map(Attraction.fromJSON);
     attractions = attractions.filter((att) => att.name.length > 2);
     //const attraction = new Attraction("Test", "Test", 5);
@@ -101,7 +131,9 @@ export class AddTripComponent implements OnInit {
       new Date(this.tripFG.value.endDate),
       this.tripFG.value.minDays,
       this.tripFG.value.maxDays,
-      attractions
+      attractions,
+      this.location.lat,
+      this.location.lng
     );
     console.log(trip);
     this.newTrip.emit(trip);
@@ -110,7 +142,7 @@ export class AddTripComponent implements OnInit {
     this.newFormGroup();
     //this.tripFG.markAsUntouched();
     //this.tripFG.get('maxDays').markAsUntouched();
-    //this.tripFG.reset(this.tripFG.getRawValue(), {emitEvent: false});    
+    //this.tripFG.reset(this.tripFG.getRawValue(), {emitEvent: false});
   }
 
   getErrorMessages(errors: any): string {

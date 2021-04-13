@@ -26,9 +26,9 @@ namespace TripApi.Data
 
             //Another way to seed the database
             builder.Entity<Trip>().HasData(
-                 new Trip { Id = 1, City = "Barcelona", Country = "Spain", StartDate = DateTime.Now, EndDate = DateTime.Now, MinDays = 2, MaxDays = 5 },
-                 new Trip { Id = 2, City = "Paris", Country = "France", StartDate = DateTime.Now, EndDate = DateTime.Now, MinDays = 3, MaxDays = 8 },
-                 new Trip { Id = 3, City = "Prague", Country = "Czech Republic", StartDate = DateTime.Now, EndDate = DateTime.Now, MinDays = 4, MaxDays = 7 }
+                 new Trip { Id = 1, City = "Barcelona", Country = "Spain", StartDate = DateTime.Now, EndDate = DateTime.Now, MinDays = 2, MaxDays = 5, Latitude = 41.3850639, Longtitude = 2.1734035 },
+                 new Trip { Id = 2, City = "Paris", Country = "France", StartDate = DateTime.Now, EndDate = DateTime.Now, MinDays = 3, MaxDays = 8, Latitude = 48.856614, Longtitude = 2.3522219 },
+                 new Trip { Id = 3, City = "Prague", Country = "Czech Republic", StartDate = DateTime.Now, EndDate = DateTime.Now, MinDays = 4, MaxDays = 7, Latitude = 50.0755381, Longtitude = 14.4378005 }
             );
 
             builder.Entity<Attraction>().HasData(

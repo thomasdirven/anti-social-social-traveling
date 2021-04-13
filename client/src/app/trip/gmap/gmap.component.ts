@@ -1,4 +1,5 @@
 import { Component, NgZone, OnInit } from '@angular/core';
+import { TripDataService } from '../trip-data.service';
 // No longer used in latest version of agm -> using googl.maps
 //import { MouseEvent } from '@agm/core';
 

@@ -9,6 +9,8 @@ interface TripJson {
   minDays: number;
   maxDays: number;
   attractions: AttractionJson[];
+  latitude: number;
+  longtitude: number;
 }
 
 export class Trip {
@@ -27,6 +29,8 @@ export class Trip {
     private _minDays: number,
     private _maxDays: number,
     private _attractions = new Array<Attraction>(), // tourist Attractions you really want to do
+    private _latitude?: number,
+    private _longtitude?: number,
   ) //TODO more attributes
   {}
 
@@ -35,6 +39,10 @@ export class Trip {
       typeof json.minDays === 'string' ? parseInt(json.minDays) : json.minDays;
     const maxDays =
       typeof json.maxDays === 'string' ? parseInt(json.maxDays) : json.maxDays;
+    const latitude =
+      typeof json.latitude === 'string' ? parseInt(json.latitude) : json.latitude;
+    const longtitude =
+      typeof json.longtitude === 'string' ? parseInt(json.longtitude) : json.longtitude;
     const trip = new Trip(
       json.city,
       json.country,
@@ -42,7 +50,9 @@ export class Trip {
       new Date(json.endDate),
       minDays,
       maxDays,
-      json.attractions.map(Attraction.fromJSON)
+      json.attractions.map(Attraction.fromJSON),
+      latitude,
+      longtitude
     );
     trip._id = json.id;
     return trip;
@@ -56,7 +66,9 @@ export class Trip {
           endDate: this.endDate.toJSON(),
           minDays: this.minDays,
           maxDays: this.maxDays,
-          attractions: this.attractions.map(att => att.toJSON())
+          attractions: this.attractions.map(att => att.toJSON()),
+          latitude: this.latitude,
+          longtitude: this.longtitude,
       }
   }
 
@@ -83,6 +95,12 @@ export class Trip {
   }
   get attractions(): Attraction[] {
     return this._attractions;
+  }
+  get latitude(): number {
+    return this._latitude;
+  }
+  get longtitude(): number {
+    return this._longtitude;
   }
 
   addAttraction(name: string, type?: string, budget?: number) {

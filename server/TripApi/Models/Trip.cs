@@ -22,6 +22,9 @@ namespace TripApi.Models
         public int MaxDays { get; set; }
 
         public ICollection<Attraction> Attractions { get; private set; }
+
+        public double? Latitude { get; set; }
+        public double? Longtitude { get; set; }
         #endregion
 
         #region Constructors

@@ -44,6 +44,7 @@ export class GeocodeService {
           this.geocoder.geocode({'address': location}, (results, status) => {
             if (status == google.maps.GeocoderStatus.OK) {
               console.log('Geocoding complete!');
+              console.log('Results - ', results, ' & Status - ', status)
               observer.next({
                 lat: results[0].geometry.location.lat(), 
                 lng: results[0].geometry.location.lng()
@@ -57,5 +58,5 @@ export class GeocodeService {
         })        
       })
     )
-  }  
+  } 
 }
