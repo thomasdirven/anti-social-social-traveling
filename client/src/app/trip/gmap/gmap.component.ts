@@ -23,6 +23,8 @@ export class GmapComponent implements OnInit {
   @Input() public trips: Trip[];
   @Input() public hoverTrip?: Trip;
 
+  public isCheckedMapTypeControl = false;
+
   constructor(private zone: NgZone) {}
 
   public hoverIcon = {

@@ -11,7 +11,7 @@ import { AgmCoreModule } from '@agm/core';
 import { GmapComponent } from './gmap/gmap.component';
 import { GeocodeService } from './geocode.service';
 import { GeocodeComponent } from './geocode/geocode.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // Google API key
 // AIzaSyByzFs-RMMy83HcDPftNNp_JddxVD4rurM
@@ -35,6 +35,7 @@ import { ReactiveFormsModule } from '@angular/forms';
       apiKey: 'AIzaSyByzFs-RMMy83HcDPftNNp_JddxVD4rurM',
     }),
     ReactiveFormsModule,
+    FormsModule,
   ],
   providers: [GeocodeService],
   exports: [TripListComponent],

@@ -1,13 +1,55 @@
-<agm-map 
-  [latitude]="lat"
-  [longitude]="lng"
-  [zoom]="zoom"
-  [disableDefaultUI]="false"
-  
-  (mapReady)="mapReadyHandler($event)">
-  <!-- (mapClick)="mapClicked($event)" -->
+<!-- TODO -->
+<!-- if map type control is enabled, street view gets CORS error -->
+<mat-slide-toggle color="primary" [(ngModel)]="isCheckedMapTypeControl"
+  >Map Type Control: {{ isCheckedMapTypeControl ? "enabled" : "disabled" }}</mat-slide-toggle
+>
+<span><em> (Disable map type control if you want to use Street View.)</em></span>
+<!-- you have to reload the whole map if you want to enable MapTypeControl, there is no other way -->
+<div *ngIf="!isCheckedMapTypeControl; else enabledMapTypeControl">
+  <agm-map
+    [latitude]="lat"
+    [longitude]="lng"
+    [zoom]="zoom"
+    [disableDefaultUI]="false"
+    (mapReady)="mapReadyHandler($event)"
+  >
+    <agm-marker
+      *ngFor="let trip of trips; let i = index"
+      (markerClick)="clickedMarker(T, i)"
+      [latitude]="trip.latitude"
+      [longitude]="trip.longtitude"
+      [markerDraggable]="false"
+      [animation]="'DROP'"
+    >
+      <agm-info-window>
+        <strong>{{ trip.city }}, {{ trip.country }}</strong>
+      </agm-info-window>
+    </agm-marker>
 
-  <!-- <agm-marker 
+    <div *ngIf="this.hoverTrip">
+      <agm-marker
+        [latitude]="hoverTrip.latitude"
+        [longitude]="hoverTrip.longtitude"
+        [label]=""
+        [markerDraggable]="false"
+        [iconUrl]="hoverIcon"
+        [animation]="'BOUNCE'"
+      >
+      </agm-marker>
+    </div>
+  </agm-map>
+</div>
+<ng-template #enabledMapTypeControl>
+  <agm-map
+    [latitude]="lat"
+    [longitude]="lng"
+    [zoom]="zoom"
+    [disableDefaultUI]="false"
+    (mapReady)="mapReadyHandler($event)"
+  >
+    <!-- (mapClick)="mapClicked($event)" -->
+
+    <!-- <agm-marker 
       *ngFor="let m of staticMarkers; let i = index"
       (markerClick)="clickedMarker(m.label, i)"
       [latitude]="m.lat"
@@ -20,42 +62,43 @@
       <strong>InfoWindow content</strong>
     </agm-info-window>
     
-  </agm-marker> -->
+    </agm-marker> -->
 
-  <!-- TODO -->
-  <!-- if map type control is enabled, street view gets CORS error -->
-  <!-- will fix this in later commit -->
-  <!-- <agm-map-type-control></agm-map-type-control> -->
-  <agm-marker 
+    <!-- TODO -->
+    <!-- if map type control is enabled, street view gets CORS error -->
+    <!-- will fix this in later commit -->
+    <!-- map-type-control cannot be placed in div apparently -->
+    <agm-map-type-control></agm-map-type-control>
+    <agm-marker
       *ngFor="let trip of trips; let i = index"
       (markerClick)="clickedMarker(T, i)"
       [latitude]="trip.latitude"
       [longitude]="trip.longtitude"
       [markerDraggable]="false"
-      [animation]="'DROP'">
-      
-    <agm-info-window>
-      <strong>{{trip.city}}, {{trip.country}}</strong>
-    </agm-info-window>
-    
-  </agm-marker>
-
-  <div *ngIf="this.hoverTrip">
-    <agm-marker       
-      [latitude]="hoverTrip.latitude"
-      [longitude]="hoverTrip.longtitude"
-      [label]=""
-      [markerDraggable]="false"
-      [iconUrl]="hoverIcon"
-      [animation]="'BOUNCE'">    
+      [animation]="'DROP'"
+    >
+      <agm-info-window>
+        <strong>{{ trip.city }}, {{ trip.country }}</strong>
+      </agm-info-window>
     </agm-marker>
-  </div>
-  
-  <!-- <agm-circle [latitude]="lat + 0.3" [longitude]="lng" 
+
+    <div *ngIf="this.hoverTrip">
+      <agm-marker
+        [latitude]="hoverTrip.latitude"
+        [longitude]="hoverTrip.longtitude"
+        [label]=""
+        [markerDraggable]="false"
+        [iconUrl]="hoverIcon"
+        [animation]="'BOUNCE'"
+      >
+      </agm-marker>
+    </div>
+
+    <!-- <agm-circle [latitude]="lat + 0.3" [longitude]="lng" 
       [radius]="5000"
       [fillColor]="'red'"
       [circleDraggable]="true"
       [editable]="true">
-  </agm-circle> -->
-
-</agm-map>
+    </agm-circle> -->
+  </agm-map>
+</ng-template>
