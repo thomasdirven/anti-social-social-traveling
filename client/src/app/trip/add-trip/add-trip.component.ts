@@ -55,9 +55,39 @@ export class AddTripComponent implements OnInit {
   get attractions(): FormArray {
     return <FormArray>this.tripFG.get('attractions');
   }
+  get startDate(): FormControl {
+    return <FormControl>this.tripFG.get('startDate');
+  }
+  get endDate(): FormControl {
+    return <FormControl>this.tripFG.get('endDate');
+  }
+  get minDays(): FormControl {
+    return <FormControl>this.tripFG.get('minDays');
+  }
+  get maxDays(): FormControl {
+    return <FormControl>this.tripFG.get('maxDays');
+  }
 
   ngOnInit(): void {
     this.newFormGroup();
+  }
+
+  private _startDateStr: string;
+  private _endDateStr: string;
+  private _maxDaysForDateRange: number;
+
+  calcDateRange(startDateStr: string, endDateStr: string) {
+    let startDate = new Date(startDateStr);
+    let endDate = new Date(endDateStr);
+    console.log("startDate + startDateStr");
+    console.log(startDate);
+    console.log(startDateStr);
+    console.log("endDate + endDateStr");
+    console.log(endDate);
+    console.log(endDateStr);
+    let diff = endDate.getTime() - startDate.getTime();
+    console.log(Math.floor(diff / (60 * 60 * 24 * 1000)));
+    this._maxDaysForDateRange = Math.floor(diff / (60 * 60 * 24 * 1000));
   }
 
   newFormGroup() {
@@ -66,9 +96,51 @@ export class AddTripComponent implements OnInit {
       country: ['Italy', [Validators.required, Validators.minLength(3)]],
       startDate: [''],
       endDate: [''],
-      minDays: [''],
-      maxDays: [''],
+      minDays: [{value: '', disabled: true}],
+      maxDays: [{value: '', disabled: true}],
       attractions: this.fb.array([this.createAttractions()]),
+    });
+    // "Minimum duration in Days - Maximum duration in Days" starts off disabled.
+    // When the date range is filled in, the minDays field is enabled.
+    // The minDays is at least 1 and can never exceed the date range.
+    // When the minDays field is filled in, the maxDays field is enabled.
+    // The maxDays is at least minDays and can never exceed the date range.
+    // Took me a while, but it's a nice extra I hope.
+    this.startDate.valueChanges.subscribe(hasValue => {
+      if (hasValue) {
+        console.log(hasValue);
+        this._startDateStr =  hasValue;
+      } 
+    });
+    this.endDate.valueChanges.subscribe(hasValue => {
+      if (hasValue) {
+        console.log(hasValue);
+        this._endDateStr = hasValue;
+        this.calcDateRange(this._startDateStr, this._endDateStr);
+        this.minDays.enable();
+        this.minDays.setValidators([Validators.required, Validators.min(1),
+          Validators.max(this._maxDaysForDateRange)]);
+      } else {
+        this.minDays.setValidators(null);
+        this.maxDays.setValidators(null);
+        this.minDays.reset();
+        this.minDays.disable();
+        this.maxDays.reset();
+        this.maxDays.disable();
+      }
+      this.maxDays.updateValueAndValidity();
+    });
+    this.minDays.valueChanges.subscribe(hasValue => {
+      if (hasValue) {
+        this.maxDays.enable();
+        this.maxDays.setValidators([Validators.required, Validators.min(this.minDays.value),
+          Validators.max(this._maxDaysForDateRange)]);
+      } else {
+        this.maxDays.setValidators(null);
+        this.maxDays.reset();
+        this.maxDays.disable();
+      }
+      this.maxDays.updateValueAndValidity();
     });
     this.attractions.valueChanges
       .pipe(debounceTime(400), distinctUntilChanged())
@@ -107,6 +179,8 @@ export class AddTripComponent implements OnInit {
     console.log(this.tripFG);
     this.geocodeOnSubmit();
   }
+
+  private _location: Location;
 
   geocodeOnSubmit() {
     this.geocodeService
