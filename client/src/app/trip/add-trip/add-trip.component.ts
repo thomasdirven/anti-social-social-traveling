@@ -12,7 +12,12 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { debounce, debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import {
+  debounce,
+  debounceTime,
+  distinctUntilChanged,
+  throttleTime,
+} from 'rxjs/operators';
 import { Attraction } from '../attraction.model';
 import { GeocodeService } from '../geocode.service';
 import { Trip } from '../trip.model';
@@ -56,14 +61,20 @@ export class AddTripComponent implements OnInit {
   private _endDateStr: string;
   private _maxDaysForDateRange: number;
 
+  // prevents city from calling geocode to early
+  private _typingInCountry = true;
+
+  private _cityCallsGeocoder = false;
+  private _countryCallsGeocoder = false;
+
   public isCheckedLocationAutocorrect = true;
   private _autoCorrectCity = false;
   private _autoCorrectCountry = false;
-  private _dbTime = 5000;
+
+  // private _dbTime = 5000;
   public validLocation = false;
-  // when location got checked with geocode
-  // but no good result was found or autocorrect was turned off
-  // while there were still spelling mistakes
+  // in the begining the location is nor valid nor invalid
+  // need this for the mat-progress-bar
   public invalidLocation = false;
 
   private _location: Location;
@@ -104,7 +115,7 @@ export class AddTripComponent implements OnInit {
     console.log(endDate);
     console.log(endDateStr);
     let diff = endDate.getTime() - startDate.getTime();
-    console.log(Math.floor(diff / (60 * 60 * 24 * 1000)) + " + 1");
+    console.log(Math.floor(diff / (60 * 60 * 24 * 1000)) + ' + 1');
     return Math.floor(diff / (60 * 60 * 24 * 1000)) + 1;
   }
 
@@ -124,61 +135,85 @@ export class AddTripComponent implements OnInit {
     // After the 5 seconds wait, we try to geocode the location given by the user
     // If the geocoding fails (returns lat: 0, lng: 0) we tell him/her
     // that the location does not exist (according to google's geocoding API)
-    // When geocoding was succesful we only debounce for 50ms
     // TODO - variable debouncTime
+    // When geocoding was succesful we only debounce for 50ms
     // debounceTime(this._geocodeSuccces ? 50 : 5000) didnt work
     // this might help
     // https://stackoverflow.com/questions/42070554/variable-debouncetime-based-on-conditions
+    // this might be better => .throttleTime
+    // https://stackoverflow.com/questions/56460436/what-is-the-difference-between-throttletime-vs-debouncetime-in-rxjs-and-when-to
+    // throttleTime in geocode.service.ts
     this.city.valueChanges
-      .pipe(debounceTime(this._dbTime), distinctUntilChanged())
+      .pipe(
+        debounceTime(2000),
+        distinctUntilChanged()
+        // throttleTime(9000),
+      )
       .subscribe((hasValue) => {
         if (
           !this._autoCorrectCity &&
           hasValue &&
           hasValue.length > 2 &&
-          this.country.value
+          this.country.value &&
+          !this._typingInCountry &&
+          !this._countryCallsGeocoder
         ) {
+          this._cityCallsGeocoder = true;
           console.log(hasValue);
           console.log(this.country.value);
           this.invalidLocation = false;
           this.validLocation = false;
+          console.log('city calls geocoder');
           this.geocodeLocationToCoord(false);
         } else {
           console.log('city.value too short or geocode autocorrect cycle');
           // reset autoCorrectCity to false so user can change city or country if he whishes
           if (this._autoCorrectCity) {
             this._autoCorrectCity = false;
-            this._dbTime = 5000;
+            // this._dbTime = 5000;
           } else {
             this.validLocation = false;
           }
         }
       });
     this.country.valueChanges
-      .pipe(debounceTime(this._dbTime), distinctUntilChanged())
+      .pipe(
+        debounceTime(2000),
+        distinctUntilChanged()
+        // throttleTime(9000),
+      )
       .subscribe((hasValue) => {
         if (
           !this._autoCorrectCountry &&
           hasValue &&
           hasValue.length > 1 &&
-          this.city.value
+          this.city.value &&
+          !this._cityCallsGeocoder
         ) {
+          this._typingInCountry = false; // done typing
+          this._countryCallsGeocoder = true;
           console.log(hasValue);
           console.log(this.city.value);
           this.invalidLocation = false;
           this.validLocation = false;
+          console.log('country calls geocoder');
           this.geocodeLocationToCoord(false);
         } else {
           console.log('country.value too short or geocode autocorrect cycle');
           // reset autoCorrectCountry to false so user can change city or country if he whishes
           if (this._autoCorrectCountry) {
             this._autoCorrectCountry = false;
-            this._dbTime = 5000;
+            // this._dbTime = 5000;
           } else {
             this.validLocation = false;
           }
         }
       });
+    // If autoCorrect was turned off and the location was not found by google
+    // the user can enable autocorrect, then without changing the fields,
+    // a new geocode api request will be send
+    // this.isCheckedLocationAutocorrect;
+
     // "Minimum duration in Days - Maximum duration in Days" starts off disabled.
     // When the date range is filled in, the minDays field is enabled.
     // The minDays is at least 1 and can never exceed the date range.
@@ -195,7 +230,10 @@ export class AddTripComponent implements OnInit {
       if (hasValue) {
         console.log(hasValue);
         this._endDateStr = hasValue;
-        this._maxDaysForDateRange = this.calcDateRange(this._startDateStr, this._endDateStr);
+        this._maxDaysForDateRange = this.calcDateRange(
+          this._startDateStr,
+          this._endDateStr
+        );
         this.minDays.enable();
         this.minDays.setValidators([
           Validators.required,
@@ -272,39 +310,41 @@ export class AddTripComponent implements OnInit {
   geocodeLocationToCoord(isSubmit: boolean) {
     this.geocodeService
       .geocodeAddress(`${this.tripFG.value.city}, ${this.tripFG.value.country}`)
+      // .pipe(throttleTime(9000))
       .subscribe((location: Location) => {
         this.ref.detectChanges();
         this._location = location;
         console.log('geocode finished');
         // autocorrect if google finds your misspelled location
-        if (this._location.lat !== 0) {
-          if (
-            this._location.city !== this.city.value &&
-            this.isCheckedLocationAutocorrect
-          ) {
+        if (this._location.lat !== 0 && this.isCheckedLocationAutocorrect) {
+          if (this._location.city !== this.city.value) {
             this.city.setValue(this._location.city);
             this._autoCorrectCity = true;
-            this._dbTime = 50;
+            // this._dbTime = 50;
           }
-          if (
-            this._location.country !== this.country.value &&
-            this.isCheckedLocationAutocorrect
-          ) {
+          if (this._location.country !== this.country.value) {
             this.country.setValue(this._location.country);
             this._autoCorrectCountry = true;
-            this._dbTime = 50;
+            // this._dbTime = 50;
           }
-          if (
-            this._location.city === this.city.value &&
-            this._location.country === this.country.value
-          ) {
-            this.validLocation = true;
-            this.invalidLocation = false;
-            console.log('valid location');
-          } else {
-            this.invalidLocation = true;
-            console.log('invalid location');
-          }
+        }
+        if (
+          this._location.city === this.city.value &&
+          this._location.country === this.country.value
+        ) {
+          this.validLocation = true;
+          this.invalidLocation = false;
+          console.log('valid location');
+        } else {
+          this.validLocation = false;
+          this.invalidLocation = true;
+          console.log('invalid location');
+        }
+        if (this._cityCallsGeocoder) {
+          this._cityCallsGeocoder = false;
+        }
+        if (this._countryCallsGeocoder) {
+          this._countryCallsGeocoder = false;
         }
         if (isSubmit) {
           this.emitTripWithCoord();
@@ -335,6 +375,7 @@ export class AddTripComponent implements OnInit {
     this._startDateStr = '';
     this._endDateStr = '';
     this._maxDaysForDateRange = 1;
+    this._typingInCountry = true;
     this._autoCorrectCity = false;
     this._autoCorrectCountry = false;
     this.validLocation = false;
@@ -350,7 +391,7 @@ export class AddTripComponent implements OnInit {
     this.tripFG.markAsUntouched();
     this.tripFG.updateValueAndValidity();
     //this.tripFG.get('maxDays').markAsUntouched();
-    this.tripFG.reset(this.tripFG.getRawValue(), {emitEvent: false});
+    this.tripFG.reset(this.tripFG.getRawValue(), { emitEvent: false });
   }
 
   getErrorMessages(errors: any): string {

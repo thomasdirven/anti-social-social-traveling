@@ -2,6 +2,7 @@
   <mat-card-title>Add City Trip</mat-card-title>
   <!-- turn location autocorrect on or off -->
   <mat-slide-toggle color="primary" [(ngModel)]="isCheckedLocationAutocorrect"
+  (click) = "invalidLocation ? geocodeLocationToCoord(false) : '' "
     >Location Autocorrect:
     {{
       isCheckedLocationAutocorrect ? "enabled" : "disabled"

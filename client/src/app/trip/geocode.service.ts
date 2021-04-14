@@ -11,7 +11,7 @@ import {
   merge,
   fromEvent,
 } from 'rxjs';
-import { filter, catchError, tap, map, switchMap } from 'rxjs/operators';
+import { filter, catchError, tap, map, switchMap, throttleTime } from 'rxjs/operators';
 
 export interface Location {
   city?: string;
@@ -48,6 +48,8 @@ export class GeocodeService {
   geocodeAddress(location: string): Observable<Location> {
     console.log('Start geocoding!');
     return this.waitForMapsToLoad().pipe(
+      // https://rxjs-dev.firebaseapp.com/api/operators/throttleTime
+      // throttleTime(9000), // doesnt do what I want it to do
       // filter(loaded => loaded),
       switchMap(() => {
         return new Observable<Location>((observer) => {
