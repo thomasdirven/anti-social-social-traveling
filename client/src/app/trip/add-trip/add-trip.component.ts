@@ -61,6 +61,10 @@ export class AddTripComponent implements OnInit {
   private _autoCorrectCountry = false;
   private _dbTime = 5000;
   public validLocation = false;
+  // when location got checked with geocode
+  // but no good result was found or autocorrect was turned off
+  // while there were still spelling mistakes
+  public invalidLocation = false;
 
   private _location: Location;
 
@@ -292,6 +296,9 @@ export class AddTripComponent implements OnInit {
           ) {
             this.validLocation = true;
             console.log('valid location');
+          } else {
+            this.invalidLocation = true;
+            console.log('invalid location');
           }
         }
         if (isSubmit) {
@@ -332,6 +339,7 @@ export class AddTripComponent implements OnInit {
     this._autoCorrectCity = false;
     this._autoCorrectCountry = false;
     this.validLocation = false;
+    this.invalidLocation = false;
     this._location = null;
   }
 

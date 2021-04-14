@@ -13,17 +13,25 @@
     <!-- <div [ngClass]="{ hidden: !validLocation }"> -->
     <!-- super slow if, don't know why? -->
     <!-- clicking on a form field triggers the if, so that's a solution -->
-    <div *ngIf="validLocation; else processingLocation">
+    <div *ngIf="validLocation; else processingLocationOrInvalidLocation">
       Location is verified by Google
       <mat-icon [ngStyle]="{ color: 'green' }">verified_user</mat-icon>
     </div>
     <!-- </div> -->
     <!-- workaround for slow if -->
     <!-- <div [ngClass]="{ hidden: validLocation }"> -->
-    <ng-template #processingLocation>
-      Location is being verified by Google
-      <mat-icon>youtube_searched_for</mat-icon>
-      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    <ng-template #processingLocationOrInvalidLocation>
+      <div *ngIf="invalidLocation; else processingLocation">
+        Location was not found by Google
+        <mat-icon [ngStyle]="{ color: 'red' }">location_off</mat-icon>
+        <br>
+        <em>Try turning on autocorrect (experimental).</em>
+      </div>
+      <ng-template #processingLocation>
+        Location is being verified by Google ...
+        <mat-icon>youtube_searched_for</mat-icon>
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      </ng-template>
     </ng-template>
     <!-- </div> -->
   </div>
