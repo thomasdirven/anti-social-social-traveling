@@ -36,13 +36,11 @@ function validateAttractionName(control: FormGroup): { [key: string]: any } {
 export class AddTripComponent implements OnInit {
   public readonly attractionTypes = [
     'Historic Building',
+    'Museum',
     'Park',
     'Square',
-    'Museum',
     'Other',
   ];
-
-  private location: Location;
 
   public tripFG: FormGroup;
   @Output() public newTrip = new EventEmitter<Trip>();
@@ -52,8 +50,11 @@ export class AddTripComponent implements OnInit {
     private ref: ChangeDetectorRef
   ) {}
 
-  get attractions(): FormArray {
-    return <FormArray>this.tripFG.get('attractions');
+  get city(): FormControl {
+    return <FormControl>this.tripFG.get('city');
+  }
+  get country(): FormControl {
+    return <FormControl>this.tripFG.get('country');
   }
   get startDate(): FormControl {
     return <FormControl>this.tripFG.get('startDate');
@@ -67,6 +68,9 @@ export class AddTripComponent implements OnInit {
   get maxDays(): FormControl {
     return <FormControl>this.tripFG.get('maxDays');
   }
+  get attractions(): FormArray {
+    return <FormArray>this.tripFG.get('attractions');
+  }
 
   ngOnInit(): void {
     this.newFormGroup();
@@ -79,10 +83,10 @@ export class AddTripComponent implements OnInit {
   calcDateRange(startDateStr: string, endDateStr: string) {
     let startDate = new Date(startDateStr);
     let endDate = new Date(endDateStr);
-    console.log("startDate + startDateStr");
+    console.log('startDate + startDateStr');
     console.log(startDate);
     console.log(startDateStr);
-    console.log("endDate + endDateStr");
+    console.log('endDate + endDateStr');
     console.log(endDate);
     console.log(endDateStr);
     let diff = endDate.getTime() - startDate.getTime();
@@ -90,36 +94,92 @@ export class AddTripComponent implements OnInit {
     this._maxDaysForDateRange = Math.floor(diff / (60 * 60 * 24 * 1000));
   }
 
+  public isCheckedLocationAutocorrect = true;
+  private _autoCorrectCity = false;
+  private _autoCorrectCountry = false;
+  private _dbTime = 5000;
+  public validLocation = false;
+
   newFormGroup() {
     this.tripFG = this.fb.group({
       city: ['Rome', [Validators.required, Validators.minLength(3)]],
       country: ['Italy', [Validators.required, Validators.minLength(3)]],
       startDate: [''],
       endDate: [''],
-      minDays: [{value: '', disabled: true}],
-      maxDays: [{value: '', disabled: true}],
+      minDays: [{ value: '', disabled: true }],
+      maxDays: [{ value: '', disabled: true }],
       attractions: this.fb.array([this.createAttractions()]),
     });
+    // After city and country have been filled in, we wait 5 seconds
+    // We wait this long so the user has time to correct spelling mistakes
+    // We don't want to send API requests every 50ms, don't waste money
+    // After the 5 seconds wait, we try to geocode the location given by the user
+    // If the geocoding fails (returns lat: 0, lng: 0) we tell him/her
+    // that the location does not exist (according to google's geocoding API)
+    // When geocoding was succesful we only debounce for 50ms
+    // TODO - variable debouncTime
+    // debounceTime(this._geocodeSuccces ? 50 : 5000) didnt work
+    // this might help
+    // https://stackoverflow.com/questions/42070554/variable-debouncetime-based-on-conditions
+    this.city.valueChanges
+      .pipe(
+        debounceTime(this._dbTime),
+        distinctUntilChanged()
+      )
+      .subscribe((hasValue) => {
+        if (!this._autoCorrectCity && (hasValue.length > 2) && this.country.value) {
+          console.log(hasValue);
+          console.log(this.country.value);
+          this.validLocation = false;
+          this.geocodeLocationToCoord(false);
+        } else {
+          console.log('city.value too short or geocode autocorrect cycle');
+          // reset to false so user can change city or country if he whishes
+          this._autoCorrectCity = false;
+          this._dbTime = 5000;
+        }
+      });
+    this.country.valueChanges
+      .pipe(
+        debounceTime(this._dbTime),
+        distinctUntilChanged()
+      )
+      .subscribe((hasValue) => {
+        if (!this._autoCorrectCountry && (hasValue.length > 2) && this.city.value) {
+          console.log(hasValue);
+          console.log(this.city.value);
+          this.validLocation = false;
+          this.geocodeLocationToCoord(false);
+        } else {
+          console.log('country.value too short or geocode autocorrect cycle');
+          // reset to false so user can change city or country if he whishes
+          this._autoCorrectCountry = false;
+          this._dbTime = 5000;
+        }
+      });
     // "Minimum duration in Days - Maximum duration in Days" starts off disabled.
     // When the date range is filled in, the minDays field is enabled.
     // The minDays is at least 1 and can never exceed the date range.
     // When the minDays field is filled in, the maxDays field is enabled.
     // The maxDays is at least minDays and can never exceed the date range.
     // Took me a while, but it's a nice extra I hope.
-    this.startDate.valueChanges.subscribe(hasValue => {
+    this.startDate.valueChanges.subscribe((hasValue) => {
       if (hasValue) {
         console.log(hasValue);
-        this._startDateStr =  hasValue;
-      } 
+        this._startDateStr = hasValue;
+      }
     });
-    this.endDate.valueChanges.subscribe(hasValue => {
+    this.endDate.valueChanges.subscribe((hasValue) => {
       if (hasValue) {
         console.log(hasValue);
         this._endDateStr = hasValue;
         this.calcDateRange(this._startDateStr, this._endDateStr);
         this.minDays.enable();
-        this.minDays.setValidators([Validators.required, Validators.min(1),
-          Validators.max(this._maxDaysForDateRange)]);
+        this.minDays.setValidators([
+          Validators.required,
+          Validators.min(1),
+          Validators.max(this._maxDaysForDateRange),
+        ]);
       } else {
         this.minDays.setValidators(null);
         this.maxDays.setValidators(null);
@@ -130,11 +190,14 @@ export class AddTripComponent implements OnInit {
       }
       this.maxDays.updateValueAndValidity();
     });
-    this.minDays.valueChanges.subscribe(hasValue => {
+    this.minDays.valueChanges.subscribe((hasValue) => {
       if (hasValue) {
         this.maxDays.enable();
-        this.maxDays.setValidators([Validators.required, Validators.min(this.minDays.value),
-          Validators.max(this._maxDaysForDateRange)]);
+        this.maxDays.setValidators([
+          Validators.required,
+          Validators.min(this.minDays.value),
+          Validators.max(this._maxDaysForDateRange),
+        ]);
       } else {
         this.maxDays.setValidators(null);
         this.maxDays.reset();
@@ -175,26 +238,46 @@ export class AddTripComponent implements OnInit {
     );
   }
 
-  onSubmit() {
-    console.log(this.tripFG);
-    this.geocodeOnSubmit();
-  }
-
   private _location: Location;
 
-  geocodeOnSubmit() {
+  onSubmit() {
+    console.log(this.tripFG);
+    if (!this._location) {
+      this.geocodeLocationToCoord(true);
+    } else {
+      this.emitTripWithCoord();
+    }
+  }
+
+  geocodeLocationToCoord(isSubmit: boolean) {
     this.geocodeService
       .geocodeAddress(`${this.tripFG.value.city}, ${this.tripFG.value.country}`)
       .subscribe((location: Location) => {
-        this.location = location;
         this.ref.detectChanges();
-        this.emitTripWithCoord(location);
+        this._location = location;
+        console.log('geocode finished');
+        // autocorrect if google finds your misspelled location
+        if (this._location.lat !== 0) {
+          if (this._location.city !== this.city.value) {
+            this.city.setValue(this._location.city);
+            this._autoCorrectCity = true;
+            this._dbTime = 50;
+          }
+          if (this._location.country !== this.country.value) {
+            this.country.setValue(this._location.country);
+            this._autoCorrectCountry = true;
+            this._dbTime = 50;
+          }          
+        this.validLocation = true;
+        }
+        if (isSubmit) {
+          this.emitTripWithCoord();
+        }
       });
   }
 
-  emitTripWithCoord(location: Location) {
-    console.log(location.lat, location.lng);
-    this.location = location;
+  emitTripWithCoord() {
+    console.log(this._location.lat, this._location.lng);
     let attractions = this.tripFG.value.attractions.map(Attraction.fromJSON);
     attractions = attractions.filter((att) => att.name.length > 2);
     //const attraction = new Attraction("Test", "Test", 5);
@@ -206,8 +289,8 @@ export class AddTripComponent implements OnInit {
       this.tripFG.value.minDays,
       this.tripFG.value.maxDays,
       attractions,
-      this.location.lat,
-      this.location.lng
+      this._location.lat,
+      this._location.lng
     );
     console.log(trip);
     this.newTrip.emit(trip);

@@ -3,7 +3,7 @@
 <mat-slide-toggle color="primary" [(ngModel)]="isCheckedMapTypeControl"
   >Map Type Control: {{ isCheckedMapTypeControl ? "enabled" : "disabled" }}</mat-slide-toggle
 >
-<span><em> (Disable map type control if you want to use Street View.)</em></span>
+<span><em> (Disable map type control if Street View has trouble loading.)</em></span>
 <!-- you have to reload the whole map if you want to enable MapTypeControl, there is no other way -->
 <div *ngIf="!isCheckedMapTypeControl; else enabledMapTypeControl">
   <agm-map
