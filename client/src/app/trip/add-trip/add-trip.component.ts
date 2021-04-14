@@ -94,7 +94,7 @@ export class AddTripComponent implements OnInit {
     this.newFormGroup();
   }
 
-  calcDateRange(startDateStr: string, endDateStr: string) {
+  calcDateRange(startDateStr: string, endDateStr: string): number {
     let startDate = new Date(startDateStr);
     let endDate = new Date(endDateStr);
     console.log('startDate + startDateStr');
@@ -104,8 +104,8 @@ export class AddTripComponent implements OnInit {
     console.log(endDate);
     console.log(endDateStr);
     let diff = endDate.getTime() - startDate.getTime();
-    console.log(Math.floor(diff / (60 * 60 * 24 * 1000)));
-    this._maxDaysForDateRange = Math.floor(diff / (60 * 60 * 24 * 1000));
+    console.log(Math.floor(diff / (60 * 60 * 24 * 1000)) + " + 1");
+    return Math.floor(diff / (60 * 60 * 24 * 1000)) + 1;
   }
 
   newFormGroup() {
@@ -140,6 +140,7 @@ export class AddTripComponent implements OnInit {
         ) {
           console.log(hasValue);
           console.log(this.country.value);
+          this.invalidLocation = false;
           this.validLocation = false;
           this.geocodeLocationToCoord(false);
         } else {
@@ -164,6 +165,7 @@ export class AddTripComponent implements OnInit {
         ) {
           console.log(hasValue);
           console.log(this.city.value);
+          this.invalidLocation = false;
           this.validLocation = false;
           this.geocodeLocationToCoord(false);
         } else {
@@ -193,7 +195,7 @@ export class AddTripComponent implements OnInit {
       if (hasValue) {
         console.log(hasValue);
         this._endDateStr = hasValue;
-        this.calcDateRange(this._startDateStr, this._endDateStr);
+        this._maxDaysForDateRange = this.calcDateRange(this._startDateStr, this._endDateStr);
         this.minDays.enable();
         this.minDays.setValidators([
           Validators.required,
