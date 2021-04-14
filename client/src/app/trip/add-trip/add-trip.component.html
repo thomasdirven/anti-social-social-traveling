@@ -1,5 +1,32 @@
 <mat-card>
   <mat-card-title>Add City Trip</mat-card-title>
+  <!-- turn location autocorrect on or off -->
+  <mat-slide-toggle color="primary" [(ngModel)]="isCheckedLocationAutocorrect"
+    >Location Autocorrect:
+    {{
+      isCheckedLocationAutocorrect ? "enabled" : "disabled"
+    }}</mat-slide-toggle
+  >
+  <div class="clearfix"></div>
+  <div class="verifiedLocation">
+    <!-- workaround for slow if => still had the same problem with this workaround -->
+    <!-- <div [ngClass]="{ hidden: !validLocation }"> -->
+    <!-- super slow if, don't know why? -->
+    <!-- clicking on a form field triggers the if, so that's a solution -->
+    <div *ngIf="validLocation; else processingLocation">
+      Location is verified by Google
+      <mat-icon [ngStyle]="{ color: 'green' }">verified_user</mat-icon>
+    </div>
+    <!-- </div> -->
+    <!-- workaround for slow if -->
+    <!-- <div [ngClass]="{ hidden: validLocation }"> -->
+    <ng-template #processingLocation>
+      Location is being verified by Google
+      <mat-icon>youtube_searched_for</mat-icon>
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </ng-template>
+    <!-- </div> -->
+  </div>
   <mat-card-content>
     <form [formGroup]="tripFG" (ngSubmit)="onSubmit()">
       <!-- City the user wants to go to -->
@@ -101,7 +128,7 @@
           </mat-error>
         </mat-form-field>
       </div>
-      
+
       <div
         formArrayName="attractions"
         *ngFor="

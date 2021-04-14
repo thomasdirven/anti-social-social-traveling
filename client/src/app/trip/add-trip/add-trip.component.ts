@@ -43,12 +43,26 @@ export class AddTripComponent implements OnInit {
   ];
 
   public tripFG: FormGroup;
+
   @Output() public newTrip = new EventEmitter<Trip>();
+
   constructor(
     private fb: FormBuilder,
     private geocodeService: GeocodeService,
     private ref: ChangeDetectorRef
   ) {}
+
+  private _startDateStr: string;
+  private _endDateStr: string;
+  private _maxDaysForDateRange: number;
+
+  public isCheckedLocationAutocorrect = true;
+  private _autoCorrectCity = false;
+  private _autoCorrectCountry = false;
+  private _dbTime = 5000;
+  public validLocation = false;
+
+  private _location: Location;
 
   get city(): FormControl {
     return <FormControl>this.tripFG.get('city');
@@ -76,10 +90,6 @@ export class AddTripComponent implements OnInit {
     this.newFormGroup();
   }
 
-  private _startDateStr: string;
-  private _endDateStr: string;
-  private _maxDaysForDateRange: number;
-
   calcDateRange(startDateStr: string, endDateStr: string) {
     let startDate = new Date(startDateStr);
     let endDate = new Date(endDateStr);
@@ -93,12 +103,6 @@ export class AddTripComponent implements OnInit {
     console.log(Math.floor(diff / (60 * 60 * 24 * 1000)));
     this._maxDaysForDateRange = Math.floor(diff / (60 * 60 * 24 * 1000));
   }
-
-  public isCheckedLocationAutocorrect = true;
-  private _autoCorrectCity = false;
-  private _autoCorrectCountry = false;
-  private _dbTime = 5000;
-  public validLocation = false;
 
   newFormGroup() {
     this.tripFG = this.fb.group({
@@ -122,39 +126,49 @@ export class AddTripComponent implements OnInit {
     // this might help
     // https://stackoverflow.com/questions/42070554/variable-debouncetime-based-on-conditions
     this.city.valueChanges
-      .pipe(
-        debounceTime(this._dbTime),
-        distinctUntilChanged()
-      )
+      .pipe(debounceTime(this._dbTime), distinctUntilChanged())
       .subscribe((hasValue) => {
-        if (!this._autoCorrectCity && (hasValue.length > 2) && this.country.value) {
+        if (
+          !this._autoCorrectCity &&
+          hasValue.length > 2 &&
+          this.country.value
+        ) {
           console.log(hasValue);
           console.log(this.country.value);
           this.validLocation = false;
           this.geocodeLocationToCoord(false);
         } else {
           console.log('city.value too short or geocode autocorrect cycle');
-          // reset to false so user can change city or country if he whishes
-          this._autoCorrectCity = false;
-          this._dbTime = 5000;
+          // reset autoCorrectCity to false so user can change city or country if he whishes
+          if (this._autoCorrectCity) {
+            this._autoCorrectCity = false;
+            this._dbTime = 5000;
+          } else {
+            this.validLocation = false;
+          }
         }
       });
     this.country.valueChanges
-      .pipe(
-        debounceTime(this._dbTime),
-        distinctUntilChanged()
-      )
+      .pipe(debounceTime(this._dbTime), distinctUntilChanged())
       .subscribe((hasValue) => {
-        if (!this._autoCorrectCountry && (hasValue.length > 2) && this.city.value) {
+        if (
+          !this._autoCorrectCountry &&
+          hasValue.length > 2 &&
+          this.city.value
+        ) {
           console.log(hasValue);
           console.log(this.city.value);
           this.validLocation = false;
           this.geocodeLocationToCoord(false);
         } else {
           console.log('country.value too short or geocode autocorrect cycle');
-          // reset to false so user can change city or country if he whishes
-          this._autoCorrectCountry = false;
-          this._dbTime = 5000;
+          // reset autoCorrectCountry to false so user can change city or country if he whishes
+          if (this._autoCorrectCountry) {
+            this._autoCorrectCountry = false;
+            this._dbTime = 5000;
+          } else {
+            this.validLocation = false;
+          }
         }
       });
     // "Minimum duration in Days - Maximum duration in Days" starts off disabled.
@@ -238,8 +252,6 @@ export class AddTripComponent implements OnInit {
     );
   }
 
-  private _location: Location;
-
   onSubmit() {
     console.log(this.tripFG);
     if (!this._location) {
@@ -258,17 +270,29 @@ export class AddTripComponent implements OnInit {
         console.log('geocode finished');
         // autocorrect if google finds your misspelled location
         if (this._location.lat !== 0) {
-          if (this._location.city !== this.city.value) {
+          if (
+            this._location.city !== this.city.value &&
+            this.isCheckedLocationAutocorrect
+          ) {
             this.city.setValue(this._location.city);
             this._autoCorrectCity = true;
             this._dbTime = 50;
           }
-          if (this._location.country !== this.country.value) {
+          if (
+            this._location.country !== this.country.value &&
+            this.isCheckedLocationAutocorrect
+          ) {
             this.country.setValue(this._location.country);
             this._autoCorrectCountry = true;
             this._dbTime = 50;
-          }          
-        this.validLocation = true;
+          }
+          if (
+            this._location.city === this.city.value &&
+            this._location.country === this.country.value
+          ) {
+            this.validLocation = true;
+            console.log('valid location');
+          }
         }
         if (isSubmit) {
           this.emitTripWithCoord();
@@ -300,6 +324,15 @@ export class AddTripComponent implements OnInit {
     //this.tripFG.markAsUntouched();
     //this.tripFG.get('maxDays').markAsUntouched();
     //this.tripFG.reset(this.tripFG.getRawValue(), {emitEvent: false});
+
+    // reset fields
+    this._startDateStr = '';
+    this._endDateStr = '';
+    this._maxDaysForDateRange = 1;
+    this._autoCorrectCity = false;
+    this._autoCorrectCountry = false;
+    this.validLocation = false;
+    this._location = null;
   }
 
   getErrorMessages(errors: any): string {
