@@ -110,8 +110,8 @@ export class AddTripComponent implements OnInit {
 
   newFormGroup() {
     this.tripFG = this.fb.group({
-      city: ['Rome', [Validators.required, Validators.minLength(3)]],
-      country: ['Italy', [Validators.required, Validators.minLength(3)]],
+      city: ['', [Validators.required, Validators.minLength(3)]],
+      country: ['', [Validators.required, Validators.minLength(2)]],
       startDate: [''],
       endDate: [''],
       minDays: [{ value: '', disabled: true }],
@@ -134,6 +134,7 @@ export class AddTripComponent implements OnInit {
       .subscribe((hasValue) => {
         if (
           !this._autoCorrectCity &&
+          hasValue &&
           hasValue.length > 2 &&
           this.country.value
         ) {
@@ -157,7 +158,8 @@ export class AddTripComponent implements OnInit {
       .subscribe((hasValue) => {
         if (
           !this._autoCorrectCountry &&
-          hasValue.length > 2 &&
+          hasValue &&
+          hasValue.length > 1 &&
           this.city.value
         ) {
           console.log(hasValue);
@@ -295,6 +297,7 @@ export class AddTripComponent implements OnInit {
             this._location.country === this.country.value
           ) {
             this.validLocation = true;
+            this.invalidLocation = false;
             console.log('valid location');
           } else {
             this.invalidLocation = true;
@@ -326,12 +329,6 @@ export class AddTripComponent implements OnInit {
     console.log(trip);
     this.newTrip.emit(trip);
 
-    // reset form with new form group after submit
-    this.newFormGroup();
-    //this.tripFG.markAsUntouched();
-    //this.tripFG.get('maxDays').markAsUntouched();
-    //this.tripFG.reset(this.tripFG.getRawValue(), {emitEvent: false});
-
     // reset fields
     this._startDateStr = '';
     this._endDateStr = '';
@@ -341,6 +338,17 @@ export class AddTripComponent implements OnInit {
     this.validLocation = false;
     this.invalidLocation = false;
     this._location = null;
+
+    // TODO fix form reset
+    // reset form with new form group after submit
+    // this.newFormGroup();
+    this.tripFG.reset();
+    this.tripFG.updateValueAndValidity();
+    this.tripFG.markAsPristine();
+    this.tripFG.markAsUntouched();
+    this.tripFG.updateValueAndValidity();
+    //this.tripFG.get('maxDays').markAsUntouched();
+    this.tripFG.reset(this.tripFG.getRawValue(), {emitEvent: false});
   }
 
   getErrorMessages(errors: any): string {

@@ -181,7 +181,7 @@
           {{ getErrorMessage(item.errors) }}
         </mat-error>
       </div>
-      <button type="submit" mat-raised-button [disabled]="!tripFG.valid">
+      <button type="submit" mat-raised-button [disabled]="!(tripFG.valid && validLocation)">
         Add Trip
       </button>
     </form>
