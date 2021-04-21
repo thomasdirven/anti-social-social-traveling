@@ -28,7 +28,7 @@ export class TripListComponent implements OnInit {
   public filterTripCity: string;
   public filterTrip$ = new Subject<string>();
 
-  public filterTripDateRange : Date[] = new Array();
+  public filterTripDateRange: Date[] = new Array();
   // public filterTripDateRange$ = new Subject<Date[]>();
 
   // public tripFilterDateRangeFG: FormGroup;
@@ -44,9 +44,9 @@ export class TripListComponent implements OnInit {
   // private _endDateStr: string;
 
   constructor(
-    private _tripDataService: TripDataService,
-    // private fb: FormBuilder
-  ) {
+    private _tripDataService: TripDataService
+  ) // private fb: FormBuilder
+  {
     this.filterTrip$
       .pipe(distinctUntilChanged(), debounceTime(150))
       .subscribe((val) => (this.filterTripCity = val));
@@ -69,15 +69,17 @@ export class TripListComponent implements OnInit {
   }
 
   // duplicate input event trigger
-  inputEventStartDate(event){
-    // Return date object 
+  inputEventStartDate(event) {
+    // Return date object
     console.log(event.value);
-    this.filterTripDateRange[0] = new Date(event.value);
+    this.filterTripDateRange[0] =
+      event.value === null ? null : new Date(event.value);
   }
-  inputEventEndDate(event){
-    // Return date object 
+  inputEventEndDate(event) {
+    // Return date object
     console.log(event.value);
-    this.filterTripDateRange[1] = new Date(event.value);
+    this.filterTripDateRange[1] =
+      event.value === null ? null : new Date(event.value);
   }
 
   ngOnInit(): void {
@@ -103,7 +105,7 @@ export class TripListComponent implements OnInit {
     //   if (hasValue) {
     //     console.log(hasValue);
     //     this._endDateStr = hasValue;
-    //   } 
+    //   }
     // });
   }
 }

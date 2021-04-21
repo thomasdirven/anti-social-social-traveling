@@ -21,19 +21,18 @@
         <mat-icon>close</mat-icon>
       </button>
     </mat-form-field>
+    <span> &nbsp; | &nbsp; </span>
     <!-- <form [formGroup]="tripFilterDateRangeFG"> -->
     <mat-form-field appearance="fill">
       <mat-label>Filter on date range</mat-label>
       <mat-date-range-input [rangePicker]="picker">
         <input
           matStartDate
-          formControlName="startDate"
           placeholder="Start date"
           (dateInput)="inputEventStartDate($event)"
         />
         <input
           matEndDate
-          formControlName="endDate"
           placeholder="End date"
           (dateInput)="inputEventEndDate($event)"
         />

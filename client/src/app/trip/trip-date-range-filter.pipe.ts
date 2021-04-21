@@ -4,13 +4,20 @@ import { Trip } from './trip.model';
 @Pipe({
   name: 'tripDateRangeFilter',
   // Necessary for DOM changes
-  // Didn't notice the differnce
-  // pure: false
+  // Yep you notice the difference
+  // updates way too much and way too fast
+  // TODO ?? optimazation with fewer reloads of this filter?
+  pure: false,
 })
 export class TripDateRangeFilterPipe implements PipeTransform {
   transform(trips: Trip[], dateRange: Date[]): Trip[] {
-    if (!dateRange || dateRange.length === 0) {
-      console.log("geen date range")
+    if (
+      !dateRange ||
+      dateRange.length === 0 ||
+      dateRange[0] === null ||
+      dateRange[1] === null
+    ) {
+      console.log('geen date range');
       return trips;
     }
     console.log(dateRange[0]);
