@@ -8,14 +8,12 @@ import { Trip } from './trip.model';
   // pure: false
 })
 export class TripFilterPipe implements PipeTransform {
-
   transform(trips: Trip[], city: string): Trip[] {
-    if (!city || city.length ===0){
+    if (!city || city.length === 0) {
       return trips;
     }
-    return trips.filter(rec => 
-      rec.city.toLowerCase().includes(city.toLowerCase())
+    return trips.filter((trip) =>
+      trip.city.toLowerCase().includes(city.toLowerCase())
     );
   }
-
 }

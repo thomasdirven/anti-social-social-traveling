@@ -21,6 +21,39 @@
         <mat-icon>close</mat-icon>
       </button>
     </mat-form-field>
+    <!-- <form [formGroup]="tripFilterDateRangeFG"> -->
+    <mat-form-field appearance="fill">
+      <mat-label>Filter on date range</mat-label>
+      <mat-date-range-input [rangePicker]="picker">
+        <input
+          matStartDate
+          formControlName="startDate"
+          placeholder="Start date"
+          (dateInput)="inputEventStartDate($event)"
+        />
+        <input
+          matEndDate
+          formControlName="endDate"
+          placeholder="End date"
+          (dateInput)="inputEventEndDate($event)"
+        />
+      </mat-date-range-input>
+      <mat-datepicker-toggle
+        matSuffix
+        [for]="picker"
+      ></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+<!-- 
+      <mat-error
+        *ngIf="tripFG.controls.startDate.hasError('matStartDateInvalid')"
+        >Invalid start date</mat-error
+      >
+      <mat-error
+        *ngIf="tripFG.controls.endDate.hasError('matEndDateInvalid')"
+        >Invalid end date</mat-error
+      > -->
+    </mat-form-field>
+  <!-- </form> -->
   </mat-card>
 
   <!-- card that allows you to geocode location and put marker on map -->
@@ -40,7 +73,7 @@
       >
         <div
           class="trip"
-          *ngFor="let trip of trips | tripFilter: filterTripCity"
+          *ngFor="let trip of trips | tripFilter: filterTripCity | tripDateRangeFilter: filterTripDateRange"
           fxFlex="0 0 calc(33%-0.5)"
           fxFlex.xs="100%"
         >
@@ -65,7 +98,7 @@
     </ng-template>
     <!-- shows google maps on webpage with markers of trip locations -->
     <app-gmap
-      [trips]="trips | tripFilter: filterTripCity"
+      [trips]="trips | tripFilter: filterTripCity | tripDateRangeFilter: filterTripDateRange"
       [hoverTrip]="this.hoverTrip"
     ></app-gmap>
     <!-- turned of to save free credit on https://console.cloud.google.com/ -->

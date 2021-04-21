@@ -12,6 +12,7 @@ import { GmapComponent } from './gmap/gmap.component';
 import { GeocodeService } from './geocode.service';
 import { GeocodeComponent } from './geocode/geocode.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TripDateRangeFilterPipe } from './trip-date-range-filter.pipe';
 
 // Google API key
 // AIzaSyByzFs-RMMy83HcDPftNNp_JddxVD4rurM
@@ -26,6 +27,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     TripFilterPipe,
     GmapComponent,
     GeocodeComponent,
+    TripDateRangeFilterPipe,
   ],
   imports: [
     CommonModule,
