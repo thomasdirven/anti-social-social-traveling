@@ -17,11 +17,11 @@ export class TripFilterDateRangePipe implements PipeTransform {
       dateRange[0] === null ||
       dateRange[1] === null
     ) {
-      console.log('geen date range');
+      // console.log('geen date range');
       return trips;
     }
-    console.log(dateRange[0]);
-    console.log(dateRange[1]);
+    // console.log(dateRange[0]);
+    // console.log(dateRange[1]);
     return trips.filter(
       (trip) =>
         (trip.startDate >= dateRange[0] && trip.startDate < dateRange[1]) ||

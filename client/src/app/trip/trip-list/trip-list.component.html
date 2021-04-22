@@ -50,13 +50,11 @@
         <mat-date-range-input [rangePicker]="picker">
           <input
             matStartDate
-            formControlName="startDate"
             placeholder="Start date"
             (dateInput)="inputEventStartDate($event)"
           />
           <input
             matEndDate
-            formControlName="endDate"
             placeholder="End date"
             (dateInput)="inputEventEndDate($event)"
           />
