@@ -30,6 +30,7 @@
       </div>
       <ng-template #processingLocation>
         Location is being verified by Google ...
+        <!-- <mat-icon>find_replace</mat-icon> -->
         <mat-icon>youtube_searched_for</mat-icon>
         <mat-progress-bar mode="indeterminate"></mat-progress-bar>
       </ng-template>
@@ -138,6 +139,23 @@
         </mat-form-field>
       </div>
 
+      <!-- total budget you estimate to spend on the entire trip -->
+      <div>        
+        <mat-form-field>
+          <input
+            matInput
+            aria-label="total budget you estimate to spend on the entire trip"
+            placeholder="Total budget of Trip"
+            type="text"
+            formControlName="budget"
+          />
+          <mat-error *ngIf="tripFG.get('budget')['errors']">
+            {{ getErrorMessages(tripFG.get("budget")["errors"]) }}
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- list of tourist attractions you want to see on the trip -->
       <div
         formArrayName="attractions"
         *ngFor="

@@ -128,6 +128,7 @@ export class AddTripComponent implements OnInit {
       endDate: [''],
       minDays: [{ value: '', disabled: true }],
       maxDays: [{ value: '', disabled: true }],
+      budget: [''],
       attractions: this.fb.array([this.createAttractions()]),
     });
     // After city and country have been filled in, we wait 5 seconds
@@ -365,6 +366,7 @@ export class AddTripComponent implements OnInit {
       new Date(this.tripFG.value.endDate),
       this.tripFG.value.minDays,
       this.tripFG.value.maxDays,
+      this.tripFG.value.budget,
       attractions,
       this._location.lat,
       this._location.lng

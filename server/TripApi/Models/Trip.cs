@@ -21,6 +21,8 @@ namespace TripApi.Models
         public int MinDays { get; set; }
         public int MaxDays { get; set; }
 
+        public double Budget { get; set; }
+
         public ICollection<Attraction> Attractions { get; private set; }
 
         public double? Latitude { get; set; }

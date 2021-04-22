@@ -11,7 +11,7 @@ namespace TripApi.Models
         Trip GetBy(int id);
         bool TryGetTrip(int id, out Trip trip);
         IEnumerable<Trip> GetAll();
-        IEnumerable<Trip> GetBy(string name = null, string chef = null, string ingredientName = null);
+        IEnumerable<Trip> GetBy(string city = null, string country = null, string attractionName = null);
         void Add(Trip trip);
         void Delete(Trip trip);
         void Update(Trip trip);

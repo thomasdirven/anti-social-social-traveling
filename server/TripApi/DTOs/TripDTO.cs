@@ -17,6 +17,8 @@ namespace TripApi.DTOs
         public int MinDays { get; set; }
         public int MaxDays { get; set; }
 
+        public double Budget { get; set; }
+
         public IList<AttractionDTO> Attractions { get; set; }
 
         public double? Latitude { get; set; }

@@ -8,6 +8,7 @@ interface TripJson {
   endDate: string;
   minDays: number;
   maxDays: number;
+  budget: number;
   attractions: AttractionJson[];
   latitude: number;
   longtitude: number;
@@ -28,21 +29,27 @@ export class Trip {
     private _endDate = new Date(),
     private _minDays: number,
     private _maxDays: number,
+    private _budget: number,
     private _attractions = new Array<Attraction>(), // tourist Attractions you really want to do
     private _latitude?: number,
-    private _longtitude?: number,
-  ) //TODO more attributes
-  {}
+    private _longtitude?: number //TODO more attributes
+  ) {}
 
   static fromJSON(json: TripJson): Trip {
     const minDays =
       typeof json.minDays === 'string' ? parseInt(json.minDays) : json.minDays;
     const maxDays =
       typeof json.maxDays === 'string' ? parseInt(json.maxDays) : json.maxDays;
+    const budget =
+      typeof json.budget === 'string' ? parseInt(json.budget) : json.budget;
     const latitude =
-      typeof json.latitude === 'string' ? parseInt(json.latitude) : json.latitude;
+      typeof json.latitude === 'string'
+        ? parseInt(json.latitude)
+        : json.latitude;
     const longtitude =
-      typeof json.longtitude === 'string' ? parseInt(json.longtitude) : json.longtitude;
+      typeof json.longtitude === 'string'
+        ? parseInt(json.longtitude)
+        : json.longtitude;
     const trip = new Trip(
       json.city,
       json.country,
@@ -50,6 +57,7 @@ export class Trip {
       new Date(json.endDate),
       minDays,
       maxDays,
+      budget,
       json.attractions.map(Attraction.fromJSON),
       latitude,
       longtitude
@@ -58,21 +66,22 @@ export class Trip {
     return trip;
   }
 
-  toJSON(): TripJson{
-      return <TripJson>{
-          city: this.city,
-          country: this.country,
-          startDate: this.startDate.toJSON(),
-          endDate: this.endDate.toJSON(),
-          minDays: this.minDays,
-          maxDays: this.maxDays,
-          attractions: this.attractions.map(att => att.toJSON()),
-          latitude: this.latitude,
-          longtitude: this.longtitude,
-      }
+  toJSON(): TripJson {
+    return <TripJson>{
+      city: this.city,
+      country: this.country,
+      startDate: this.startDate.toJSON(),
+      endDate: this.endDate.toJSON(),
+      minDays: this.minDays,
+      maxDays: this.maxDays,
+      budget: this.budget,
+      attractions: this.attractions.map((att) => att.toJSON()),
+      latitude: this.latitude,
+      longtitude: this.longtitude,
+    };
   }
 
-  get id(): number{
+  get id(): number {
     return this._id;
   }
   get city(): string {
@@ -92,6 +101,9 @@ export class Trip {
   }
   get maxDays(): number {
     return this._maxDays;
+  }
+  get budget(): number {
+    return this._budget;
   }
   get attractions(): Attraction[] {
     return this._attractions;

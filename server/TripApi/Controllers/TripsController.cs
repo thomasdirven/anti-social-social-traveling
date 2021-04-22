@@ -78,7 +78,7 @@ namespace TripApi.Controllers
         {
             try
             {
-                Trip tripToCreate = new Trip() { City = trip.City, Country = trip.Country, StartDate = trip.StartDate, EndDate = trip.EndDate, MinDays = trip.MinDays, MaxDays = trip.MaxDays, Latitude = trip.Latitude, Longtitude = trip.Longtitude };
+                Trip tripToCreate = new Trip() { City = trip.City, Country = trip.Country, StartDate = trip.StartDate, EndDate = trip.EndDate, MinDays = trip.MinDays, MaxDays = trip.MaxDays, Budget = trip.Budget, Latitude = trip.Latitude, Longtitude = trip.Longtitude };
                 foreach (var a in trip.Attractions)
                     tripToCreate.AddAttraction(new Attraction(a.Name, a.Type, a.Budget));
                 _tripRepository.Add(tripToCreate);
