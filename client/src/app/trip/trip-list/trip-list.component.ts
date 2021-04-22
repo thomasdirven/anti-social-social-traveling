@@ -26,7 +26,10 @@ export class TripListComponent implements OnInit {
   public errorMessage: string = '';
 
   public filterTripCity: string;
-  public filterTrip$ = new Subject<string>();
+  public filterTripCity$ = new Subject<string>();
+
+  public filterTripCountry: string;
+  public filterTripCountry$ = new Subject<string>();
 
   public filterTripDateRange: Date[] = new Array();
   // public filterTripDateRange$ = new Subject<Date[]>();
@@ -47,18 +50,21 @@ export class TripListComponent implements OnInit {
     private _tripDataService: TripDataService
   ) // private fb: FormBuilder
   {
-    this.filterTrip$
+    this.filterTripCity$
       .pipe(distinctUntilChanged(), debounceTime(150))
       .subscribe((val) => (this.filterTripCity = val));
+    this.filterTripCountry$
+      .pipe(distinctUntilChanged(), debounceTime(150))
+      .subscribe((val) => (this.filterTripCountry = val));
     // this.filterTripDateRange$
     //   .pipe(distinctUntilChanged(), debounceTime(150))
     //   .subscribe((val) => (this.filterTripDateRange = val));
   }
 
-  // not in use, was replaced by filterTrip$
-  applyFilter(filter: string) {
-    this.filterTripCity = filter;
-  }
+  // not in use, was replaced by filterTripCity$
+  // applyFilter(filter: string) {
+  //   this.filterTripCity = filter;
+  // }
 
   get trips$(): Observable<Trip[]> {
     return this._fetchTrips$;

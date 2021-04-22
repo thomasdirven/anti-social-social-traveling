@@ -2,12 +2,13 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { Trip } from './trip.model';
 
 @Pipe({
-  name: 'tripFilter',
+  name: 'tripFilterCity',
   // Necessary for DOM changes
   // Didn't notice the differnce
+  // turning it off for better performance
   // pure: false
 })
-export class TripFilterPipe implements PipeTransform {
+export class TripFilterCityPipe implements PipeTransform {
   transform(trips: Trip[], city: string): Trip[] {
     if (!city || city.length === 0) {
       return trips;

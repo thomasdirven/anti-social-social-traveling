@@ -2,14 +2,14 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { Trip } from './trip.model';
 
 @Pipe({
-  name: 'tripDateRangeFilter',
+  name: 'tripFilterDateRange',
   // Necessary for DOM changes
   // Yep you notice the difference
   // updates way too much and way too fast
   // TODO ?? optimazation with fewer reloads of this filter?
   pure: false,
 })
-export class TripDateRangeFilterPipe implements PipeTransform {
+export class TripFilterDateRangePipe implements PipeTransform {
   transform(trips: Trip[], dateRange: Date[]): Trip[] {
     if (
       !dateRange ||
@@ -29,3 +29,4 @@ export class TripDateRangeFilterPipe implements PipeTransform {
     );
   }
 }
+
