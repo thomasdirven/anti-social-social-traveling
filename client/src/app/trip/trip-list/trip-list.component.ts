@@ -114,4 +114,19 @@ export class TripListComponent implements OnInit {
     //   }
     // });
   }
+
+  public timer: ReturnType<typeof setTimeout>;
+  
+  scrollDiv(elementToScroll:HTMLElement, depl) {
+    // console.log(elementToScroll);
+    elementToScroll.scrollLeft -= depl;
+    // console.log('scrolling...');
+    this.timer = setTimeout(()=>{
+      this.scrollDiv(elementToScroll, depl);
+    }, 30);
+  }
+
+  stopTimer(timer:number) {
+    clearTimeout(timer);
+  }
 }

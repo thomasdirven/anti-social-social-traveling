@@ -92,48 +92,107 @@
   <!-- <app-geocode></app-geocode> -->
   <!-- turned of to save free credit on https://console.cloud.google.com/ -->
 
+  <!-- <div #scrollingTrips class="tripsScroll"> -->
   <!-- if statement no longer working -->
   <!-- because behaviorObservables are never empty? -->
   <!-- <div *ngIf="trips$ | async as trips; else loadingOrError"> -->
-  <div *ngIf="trips$ | async as trips">
-    <div *ngIf="trips.length > 0; else loadingOrError">
-      <div
-        fxLayout="row wrap"
-        fxLayout.xs="column"
-        fxLayoutGap=""
-        fxLayoutAlign="center"
-      >
+  <div>
+    <div #scrollingTrips class="tripsScroll">
+      <div *ngIf="trips$ | async as trips">
+        <div *ngIf="trips.length > 0; else loadingOrError">
+          <div
+            fxLayout.xs="column"
+            fxLayoutGap=""
+            fxLayoutAlign="center"
+          >
+            <div
+              class="trip"
+              *ngFor="
+                let trip of trips
+                  | tripFilterCity: filterTripCity
+                  | tripFilterCountry: filterTripCountry
+                  | tripFilterDateRange: filterTripDateRange
+              "
+              fxFlex="0 0 calc(33%-0.5)"
+              fxFlex.xs="100%"
+            >
+              <!-- is hoverTrip a local variable in this html file?? -->
+              <!-- it works, but how? -->
+              <app-trip
+                [trip]="trip"
+                (mouseenter)="hoverTrip = trip"
+                (mouseleave)="hoverTrip = null"
+              ></app-trip>
+            </div>
+          </div>
+        </div>
+        <ng-template #loadingOrError>
+          <mat-card class="error" *ngIf="errorMessage; else loading">
+            Error loading the city trip list: {{ errorMessage }}. <br />
+            Please try again later.
+          </mat-card>
+        </ng-template>
+      </div>
+    </div>
+    <div *ngIf="trips$ | async as trips">
+      <div *ngIf="trips.length > 0">
         <div
-          class="trip"
-          *ngFor="
-            let trip of trips
-              | tripFilterCity: filterTripCity
-              | tripFilterCountry: filterTripCountry
-              | tripFilterDateRange: filterTripDateRange
-          "
-          fxFlex="0 0 calc(33%-0.5)"
-          fxFlex.xs="100%"
+          class="bigIconRight"
+          (mouseover)="scrollDiv(scrollingTrips, -300)"
+          (mouseleave)="stopTimer(timer)"
         >
-          <!-- is hoverTrip a local variable in this html file?? -->
-          <!-- it works, but how? -->
-          <app-trip
-            [trip]="trip"
-            (mouseenter)="hoverTrip = trip"
-            (mouseleave)="hoverTrip = null"
-          ></app-trip>
+          <mat-icon [ngStyle]="{ color: 'blue' }">skip_next</mat-icon>
+        </div>
+        <div
+          class="bigIconRight"
+          (mouseover)="scrollDiv(scrollingTrips, -30)"
+          (mouseleave)="stopTimer(timer)"
+        >
+          <mat-icon [ngStyle]="{ color: 'purple' }">fast_forward</mat-icon>
+        </div>
+        <div
+          class="bigIconRight"
+          (mouseover)="scrollDiv(scrollingTrips, -8)"
+          (mouseleave)="stopTimer(timer)"
+        >
+          <mat-icon [ngStyle]="{ color: 'darkgreen' }">fast_forward</mat-icon>
+        </div>
+        <div
+          class="bigIconLeft"
+          (mouseover)="scrollDiv(scrollingTrips, 300)"
+          (mouseleave)="stopTimer(timer)"
+        >
+          <mat-icon [ngStyle]="{ color: 'blue' }">skip_previous</mat-icon>
+        </div>
+        <div
+          class="bigIconLeft"
+          (mouseover)="scrollDiv(scrollingTrips, 30)"
+          (mouseleave)="stopTimer(timer)"
+        >
+          <mat-icon [ngStyle]="{ color: 'purple' }">fast_rewind</mat-icon>
+        </div>
+        <div
+          class="bigIconLeft"
+          (mouseover)="scrollDiv(scrollingTrips, 8)"
+          (mouseleave)="stopTimer(timer)"
+        >
+          <mat-icon [ngStyle]="{ color: 'darkgreen' }">fast_rewind</mat-icon>
+        </div>
+        <div class="indicator">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
         </div>
       </div>
     </div>
-    <ng-template #loadingOrError>
-      <mat-card class="error" *ngIf="errorMessage; else loading">
-        Error loading the city trip list: {{ errorMessage }}. <br />
-        Please try again later.
-      </mat-card>
-      <ng-template #loading>
-        <mat-spinner></mat-spinner>
-      </ng-template>
-    </ng-template>
-    <!-- shows google maps on webpage with markers of trip locations -->
+  </div>    
+  <ng-template #loading>
+    <mat-spinner></mat-spinner>
+  </ng-template>
+  <!-- shows google maps on webpage with markers of trip locations -->
+  <div *ngIf="trips$ | async as trips">
     <app-gmap
       [trips]="
         trips
