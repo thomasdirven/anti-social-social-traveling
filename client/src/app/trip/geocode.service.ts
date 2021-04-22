@@ -57,6 +57,7 @@ export class GeocodeService {
             if (status == google.maps.GeocoderStatus.OK) {
               console.log('Geocoding complete!');
               console.log('Results - ', results, ' & Status - ', status);
+              console.log(results[0].geometry.location.lat(), results[0].geometry.location.lng());
               if (results.length === 1) {
                 observer.next({
                   city: results[0].address_components[0].long_name,

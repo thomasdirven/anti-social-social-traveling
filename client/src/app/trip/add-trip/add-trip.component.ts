@@ -44,6 +44,7 @@ export class AddTripComponent implements OnInit {
     'Museum',
     'Park',
     'Square',
+    'Event',
     'Other',
   ];
 

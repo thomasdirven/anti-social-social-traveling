@@ -26,9 +26,11 @@ namespace TripApi.Data
 
             //Another way to seed the database
             builder.Entity<Trip>().HasData(
-                 new Trip { Id = 1, City = "Barcelona", Country = "Spain", StartDate = DateTime.Now, EndDate = DateTime.Now, MinDays = 2, MaxDays = 5, Latitude = 41.3850639, Longtitude = 2.1734035 },
-                 new Trip { Id = 2, City = "Paris", Country = "France", StartDate = DateTime.Now, EndDate = DateTime.Now, MinDays = 3, MaxDays = 8, Latitude = 48.856614, Longtitude = 2.3522219 },
-                 new Trip { Id = 3, City = "Prague", Country = "Czech Republic", StartDate = DateTime.Now, EndDate = DateTime.Now, MinDays = 4, MaxDays = 7, Latitude = 50.0755381, Longtitude = 14.4378005 }
+                 new Trip { Id = 1, City = "Barcelona", Country = "Spain", StartDate = new DateTime(2021, 7, 14), EndDate = new DateTime(2021, 7, 25), MinDays = 2, MaxDays = 5, Latitude = 41.3850639, Longtitude = 2.1734035 },
+                 new Trip { Id = 2, City = "Paris", Country = "France", StartDate = new DateTime(2021, 7, 20), EndDate = new DateTime(2021, 8, 2), MinDays = 3, MaxDays = 8, Latitude = 48.856614, Longtitude = 2.3522219 },
+                 new Trip { Id = 3, City = "Prague", Country = "Czech Republic", StartDate = new DateTime(2021, 7, 10), EndDate = new DateTime(2021, 8, 10), MinDays = 4, MaxDays = 7, Latitude = 50.0755381, Longtitude = 14.4378005 },
+                 new Trip { Id = 4, City = "Cannes", Country = "France", StartDate = new DateTime(2021, 7, 6), EndDate = new DateTime(2021, 7, 17), MinDays = 3, MaxDays = 6, Latitude = 43.552847, Longtitude = 7.017369 },
+                 new Trip { Id = 5, City = "Dubrovnik", Country = "Croatia", StartDate = new DateTime(2021, 8, 25), EndDate = new DateTime(2021, 9, 16), MinDays = 4, MaxDays = 6, Latitude = 42.65066059, Longtitude = 18.0944238 }
             );
 
             builder.Entity<Attraction>().HasData(
@@ -45,7 +47,10 @@ namespace TripApi.Data
                     // Prague - Czech Republic
                     new { Id = 8, Name = "St. Vitus Cathedral", Budget = (double?)20, Type = "Historic Building", TripId = 3 },
                     new { Id = 9, Name = "Charles Bridge", Budget = (double?)0, Type = "Historic Building", TripId = 3 },
-                    new { Id = 10, Name = "Prague Astronomical Clock", Budget = (double?)0, Type = "Historic Building", TripId = 3 }
+                    new { Id = 10, Name = "Prague Astronomical Clock", Budget = (double?)0, Type = "Historic Building", TripId = 3 },
+                    // Cannes - France
+                    new { Id = 11, Name = "Cannes Film Festival", Budget = (double?)150, Type = "Event", TripId = 4 },
+                    new { Id = 12, Name = "Île Sainte-Marguerite", Budget = (double?)0, Type = "Other", TripId = 4 }
                  );
         }
 

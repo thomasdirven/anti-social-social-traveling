@@ -44,7 +44,7 @@ export class GmapComponent implements OnInit {
   public lng: number = 2.815982;
 
   clickedMarker(label: string, index: number) {
-    console.log(`clicked the marker: ${label || index}`);
+    console.log(`clicked the custom location: ${label || index}`);
   }
 
   // public static markers: marker[];
