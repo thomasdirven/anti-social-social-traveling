@@ -1,66 +1,69 @@
 <div fxLayout="column" fxLayoutGap="2%">
   <app-add-trip (newTrip)="addNewTrip($event)"></app-add-trip>
   <mat-card>
-    <mat-form-field>
-      <input
-        matInput
-        placeholder="City to filter on"
-        type="text"
-        (keyup)="this.filterTripCity$.next($event.target.value)"
-        #filterCityValue
-      />
-      <button
-        mat-button
-        *ngIf="filterTripCity"
-        matSuffix
-        mat-icon-button
-        aria-label="Clear"
-        (click)="this.filterTripCity$.next('')"
-        (click)="filterCityValue.value = ''"
-      >
-        <mat-icon>close</mat-icon>
-      </button>
-    </mat-form-field>
-    <span> &nbsp; | &nbsp; </span>
-    <mat-form-field>
-      <input
-        matInput
-        placeholder="Country to filter on"
-        type="text"
-        (keyup)="this.filterTripCountry$.next($event.target.value)"
-        #filterCountryValue
-      />
-      <button
-        mat-button
-        *ngIf="filterTripCountry"
-        matSuffix
-        mat-icon-button
-        aria-label="Clear"
-        (click)="this.filterTripCountry$.next('')"
-        (click)="filterCountryValue.value = ''"
-      >
-        <mat-icon>close</mat-icon>
-      </button>
-    </mat-form-field>
-    <span> &nbsp; | &nbsp; </span>
-    <!-- <form [formGroup]="tripFilterDateRangeFG"> -->
-    <mat-form-field appearance="fill">
-      <mat-label>Filter on date range</mat-label>
-      <mat-date-range-input [rangePicker]="picker">
+    <form>
+      <mat-form-field>
         <input
-          matStartDate
-          placeholder="Start date"
-          (dateInput)="inputEventStartDate($event)"
+          matInput
+          placeholder="City to filter on"
+          type="text"
+          (keyup)="this.filterTripCity$.next($event.target.value)"
+          #filterCityValue
         />
+        <button
+          mat-button
+          *ngIf="filterTripCity"
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+          (click)="this.filterTripCity$.next('')"
+          (click)="filterCityValue.value = ''"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+      <span> &nbsp; | &nbsp; </span>
+      <mat-form-field>
         <input
-          matEndDate
-          placeholder="End date"
-          (dateInput)="inputEventEndDate($event)"
+          matInput
+          placeholder="Country to filter on"
+          type="text"
+          (keyup)="this.filterTripCountry$.next($event.target.value)"
+          #filterCountryValue
         />
-      </mat-date-range-input>
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-date-range-picker #picker></mat-date-range-picker>
-      <!-- 
+        <button
+          mat-button
+          *ngIf="filterTripCountry"
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+          (click)="this.filterTripCountry$.next('')"
+          (click)="filterCountryValue.value = ''"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+      <span> &nbsp; | &nbsp; </span>
+      <!-- <form [formGroup]="tripFilterDateRangeFG"> -->
+      <mat-form-field appearance="fill">
+        <mat-label>Filter on date range</mat-label>
+        <mat-date-range-input [rangePicker]="picker">
+          <input
+            matStartDate
+            formControlName="startDate"
+            placeholder="Start date"
+            (dateInput)="inputEventStartDate($event)"
+          />
+          <input
+            matEndDate
+            formControlName="endDate"
+            placeholder="End date"
+            (dateInput)="inputEventEndDate($event)"
+          />
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+        <!-- 
       <mat-error
         *ngIf="tripFG.controls.startDate.hasError('matStartDateInvalid')"
         >Invalid start date</mat-error
@@ -69,8 +72,22 @@
         *ngIf="tripFG.controls.endDate.hasError('matEndDateInvalid')"
         >Invalid end date</mat-error
       > -->
-    </mat-form-field>
-    <!-- </form> -->
+      </mat-form-field>
+      <span> &nbsp; | &nbsp; </span>
+      <!-- type="reset" sounds great, doesn't work, placeholders don't fall back into place -->
+      <button
+        mat-raised-button
+        type="reset"
+        (click)="this.filterTripDateRange[0] = null"
+        (click)="this.filterTripDateRange[1] = null"
+        (click)="this.filterTripCity$.next('')"
+        (click)="filterCityValue.value = ''"
+        (click)="this.filterTripCountry$.next('')"
+        (click)="filterCountryValue.value = ''"
+      >
+        Reset Filters
+      </button>
+    </form>
   </mat-card>
 
   <!-- card that allows you to geocode location and put marker on map -->
