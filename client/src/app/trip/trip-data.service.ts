@@ -59,6 +59,16 @@ export class TripDataService {
       });
   }
 
+  updateTrip(trip: Trip) {
+    return this.http
+      .put(`${environment.apiUrl}/trips/${trip.id}`, trip.toJSON())
+      .pipe(tap(console.log), catchError(this.handleError))
+      .subscribe(() => {
+        this._trips[trip.id] = trip;
+        this._trips$.next(this._trips);
+      });
+  }
+
   handleError(err: any): Observable<never> {
     let errorMessage: string;    
     if (err instanceof HttpErrorResponse) {

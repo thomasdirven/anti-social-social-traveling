@@ -10,6 +10,8 @@ interface TripJson {
   maxDays: number;
   budget: number;
   attractions: AttractionJson[];
+  // participants: Map<User, number>;
+  participants: number;
   latitude: number;
   longtitude: number;
 }
@@ -31,6 +33,8 @@ export class Trip {
     private _maxDays: number,
     private _budget: number,
     private _attractions = new Array<Attraction>(), // tourist Attractions you really want to do
+    // private _participants = new Map<User, number>(),
+    private _participants?: number,
     private _latitude?: number,
     private _longtitude?: number //TODO more attributes
   ) {}
@@ -42,6 +46,10 @@ export class Trip {
       typeof json.maxDays === 'string' ? parseInt(json.maxDays) : json.maxDays;
     const budget =
       typeof json.budget === 'string' ? parseInt(json.budget) : json.budget;
+    const participants =
+      typeof json.participants === 'string'
+        ? parseInt(json.participants)
+        : json.participants;
     const latitude =
       typeof json.latitude === 'string'
         ? parseInt(json.latitude)
@@ -59,6 +67,7 @@ export class Trip {
       maxDays,
       budget,
       json.attractions.map(Attraction.fromJSON),
+      participants,
       latitude,
       longtitude
     );
@@ -76,6 +85,7 @@ export class Trip {
       maxDays: this.maxDays,
       budget: this.budget,
       attractions: this.attractions.map((att) => att.toJSON()),
+      participants: this.participants,
       latitude: this.latitude,
       longtitude: this.longtitude,
     };
@@ -108,6 +118,9 @@ export class Trip {
   get attractions(): Attraction[] {
     return this._attractions;
   }
+  get participants(): number {
+    return this._participants;
+  }
   get latitude(): number {
     return this._latitude;
   }
@@ -117,5 +130,10 @@ export class Trip {
 
   addAttraction(name: string, type?: string, budget?: number) {
     this._attractions.push(new Attraction(name, type, budget));
+  }
+
+  // TODO will change later
+  addParticipant(code: number){
+    this._participants = code;
   }
 }

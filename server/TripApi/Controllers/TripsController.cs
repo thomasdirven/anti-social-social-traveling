@@ -107,8 +107,9 @@ namespace TripApi.Controllers
                 // 404 if trip with id doesn't exist
                 if (_tripRepository.GetBy(id) == null) return NotFound();
                 // 400 (Bad Request) id’s don’t match
+                Console.WriteLine(id + " " + trip.Id);
                 if (id != trip.Id) return BadRequest();
-
+                Console.WriteLine("voorbij bad request");
                 _tripRepository.Update(trip);
                 _tripRepository.SaveChanges();
                 // 204(No Content) when ModelState validation fails or 200+Trip

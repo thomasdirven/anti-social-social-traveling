@@ -84,7 +84,9 @@
         (click)="filterCountryValue.value = ''"
       >
         Reset Filters
-      </button>
+      </button>      
+      <span *ngIf="trips$ | async as trips"> &nbsp; | &nbsp;
+      Found {{ trips.length }} trips</span>
     </form>
   </mat-card>
 

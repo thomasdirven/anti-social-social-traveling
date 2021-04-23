@@ -21,6 +21,9 @@ namespace TripApi.DTOs
 
         public IList<AttractionDTO> Attractions { get; set; }
 
+        // TODO change to map <User, enum>
+        public int? Participants { get; set; }
+
         public double? Latitude { get; set; }
         public double? Longtitude { get; set; }
     }

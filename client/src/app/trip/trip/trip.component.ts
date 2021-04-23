@@ -19,4 +19,9 @@ export class TripComponent implements OnInit {
     this._tripDataService.deleteTrip(this.trip);
   }
 
+  addParticipant(code: number){
+    this.trip.addParticipant(code);
+    this._tripDataService.updateTrip(this.trip);
+  }
+
 }

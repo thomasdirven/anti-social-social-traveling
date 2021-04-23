@@ -12,18 +12,21 @@ namespace TripApi.Models
 
         [Required]
         public string City { get; set; }
-        
+
         public string Country { get; set; }
-        
+
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        
+
         public int MinDays { get; set; }
         public int MaxDays { get; set; }
 
         public double Budget { get; set; }
 
         public ICollection<Attraction> Attractions { get; private set; }
+
+        // TODO change to map <User, enum>
+        public int? Participants { get; set; }
 
         public double? Latitude { get; set; }
         public double? Longtitude { get; set; }
