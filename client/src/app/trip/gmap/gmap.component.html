@@ -1,4 +1,3 @@
-
 <!-- you have to reload the whole map if you want to enable MapTypeControl, there is no other way -->
 <div *ngIf="!isCheckedMapTypeControl; else enabledMapTypeControl">
   <agm-map
@@ -72,18 +71,37 @@
     <!-- will fix this in later commit -->
     <!-- map-type-control cannot be placed in div apparently -->
     <agm-map-type-control></agm-map-type-control>
-    <agm-marker
-      *ngFor="let trip of trips; let i = index"
-      (markerClick)="clickedMarker(T, i)"
-      [latitude]="trip.latitude"
-      [longitude]="trip.longtitude"
-      [markerDraggable]="false"
-      [animation]="'DROP'"
-    >
-      <agm-info-window>
-        <strong>{{ trip.city }}, {{ trip.country }}</strong>
-      </agm-info-window>
-    </agm-marker>
+    <ng-container *ngFor="let trip of trips; let i = index">
+      <agm-marker
+        (markerClick)="clickedMarker(T, i)"
+        [latitude]="trip.latitude"
+        [longitude]="trip.longtitude"
+        [markerDraggable]="false"
+        [animation]="'DROP'"
+      >
+        <agm-info-window>
+          <strong>{{ trip.city }}, {{ trip.country }}</strong>
+        </agm-info-window>
+      </agm-marker>
+      <agm-marker
+        *ngIf="trip.participants == 1"
+        [latitude]="trip.latitude"
+        [longitude]="trip.longtitude"
+        [label]=""
+        [markerDraggable]="false"
+        [iconUrl]="pinIconGreen"
+      >
+      </agm-marker>
+      <agm-marker
+        *ngIf="trip.participants == 2"
+        [latitude]="trip.latitude"
+        [longitude]="trip.longtitude"
+        [label]=""
+        [markerDraggable]="false"
+        [iconUrl]="pinIconYellow"
+      >
+      </agm-marker>
+    </ng-container>
 
     <div *ngIf="this.hoverTrip">
       <agm-marker
@@ -95,16 +113,6 @@
         [animation]="'BOUNCE'"
       >
       </agm-marker>
-      <div class="pinIconGreen">
-        <agm-marker
-          [latitude]="hoverTrip.latitude"
-          [longitude]="hoverTrip.longtitude"
-          [label]=""
-          [markerDraggable]="false"
-          [iconUrl]="pinIconGreen"
-        >
-        </agm-marker>
-      </div>
     </div>
 
     <!-- <agm-circle [latitude]="lat + 0.3" [longitude]="lng" 

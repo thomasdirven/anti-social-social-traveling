@@ -25,6 +25,6 @@ namespace TripApi.DTOs
         public int? TotalBudget { get; set; }
 
         // TODO change to map <User, enum>
-        //public int? Participants { get; set; }
+        public int? Participants { get; set; }
     }
 }

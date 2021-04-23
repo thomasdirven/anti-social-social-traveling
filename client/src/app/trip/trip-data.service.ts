@@ -64,7 +64,11 @@ export class TripDataService {
       .put(`${environment.apiUrl}/trips/${trip.id}`, trip.toJSON())
       .pipe(tap(console.log), catchError(this.handleError))
       .subscribe(() => {
-        this._trips[trip.id] = trip;
+        // !!! don't do this, trips have been sorted
+        // so the id differs from the location in the array
+        // this._trips[trip.id] = trip;
+        // instead you should do this
+        this._trips[this._trips.indexOf(trip)] = trip;
         this._trips$.next(this._trips);
       });
   }

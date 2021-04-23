@@ -93,7 +93,6 @@ namespace TripApi.Controllers
                 };
                 foreach (var a in trip.Attractions)
                     tripToCreate.AddAttraction(new Attraction(a.Name, a.Type, a.Budget));
-                Console.WriteLine("tot hier");
                 _tripRepository.Add(tripToCreate);
                 _tripRepository.SaveChanges();
 
@@ -122,7 +121,7 @@ namespace TripApi.Controllers
                 if (tripToUpdate == null) return NotFound();
                 // 400 (Bad Request) id’s don’t match
                 if (id != tripToUpdate.Id) return BadRequest();
-                //tripToUpdate.Participants = trip.Participants;
+                tripToUpdate.Participants = trip.Participants;
                 _tripRepository.Update(tripToUpdate);
                 _tripRepository.SaveChanges();
                 // 204(No Content) when ModelState validation fails or 200+Trip
