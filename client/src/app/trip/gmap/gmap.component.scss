@@ -1,3 +1,8 @@
 agm-map {
   height: 450px;
 }
+// css on pinIcon doesn't work
+.pinIcon{
+  transform: scaleX(-1);
+  transform: scale(2);
+}

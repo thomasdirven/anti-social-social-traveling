@@ -36,6 +36,23 @@ export class GmapComponent implements OnInit {
     },
   };
 
+  public pinIconGreen = {
+    url:
+      'http://maps.google.com/mapfiles/ms/icons/grn-pushpin.png',
+    scaledSize: {
+      width: 20,
+      height: 20,
+    }
+  };
+  public pinIconYellow = {
+    url:
+      'http://maps.google.com/mapfiles/ms/icons/ylw-pushpin.png',
+    scaledSize: {
+      width: 20,
+      height: 20,
+    }
+  };
+
   // google maps zoom level
   public zoom: number = 4;
 

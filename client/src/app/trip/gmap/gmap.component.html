@@ -1,9 +1,4 @@
-<!-- TODO -->
-<!-- if map type control is enabled, street view gets CORS error -->
-<mat-slide-toggle color="primary" [(ngModel)]="isCheckedMapTypeControl"
-  >Map Type Control: {{ isCheckedMapTypeControl ? "enabled" : "disabled" }}</mat-slide-toggle
->
-<span><em> (Disable map type control if Street View has trouble loading.)</em></span>
+
 <!-- you have to reload the whole map if you want to enable MapTypeControl, there is no other way -->
 <div *ngIf="!isCheckedMapTypeControl; else enabledMapTypeControl">
   <agm-map
@@ -34,6 +29,14 @@
         [markerDraggable]="false"
         [iconUrl]="hoverIcon"
         [animation]="'BOUNCE'"
+      >
+      </agm-marker>
+      <agm-marker
+        [latitude]="hoverTrip.latitude"
+        [longitude]="hoverTrip.longtitude"
+        [label]=""
+        [markerDraggable]="false"
+        [iconUrl]="pinIcon"
       >
       </agm-marker>
     </div>
@@ -92,6 +95,16 @@
         [animation]="'BOUNCE'"
       >
       </agm-marker>
+      <div class="pinIconGreen">
+        <agm-marker
+          [latitude]="hoverTrip.latitude"
+          [longitude]="hoverTrip.longtitude"
+          [label]=""
+          [markerDraggable]="false"
+          [iconUrl]="pinIconGreen"
+        >
+        </agm-marker>
+      </div>
     </div>
 
     <!-- <agm-circle [latitude]="lat + 0.3" [longitude]="lng" 
@@ -102,3 +115,14 @@
     </agm-circle> -->
   </agm-map>
 </ng-template>
+<!-- TODO -->
+<!-- if map type control is enabled, street view gets CORS error -->
+<mat-slide-toggle color="primary" [(ngModel)]="isCheckedMapTypeControl"
+  >Map Type Control:
+  {{ isCheckedMapTypeControl ? "enabled" : "disabled" }}</mat-slide-toggle
+>
+<span
+  ><em>
+    (Disable map type control if Street View has trouble loading.)</em
+  ></span
+>
