@@ -34,7 +34,7 @@ export class Trip {
     private _attractions = new Array<Attraction>(), // tourist Attractions you really want to do
     private _latitude: number,
     private _longtitude: number,
-    private _totalBudget?: number,
+    private _totalBudget: number,
     // private _participants = new Map<User, number>(),
     private _participants?: number //TODO more attributes
   ) {}
@@ -124,7 +124,10 @@ export class Trip {
     return this._longtitude;
   }
   get totalBudget(): number {
-    return this._totalBudget;
+    //TODO
+    // what am i doing wrong, why do i need this for it to work??
+    if (this._totalBudget > 0) return this._totalBudget;
+    return null;
   }
   get participants(): number {
     return this._participants;
