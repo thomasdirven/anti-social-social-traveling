@@ -6,7 +6,7 @@
     background-color: #fafafa;
     height: fit-content;
     min-width: 250px;
-    width: fit-content;
+    // width: fit-content; 0
     margin: 0 5px 0px;
     padding: 10px;
     display: flex;
@@ -16,12 +16,20 @@
     transition: all 0.2s ease-in-out;
   }
 
-.peopleGoing {
-  // display: flex;
-  right: 0;
-  float: right;
-}
+// .peopleGoing {
+//   // display: flex;
+//   right: 0;
+//   float: right;
+// }
 
+// dumbass material cards
+::ng-deep .mat-card-header-text {
+  margin: 0px;
+  margin-right: auto;
+}
+// :host /deep/ .mat-card-header-text {
+//   margin: 0;
+// }
 
   .card.card-small {
     height: 16px;

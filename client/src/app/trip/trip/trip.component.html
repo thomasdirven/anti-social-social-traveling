@@ -6,51 +6,51 @@
   data-aos-once="true"
   data-aos-delay="300"
 > -->
-  <div class="card-container">
-    <div class="card">
-      <mat-card>
-        <mat-card-header>
-          <mat-card-title>
-            {{ trip.city }} <mat-icon>flight</mat-icon>
-          </mat-card-title>
-          <span class="peopleGoing">
-            <!-- people who will might go (in orange) -->
-            <span style="color: orange">
-              {{ giveNumberOfGoingStatusParticipants(2) }}
-            </span>
-            <mat-icon>people</mat-icon>
-            <!-- people who will definitely go (in green) -->
-            <span style="color: green">
-              {{ giveNumberOfGoingStatusParticipants(1) }}
-            </span>
+<div class="card-container">
+  <div class="card">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>
+          {{ trip.city }} <mat-icon>flight</mat-icon>
+        </mat-card-title>
+        <span class="peopleGoing">
+          <!-- people who will might go (in orange) -->
+          <span style="color: orange">
+            {{ giveNumberOfGoingStatusParticipants(2) }}
           </span>
-          <mat-card-subtitle>
-            {{ trip.country }}
-          </mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-content>
-          <p>
-            <em>Possible travel period: </em><br />
-            from {{ trip.startDate | date: "longDate" }} <br />
-            till {{ trip.endDate | date: "longDate" }}
-          </p>
-          <p>
-            <em>Length of city trip: </em><br />
-            {{ trip.minDays }} to {{ trip.maxDays }} days
-          </p>
-          <!-- <h4 mat-subheader>Things I really want to see:</h4>
+          <mat-icon>people</mat-icon>
+          <!-- people who will definitely go (in green) -->
+          <span style="color: green">
+            {{ giveNumberOfGoingStatusParticipants(1) }}
+          </span>
+        </span>
+        <mat-card-subtitle>
+          {{ trip.country }}
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>
+          <em>Possible travel period: </em><br />
+          from {{ trip.startDate | date: "longDate" }} <br />
+          till {{ trip.endDate | date: "longDate" }}
+        </p>
+        <p>
+          <em>Length of city trip: </em><br />
+          {{ trip.minDays }} to {{ trip.maxDays }} days
+        </p>
+        <!-- <h4 mat-subheader>Things I really want to see:</h4>
         <mat-list>
           <mat-list-item *ngFor="let attraction of trip.attractions">
             <app-attraction [attraction]="attraction"></app-attraction>
           </mat-list-item>
         </mat-list> -->
 
-          <!-- <button type="button" class="btn btn-outline-secondary" ngbPopover="You see, I show up on hover!" triggers="mouseenter:mouseleave" popoverTitle="Pop title">
+        <!-- <button type="button" class="btn btn-outline-secondary" ngbPopover="You see, I show up on hover!" triggers="mouseenter:mouseleave" popoverTitle="Pop title">
           Hover over me!
         </button> -->
 
-          <!-- delete and restore buttons -->
-          <!-- <button
+        <!-- delete and restore buttons -->
+        <!-- <button
         mat-raised-button (click)="deleteTrip()" class="deleteTripButton">
           <mat-icon [ngStyle]="{ color: 'red' }">delete_forever</mat-icon>
         </button>
@@ -59,30 +59,30 @@
           <mat-icon [ngStyle]="{ color: 'red' }">restore_from_trash</mat-icon>
         </button> -->
 
-          <!-- decision buttons -->
-          <button
-            mat-raised-button
-            (click)="addParticipant(0)"
-            class="notGoingTripButton"
-          >
-            <mat-icon [ngStyle]="{ color: 'red' }">clear</mat-icon>
-          </button>
-          <button
-            mat-raised-button
-            (click)="addParticipant(1)"
-            class="definitelyGoingTripButton"
-          >
-            <mat-icon [ngStyle]="{ color: 'green' }">where_to_vote</mat-icon>
-          </button>
-          <button
-            mat-raised-button
-            (click)="addParticipant(2)"
-            class="maybeGoingTripButton"
-          >
-            <mat-icon [ngStyle]="{ color: 'orange' }">add_location</mat-icon>
-          </button>
-        </mat-card-content>
-      </mat-card>
-    </div>
+        <!-- decision buttons -->
+        <button
+          mat-raised-button
+          (click)="addParticipant(0)"
+          class="notGoingTripButton"
+        >
+          <mat-icon [ngStyle]="{ color: 'red' }">clear</mat-icon>
+        </button>
+        <button
+          mat-raised-button
+          (click)="addParticipant(1)"
+          class="definitelyGoingTripButton"
+        >
+          <mat-icon [ngStyle]="{ color: 'green' }">where_to_vote</mat-icon>
+        </button>
+        <button
+          mat-raised-button
+          (click)="addParticipant(2)"
+          class="maybeGoingTripButton"
+        >
+          <mat-icon [ngStyle]="{ color: 'orange' }">add_location</mat-icon>
+        </button>
+      </mat-card-content>
+    </mat-card>
   </div>
+</div>
 <!-- </div> -->
