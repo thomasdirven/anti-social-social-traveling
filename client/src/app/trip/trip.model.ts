@@ -155,5 +155,14 @@ export class Trip {
     // add new goingStatus of this user for this trip
     // this._participants.set(userId, code.toString());
     this._participants.push(new Participant(userIdHere, code));
+  }  
+
+  isUserParticipant(code: number) : boolean{
+    const userIdHere = 1;
+    let tempParticipants = this._participants.filter(
+      (par) => par.userId == userIdHere && par.goingStatus == code
+    );
+    return tempParticipants.length == 1;
   }
+
 }

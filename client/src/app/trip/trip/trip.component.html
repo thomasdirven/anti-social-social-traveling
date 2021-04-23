@@ -71,15 +71,19 @@
           mat-raised-button
           (click)="addParticipant(1)"
           class="definitelyGoingTripButton"
+          [disabled]="isUserParticipant(1)"
         >
-          <mat-icon [ngStyle]="{ color: 'green' }">where_to_vote</mat-icon>
+          <mat-icon 
+          [ngStyle]="{ color: 'green' }">where_to_vote</mat-icon>
         </button>
         <button
           mat-raised-button
           (click)="addParticipant(2)"
           class="maybeGoingTripButton"
+          [disabled]="isUserParticipant(2)"
         >
-          <mat-icon [ngStyle]="{ color: 'orange' }">add_location</mat-icon>
+          <mat-icon 
+          [ngStyle]="{ color: 'orange' }">add_location</mat-icon>
         </button>
       </mat-card-content>
     </mat-card>

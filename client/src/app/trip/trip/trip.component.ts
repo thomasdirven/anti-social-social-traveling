@@ -26,6 +26,10 @@ export class TripComponent implements OnInit {
     this._tripDataService.updateTrip(this.trip);
   }
 
+  isUserParticipant(code: number){
+    return this.trip.isUserParticipant(code);
+  }
+
   giveNumberOfGoingStatusParticipants(code : number) : number{
     return this.trip.participants.filter(par => par.goingStatus == code).length;
   }
