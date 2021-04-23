@@ -20,7 +20,7 @@ namespace TripApi.Controllers
         {
             _tripRepository = context;
         }
-        
+
         // GET: api/trips
         /// <summary>
         /// Get all Trips ordered by startDate
@@ -78,9 +78,22 @@ namespace TripApi.Controllers
         {
             try
             {
-                Trip tripToCreate = new Trip() { City = trip.City, Country = trip.Country, StartDate = trip.StartDate, EndDate = trip.EndDate, MinDays = trip.MinDays, MaxDays = trip.MaxDays, Budget = trip.Budget, Latitude = trip.Latitude, Longtitude = trip.Longtitude };
+                Console.WriteLine(trip.Latitude);
+                Console.WriteLine(trip.Longtitude);
+                Trip tripToCreate = new Trip() { 
+                    City = trip.City, 
+                    Country = trip.Country, 
+                    StartDate = trip.StartDate, 
+                    EndDate = trip.EndDate, 
+                    MinDays = trip.MinDays, 
+                    MaxDays = trip.MaxDays,
+                    Latitude = trip.Latitude, 
+                    Longtitude = trip.Longtitude,
+                    TotalBudget = trip.TotalBudget,
+                };
                 foreach (var a in trip.Attractions)
                     tripToCreate.AddAttraction(new Attraction(a.Name, a.Type, a.Budget));
+                Console.WriteLine("tot hier");
                 _tripRepository.Add(tripToCreate);
                 _tripRepository.SaveChanges();
 
@@ -100,17 +113,17 @@ namespace TripApi.Controllers
         /// <param name="id">The id of the Trip</param>
         /// <param name="trip">The modified Trip</param>
         [HttpPut("{id}")]
-        public IActionResult PutTrip(int id, Trip trip)
+        public IActionResult PutTrip(int id, TripDTO trip)
         {
             try
             {
+                Trip tripToUpdate = _tripRepository.GetBy(id);
                 // 404 if trip with id doesn't exist
-                if (_tripRepository.GetBy(id) == null) return NotFound();
+                if (tripToUpdate == null) return NotFound();
                 // 400 (Bad Request) id’s don’t match
-                Console.WriteLine(id + " " + trip.Id);
-                if (id != trip.Id) return BadRequest();
-                Console.WriteLine("voorbij bad request");
-                _tripRepository.Update(trip);
+                if (id != tripToUpdate.Id) return BadRequest();
+                //tripToUpdate.Participants = trip.Participants;
+                _tripRepository.Update(tripToUpdate);
                 _tripRepository.SaveChanges();
                 // 204(No Content) when ModelState validation fails or 200+Trip
                 return NoContent();

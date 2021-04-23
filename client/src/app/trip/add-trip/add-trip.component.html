@@ -147,10 +147,10 @@
             aria-label="total budget you estimate to spend on the entire trip"
             placeholder="Total budget of Trip"
             type="text"
-            formControlName="budget"
+            formControlName="totalBudget"
           />
-          <mat-error *ngIf="tripFG.get('budget')['errors']">
-            {{ getErrorMessages(tripFG.get("budget")["errors"]) }}
+          <mat-error *ngIf="tripFG.get('totalBudget')['errors']">
+            {{ getErrorMessages(tripFG.get("totalBudget")["errors"]) }}
           </mat-error>
         </mat-form-field>
       </div>

@@ -17,14 +17,14 @@ namespace TripApi.DTOs
         public int MinDays { get; set; }
         public int MaxDays { get; set; }
 
-        public double Budget { get; set; }
+        public double? Latitude { get; set; }
+        public double? Longtitude { get; set; }
 
         public IList<AttractionDTO> Attractions { get; set; }
 
-        // TODO change to map <User, enum>
-        public int? Participants { get; set; }
+        public int? TotalBudget { get; set; }
 
-        public double? Latitude { get; set; }
-        public double? Longtitude { get; set; }
+        // TODO change to map <User, enum>
+        //public int? Participants { get; set; }
     }
 }
