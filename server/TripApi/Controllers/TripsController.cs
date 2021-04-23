@@ -80,14 +80,15 @@ namespace TripApi.Controllers
             {
                 Console.WriteLine(trip.Latitude);
                 Console.WriteLine(trip.Longtitude);
-                Trip tripToCreate = new Trip() { 
-                    City = trip.City, 
-                    Country = trip.Country, 
-                    StartDate = trip.StartDate, 
-                    EndDate = trip.EndDate, 
-                    MinDays = trip.MinDays, 
+                Trip tripToCreate = new Trip()
+                {
+                    City = trip.City,
+                    Country = trip.Country,
+                    StartDate = trip.StartDate,
+                    EndDate = trip.EndDate,
+                    MinDays = trip.MinDays,
                     MaxDays = trip.MaxDays,
-                    Latitude = trip.Latitude, 
+                    Latitude = trip.Latitude,
                     Longtitude = trip.Longtitude,
                     TotalBudget = trip.TotalBudget,
                 };
@@ -116,12 +117,35 @@ namespace TripApi.Controllers
         {
             try
             {
+                // TODO after authentication
+                int selectedUserId = 1;
+
                 Trip tripToUpdate = _tripRepository.GetBy(id);
                 // 404 if trip with id doesn't exist
                 if (tripToUpdate == null) return NotFound();
                 // 400 (Bad Request) id’s don’t match
                 if (id != tripToUpdate.Id) return BadRequest();
-                tripToUpdate.Participants = trip.Participants;
+                // remove goingStatus that was already in participants for this user
+                foreach (var p in tripToUpdate.Participants.ToList())
+                {
+                    if (p.UserId == selectedUserId)
+                    {
+                        tripToUpdate.DeleteParticipant(p);
+                    }
+                }
+
+                // Error: "Collection was modified; enumeration operation may not execute."
+                // So I tried to solve it by using a .ToList()
+
+                // add new goingStatus that was already in participants for this user
+                foreach (var p in trip.Participants.ToList())
+                {
+                    if (p.UserId == selectedUserId)
+                    {
+                        tripToUpdate.AddParticipant(new Participant(p.UserId, p.GoingStatus));
+                    }
+                }
+                //tripToUpdate.Participants = trip.Participants;
                 _tripRepository.Update(tripToUpdate);
                 _tripRepository.SaveChanges();
                 // 204(No Content) when ModelState validation fails or 200+Trip

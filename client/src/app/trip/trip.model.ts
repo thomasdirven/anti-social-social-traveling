@@ -1,4 +1,5 @@
 import { Attraction, AttractionJson } from './attraction.model';
+import { Participant, ParticipantJson } from './participant.model';
 
 interface TripJson {
   id: number;
@@ -13,7 +14,8 @@ interface TripJson {
   attractions: AttractionJson[];
   totalBudget: number;
   // participants: Map<User, number>;
-  participants: number;
+  participants: ParticipantJson[];
+  // participants: number;
 }
 
 export class Trip {
@@ -36,8 +38,10 @@ export class Trip {
     private _longtitude: number,
     private _totalBudget: number,
     // private _participants = new Map<User, number>(),
-    private _participants?: number //TODO more attributes
-  ) {}
+    // private _participants = new Map<string, string>(),
+    private _participants = new Array<Participant>() // private _participants?: number,
+  ) //TODO more attributes
+  {}
 
   static fromJSON(json: TripJson): Trip {
     const minDays =
@@ -56,10 +60,6 @@ export class Trip {
       typeof json.totalBudget === 'string'
         ? parseInt(json.totalBudget)
         : json.totalBudget;
-    const participants =
-      typeof json.participants === 'string'
-        ? parseInt(json.participants)
-        : json.participants;
     const trip = new Trip(
       json.city,
       json.country,
@@ -71,7 +71,8 @@ export class Trip {
       latitude,
       longtitude,
       totalBudget,
-      participants
+      // new Map(JSON.parse(json.participants)),
+      json.participants.map(Participant.fromJSON)
     );
     trip._id = json.id;
     return trip;
@@ -89,7 +90,8 @@ export class Trip {
       latitude: this.latitude,
       longtitude: this.longtitude,
       totalBudget: this.totalBudget,
-      participants: this.participants,
+      // participants: JSON.stringify([...this.participants]),
+      participants: this.participants.map((par) => par.toJSON()),
     };
   }
 
@@ -129,7 +131,7 @@ export class Trip {
     if (this._totalBudget > 0) return this._totalBudget;
     return null;
   }
-  get participants(): number {
+  get participants(): Participant[] {
     return this._participants;
   }
 
@@ -139,6 +141,19 @@ export class Trip {
 
   // TODO will change later
   addParticipant(code: number) {
-    this._participants = code;
+    const userIdHere = 1;
+    // this._participants.forEach(par => {
+    //   if (par.userId == userIdHere){
+    //     this._participants.indexOf(par);
+    //   }});
+
+    // remove previous goingStatus of this user
+    this._participants = this._participants.filter(
+      (par) => par.userId != userIdHere
+    );
+
+    // add new goingStatus of this user for this trip
+    // this._participants.set(userId, code.toString());
+    this._participants.push(new Participant(userIdHere, code));
   }
 }

@@ -72,19 +72,34 @@
     <!-- map-type-control cannot be placed in div apparently -->
     <agm-map-type-control></agm-map-type-control>
     <ng-container *ngFor="let trip of trips; let i = index">
-      <agm-marker
+      <agm-marker 
         (markerClick)="clickedMarker(T, i)"
         [latitude]="trip.latitude"
         [longitude]="trip.longtitude"
         [markerDraggable]="false"
         [animation]="'DROP'"
+        [ngStyle]="{'display': (trip == this.hoverTrip) ? 'none' : 'inline'}"
       >
+      <!-- ngStyle nog working for map markers  -->
+      <!-- removes underlying marker which is good 
+      but
+      when the bounce hoverIcon is gone a new static marker
+      is placed over the pins, then the pins are hard to see -->
+      <!-- <agm-marker *ngIf="trip != this.hoverTrip"
+        (markerClick)="clickedMarker(T, i)"
+        [latitude]="trip.latitude"
+        [longitude]="trip.longtitude"
+        [markerDraggable]="false"
+        [animation]="'DROP'"
+      > -->
         <agm-info-window>
           <strong>{{ trip.city }}, {{ trip.country }}</strong>
         </agm-info-window>
       </agm-marker>
-      <agm-marker
-        *ngIf="trip.participants == 1"
+      <ng-container *ngFor="let participant of trip.participants; let i = index">
+        <!-- replace 1 by the actual userId once we have users -->
+      <agm-marker 
+        *ngIf="participant.userId == selectedUserId && participant.goingStatus == 1"
         [latitude]="trip.latitude"
         [longitude]="trip.longtitude"
         [label]=""
@@ -92,8 +107,8 @@
         [iconUrl]="pinIconGreen"
       >
       </agm-marker>
-      <agm-marker
-        *ngIf="trip.participants == 2"
+      <agm-marker 
+        *ngIf="participant.userId == selectedUserId && participant.goingStatus == 2"
         [latitude]="trip.latitude"
         [longitude]="trip.longtitude"
         [label]=""
@@ -102,6 +117,7 @@
       >
       </agm-marker>
     </ng-container>
+  </ng-container>
 
     <div *ngIf="this.hoverTrip">
       <agm-marker
@@ -109,7 +125,6 @@
         [longitude]="hoverTrip.longtitude"
         [label]=""
         [markerDraggable]="false"
-        [iconUrl]="hoverIcon"
         [animation]="'BOUNCE'"
       >
       </agm-marker>

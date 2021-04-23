@@ -18,17 +18,17 @@ namespace TripApi.Data.Repositories
 
         public IEnumerable<Trip> GetAll()
         {
-            return _trips.Include(t => t.Attractions).ToList();
+            return _trips.Include(t => t.Attractions).Include(t => t.Participants).ToList();
         }
 
         public Trip GetBy(int id)
         {
-            return _trips.Include(t => t.Attractions).SingleOrDefault(t => t.Id == id);
+            return _trips.Include(t => t.Attractions).Include(t => t.Participants).SingleOrDefault(t => t.Id == id);
         }
 
         public bool TryGetTrip(int id, out Trip trip)
         {
-            trip = _context.Trips.Include(t => t.Attractions).FirstOrDefault(t => t.Id == id);
+            trip = _context.Trips.Include(t => t.Attractions).Include(t => t.Participants).FirstOrDefault(t => t.Id == id);
             return trip != null;
         }
 
@@ -54,7 +54,7 @@ namespace TripApi.Data.Repositories
 
         public IEnumerable<Trip> GetBy(string city = null, string country = null, string attractionName = null)
         {
-            var trips = _trips.Include(t => t.Attractions).AsQueryable();
+            var trips = _trips.Include(t => t.Attractions).Include(t => t.Participants).AsQueryable();
             if (!string.IsNullOrEmpty(city))
                 //trips = trips.Where(t => t.City.Contains(city, System.StringComparison.OrdinalIgnoreCase));
                 // should be the same result but the above method gives errors

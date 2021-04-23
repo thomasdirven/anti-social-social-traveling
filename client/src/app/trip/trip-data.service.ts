@@ -39,7 +39,7 @@ export class TripDataService {
     //// this._trips.push(trip);
     //// Necessary for DOM changes
     //// Didn't notice the differnce
-    //this._trips = [...this._trips, trip]    
+    //this._trips = [...this._trips, trip]
     return this.http
       .post(`${environment.apiUrl}/trips/`, trip.toJSON())
       .pipe(tap(console.log), catchError(this.handleError), map(Trip.fromJSON))
@@ -47,19 +47,20 @@ export class TripDataService {
         this._trips = [...this._trips, trip];
         this._trips$.next(this._trips);
       });
-  }  
+  }
 
   deleteTrip(trip: Trip) {
     return this.http
       .delete(`${environment.apiUrl}/trips/${trip.id}`)
       .pipe(tap(console.log), catchError(this.handleError))
       .subscribe(() => {
-        this._trips = this._trips.filter(rec => rec.id != trip.id);
+        this._trips = this._trips.filter((rec) => rec.id != trip.id);
         this._trips$.next(this._trips);
       });
   }
 
   updateTrip(trip: Trip) {
+    console.log(trip.participants);
     return this.http
       .put(`${environment.apiUrl}/trips/${trip.id}`, trip.toJSON())
       .pipe(tap(console.log), catchError(this.handleError))
@@ -74,15 +75,14 @@ export class TripDataService {
   }
 
   handleError(err: any): Observable<never> {
-    let errorMessage: string;    
+    let errorMessage: string;
     if (err instanceof HttpErrorResponse) {
       errorMessage = `"${err.status} ${err.statusText}" when accessing "${err.url}"`;
     } else {
       errorMessage = `an unknown error occurred ${err}`;
     }
-    console.log("hier is em");
+    console.log('hier is em');
     console.error(err);
     return throwError(errorMessage);
   }
-
 }

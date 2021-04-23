@@ -23,6 +23,11 @@ namespace TripApi.Data
             // builder.Entity<Trip>().Property(r => r.Country).HasMaxLength(50);
             builder.Entity<Attraction>().Property(r => r.Name).IsRequired();
             // builder.Entity<Attraction>().Property(r => r.Type).HasMaxLength(50);
+            builder.Entity<Trip>()
+                .HasMany(p => p.Participants)
+                .WithOne()
+                .IsRequired()
+                .HasForeignKey("TripId"); //Shadow property
 
             //Another way to seed the database
             builder.Entity<Trip>().HasData(
@@ -33,7 +38,7 @@ namespace TripApi.Data
                  new Trip { Id = 5, City = "Dubrovnik", Country = "Croatia", StartDate = new DateTime(2021, 8, 25), EndDate = new DateTime(2021, 9, 16), MinDays = 4, MaxDays = 6, TotalBudget = 550, Latitude = 42.65066059, Longtitude = 18.0944238 },
                  new Trip { Id = 6, City = "Lisbon", Country = "Portugal", StartDate = new DateTime(2021, 5, 4), EndDate = new DateTime(2021, 5, 9), MinDays = 2, MaxDays = 5, TotalBudget = 550, Latitude = 38.7222524, Longtitude = -9.1393366 },
                  new Trip { Id = 7, City = "Milan", Country = "Italy", StartDate = new DateTime(2021, 6, 20), EndDate = new DateTime(2021, 7, 2), MinDays = 3, MaxDays = 8, TotalBudget = 550, Latitude = 45.4642035, Longtitude = 9.189982 },
-                 new Trip { Id = 8, City = "Copenhagen", Country = "Denmark", StartDate = new DateTime(2021, 9, 19), EndDate = new DateTime(2021, 10, 1), MinDays = 4, MaxDays = 7, TotalBudget = 550, Latitude = 55.6760968, Longtitude = 12.5683372 },
+                 //new Trip { Id = 8, City = "Copenhagen", Country = "Denmark", StartDate = new DateTime(2021, 9, 19), EndDate = new DateTime(2021, 10, 1), MinDays = 4, MaxDays = 7, TotalBudget = 550, Latitude = 55.6760968, Longtitude = 12.5683372 },
                  new Trip { Id = 9, City = "Dublin", Country = "Ireland", StartDate = new DateTime(2021, 10, 5), EndDate = new DateTime(2021, 10, 17), MinDays = 3, MaxDays = 6, TotalBudget = 550, Latitude = 53.3498053, Longtitude = -6.2603097 },
                  new Trip { Id = 10, City = "Athens", Country = "Greece", StartDate = new DateTime(2021, 11, 7), EndDate = new DateTime(2021, 11, 16), MinDays = 4, MaxDays = 6, TotalBudget = 550, Latitude = 37.9838096, Longtitude = 23.7275388 }
             );

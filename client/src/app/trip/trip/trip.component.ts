@@ -9,8 +9,10 @@ import { Trip } from '../trip.model';
 })
 export class TripComponent implements OnInit {
   @Input() public trip: Trip;
+  public numberOfMaybeGoingParticipants: number;
 
-  constructor(private _tripDataService: TripDataService) { }
+  constructor(private _tripDataService: TripDataService) {
+   }
 
   ngOnInit(): void {
   }
@@ -22,6 +24,10 @@ export class TripComponent implements OnInit {
   addParticipant(code: number){
     this.trip.addParticipant(code);
     this._tripDataService.updateTrip(this.trip);
+  }
+
+  giveNumberOfGoingStatusParticipants(code : number) : number{
+    return this.trip.participants.filter(par => par.goingStatus == code).length;
   }
 
 }

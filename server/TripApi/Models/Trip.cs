@@ -21,15 +21,16 @@ namespace TripApi.Models
         public int MinDays { get; set; }
         public int MaxDays { get; set; }
 
-        public double? Latitude { get; set; }
-        public double? Longtitude { get; set; }
+        public double Latitude { get; set; }
+        public double Longtitude { get; set; }
 
         public ICollection<Attraction> Attractions { get; private set; }
 
-        public int? TotalBudget { get; set; }
-
         // TODO change to map <User, enum>
-        public int? Participants { get; set; }
+        //public int? Participants { get; set; }
+        public ICollection<Participant> Participants { get; private set; }
+
+        public int? TotalBudget { get; set; }
 
         #endregion
 
@@ -37,6 +38,7 @@ namespace TripApi.Models
         public Trip()
         {
             Attractions = new List<Attraction>();
+            Participants = new List<Participant>();
             //Created = DateTime.Now;
         }
 
@@ -51,6 +53,9 @@ namespace TripApi.Models
         public void DeleteAttraction(Attraction attraction) => Attractions.Remove(attraction);
 
         public Attraction GetAttraction(int id) => Attractions.SingleOrDefault(i => i.Id == id);
+
+        public void AddParticipant(Participant participant) => Participants.Add(participant);
+        public void DeleteParticipant(Participant participant) => Participants.Remove(participant);
         #endregion
     }
 }

@@ -23,6 +23,16 @@ export class GmapComponent implements OnInit {
   @Input() public trips: Trip[];
   @Input() public hoverTrip?: Trip;
 
+  public selectedUserId = 1;
+
+  public bounceOnLoad = 'DROP';
+  public setBounceOnLoad(str : string){
+    this.bounceOnLoad = str;
+  }
+  public getBounceOnLoad(){
+    return this.bounceOnLoad;
+  }
+
   public isCheckedMapTypeControl = true;
 
   constructor(private zone: NgZone) {}
