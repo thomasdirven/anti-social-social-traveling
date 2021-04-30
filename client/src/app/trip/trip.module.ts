@@ -34,6 +34,7 @@ import { TripFilterDateRangePipe } from './trip-filter-date-range.pipe';
   imports: [
     CommonModule,
     HttpClientModule,
+    MaterialModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyByzFs-RMMy83HcDPftNNp_JddxVD4rurM',
     }),
