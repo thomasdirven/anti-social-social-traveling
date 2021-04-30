@@ -128,7 +128,14 @@ export class AddTripComponent implements OnInit {
       endDate: [''],
       minDays: [{ value: '', disabled: true }],
       maxDays: [{ value: '', disabled: true }],
-      totalBudget: [''],
+      // regex for whole numbers
+      // totalBudget: ['', [Validators.pattern("^[0-9]*$"), Validators.min(0)]],
+      // regex for doubles
+      totalBudget: ['', [Validators.pattern("^(-?)(0|([1-9][0-9]*))(\\.[0-9]+)?$"), 
+                        Validators.min(0)]],
+      // 1. is an optional negative sign;
+      // 2. is zero or a valid non-zero integer;
+      // 4. is the optional fracture part;
       attractions: this.fb.array([this.createAttractions()]),
     });
     // After city and country have been filled in, we wait 5 seconds
@@ -406,8 +413,16 @@ export class AddTripComponent implements OnInit {
     } else if (errors.minlength) {
       return `needs at least ${errors.minlength.requiredLength}
         characters (got ${errors.minlength.actualLength})`;
+    } else if (errors.min) {
+      return `should be at least ${errors.min.min}
+        (got ${errors.min.actual})`;
+    } else if (errors.max) {
+      return `should be ${errors.max.max} or less
+        (got ${errors.max.actual})`;
     } else if (errors.budgetNoName) {
       return `if budget is set you must set a name`;
+    } else if (errors.pattern) {
+      return `should be a number`;
     }
   }
 }
