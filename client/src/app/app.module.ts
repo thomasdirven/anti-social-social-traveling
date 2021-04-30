@@ -10,6 +10,13 @@ import { TripListComponent } from './trip/trip-list/trip-list.component';
 import { AddTripComponent } from './trip/add-trip/add-trip.component';
 import { MaterialModule } from './material/material.module';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { MainNavComponent } from './main-nav/main-nav.component';
+import { LayoutModule } from '@angular/cdk/layout';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
 
 const appRoutes: Routes = [
   { path: 'trip/list', component: TripListComponent },
@@ -21,7 +28,8 @@ const appRoutes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    MainNavComponent
   ],
   imports: [
     BrowserModule,
@@ -30,6 +38,12 @@ const appRoutes: Routes = [
     MaterialModule,
     TripModule,
     RouterModule.forRoot(appRoutes),
+    LayoutModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatListModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
