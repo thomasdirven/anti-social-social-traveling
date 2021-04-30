@@ -14,6 +14,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TripFilterCountryPipe } from './trip-filter-country.pipe';
 import { TripFilterCityPipe } from './trip-filter-city.pipe';
 import { TripFilterDateRangePipe } from './trip-filter-date-range.pipe';
+import { TripDetailComponent } from './trip-detail/trip-detail.component';
 
 // Google API key
 // AIzaSyByzFs-RMMy83HcDPftNNp_JddxVD4rurM
@@ -30,6 +31,7 @@ import { TripFilterDateRangePipe } from './trip-filter-date-range.pipe';
     TripFilterCountryPipe,
     TripFilterCityPipe,
     TripFilterDateRangePipe,
+    TripDetailComponent,
   ],
   imports: [
     CommonModule,
