@@ -22,6 +22,7 @@ import { Attraction } from '../attraction.model';
 import { GeocodeService } from '../geocode.service';
 import { Trip } from '../trip.model';
 import { Location } from '../geocode.service';
+import { TripDataService } from '../trip-data.service';
 
 function validateAttractionName(control: FormGroup): { [key: string]: any } {
   if (
@@ -50,10 +51,11 @@ export class AddTripComponent implements OnInit {
 
   public tripFG: FormGroup;
 
-  @Output() public newTrip = new EventEmitter<Trip>();
+  // @Output() public newTrip = new EventEmitter<Trip>();
 
   constructor(
     private fb: FormBuilder,
+    private _tripDataService: TripDataService,
     private geocodeService: GeocodeService,
     private ref: ChangeDetectorRef
   ) {}
@@ -379,7 +381,8 @@ export class AddTripComponent implements OnInit {
       this.tripFG.value.totalBudget,
     );
     console.log(trip);
-    this.newTrip.emit(trip);
+    // this.newTrip.emit(trip);
+    this._tripDataService.addNewTrip(trip);
 
     // reset fields
     this._startDateStr = '';

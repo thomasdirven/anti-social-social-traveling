@@ -42,6 +42,6 @@ import { TripFilterDateRangePipe } from './trip-filter-date-range.pipe';
     FormsModule,
   ],
   providers: [GeocodeService],
-  exports: [TripListComponent],
+  exports: [TripListComponent, AddTripComponent],
 })
 export class TripModule {}

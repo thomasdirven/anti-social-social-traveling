@@ -70,9 +70,10 @@ export class TripListComponent implements OnInit {
     return this._fetchTrips$;
   }
 
-  addNewTrip(trip: Trip) {
-    this._tripDataService.addNewTrip(trip);
-  }
+  // Add-Trip component will speak to tripDataService now
+  // addNewTrip(trip: Trip) {
+  //   this._tripDataService.addNewTrip(trip);
+  // }
 
   // duplicate input event trigger
   inputEventStartDate(event) {
