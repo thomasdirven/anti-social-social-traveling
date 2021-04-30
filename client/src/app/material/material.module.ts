@@ -16,6 +16,9 @@ import { MatNativeDateModule } from '@angular/material/core';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { LayoutModule } from '@angular/cdk/layout';
 
 @NgModule({
   declarations: [],
@@ -37,6 +40,12 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     MatSlideToggleModule,
     MatProgressBarModule,
     MatTooltipModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatListModule,
+    LayoutModule,
   ],
   exports: [
     BrowserAnimationsModule,
@@ -55,6 +64,12 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     MatSlideToggleModule,
     MatProgressBarModule,
     MatTooltipModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatListModule,
+    LayoutModule,
   ],
 })
 export class MaterialModule {}
