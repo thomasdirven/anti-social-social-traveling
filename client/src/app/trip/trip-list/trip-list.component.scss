@@ -1,6 +1,8 @@
 // body{    
 //     background-color: #222;
 // }
+//@import '~bootstrap/scss/bootstrap';
+
 mat-spinner {
   margin: 0 auto;
 }
@@ -117,6 +119,9 @@ $base: 0.6rem;
   transform: translateY($base * 16) scale(.5);
  }
 }
+
+
+// @import '~bootstrap/scss/bootstrap';
 
 // indicator 1 - doesnt fit my page well
 

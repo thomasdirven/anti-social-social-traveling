@@ -62,29 +62,43 @@
         <!-- decision buttons -->
         <button
           mat-raised-button
+          matTooltip="You don't want to go on this Trip"
+          aria-label="Button to be pressed if You don't want to go on this Trip"
           (click)="addParticipant(0)"
           class="notGoingTripButton"
         >
           <mat-icon [ngStyle]="{ color: 'red' }">clear</mat-icon>
         </button>
-        <button
-          mat-raised-button
-          (click)="addParticipant(1)"
-          class="definitelyGoingTripButton"
-          [disabled]="isUserParticipant(1)"
+        <div
+          matTooltip="You are going on this Trip! :)"
+          [matTooltipDisabled]="!isUserParticipant(1)"
         >
-          <mat-icon 
-          [ngStyle]="{ color: 'green' }">where_to_vote</mat-icon>
-        </button>
-        <button
-          mat-raised-button
-          (click)="addParticipant(2)"
-          class="maybeGoingTripButton"
-          [disabled]="isUserParticipant(2)"
+          <button
+            mat-raised-button
+            matTooltip="You definitely want to go on this Trip"
+            aria-label="Button to be pressed if You definitely want to go on this Trip"
+            (click)="addParticipant(1)"
+            class="definitelyGoingTripButton"
+            [disabled]="isUserParticipant(1)"
+          >
+            <mat-icon [ngStyle]="{ color: 'green' }">where_to_vote</mat-icon>
+          </button>
+        </div>
+        <div
+          matTooltip="You might go on this Trip! :)"
+          [matTooltipDisabled]="!isUserParticipant(2)"
         >
-          <mat-icon 
-          [ngStyle]="{ color: 'orange' }">add_location</mat-icon>
-        </button>
+          <button
+            mat-raised-button
+            matTooltip="You might go on this Trip"
+            aria-label="Button to be pressed if You might go on this Trip"
+            (click)="addParticipant(2)"
+            class="maybeGoingTripButton"
+            [disabled]="isUserParticipant(2)"
+          >
+            <mat-icon [ngStyle]="{ color: 'orange' }">add_location</mat-icon>
+          </button>
+        </div>
       </mat-card-content>
     </mat-card>
   </div>

@@ -15,6 +15,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [],
@@ -35,6 +36,7 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
     MatNativeDateModule,
     MatSlideToggleModule,
     MatProgressBarModule,
+    MatTooltipModule,
   ],
   exports: [
     BrowserAnimationsModule,
@@ -52,6 +54,7 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
     MatNativeDateModule,
     MatSlideToggleModule,
     MatProgressBarModule,
+    MatTooltipModule,
   ],
 })
 export class MaterialModule {}
