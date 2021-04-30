@@ -17,6 +17,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
+import { AppRoutingModule } from './app-routing.module';
 
 const appRoutes: Routes = [
   { path: 'trip/list', component: TripListComponent },
@@ -44,6 +45,7 @@ const appRoutes: Routes = [
     MatSidenavModule,
     MatIconModule,
     MatListModule,
+    AppRoutingModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
