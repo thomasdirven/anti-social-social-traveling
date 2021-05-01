@@ -23,6 +23,9 @@ export class TripDataService {
 
   get allTrips$(): Observable<Trip[]> {
     return this._trips$;
+    // to test errors we should call this one
+    // this one throws an error, the above one doesn't
+    // return this.trips$;
   }
 
   get trips$(): Observable<Trip[]> {
@@ -105,7 +108,6 @@ export class TripDataService {
     } else {
       errorMessage = `an unknown error occurred ${err}`;
     }
-    console.log('hier is em');
     console.error(err);
     return throwError(errorMessage);
   }

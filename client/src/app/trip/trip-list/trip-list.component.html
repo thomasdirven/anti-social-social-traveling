@@ -1,3 +1,6 @@
+ <!-- Would be nice if *ngLet exists -->
+ <!-- this guy made it but I hope the angular team does it themselves -->
+ <!-- https://www.npmjs.com/package/ng-let -->
 <div *ngIf="trips$ | async as trips">
   <div
     *ngIf="
@@ -119,11 +122,8 @@
               fxFlex="0 0 calc(33%-0.5)"
               fxFlex.xs="100%"
             > -->
-            <div fxLayoutGap="" fxLayoutAlign="center">
-              <div
-                class="trip"
-                *ngFor="let trip of filteredTrips"
-              >
+          <div fxLayoutGap="" fxLayoutAlign="center">
+            <div class="trip" *ngFor="let trip of filteredTrips">
               <!-- is hoverTrip a local variable in this html file?? -->
               <!-- it works, but how? -->
               <app-trip
@@ -135,12 +135,18 @@
           </div>
         </div>
         <ng-template #loadingOrError>
+          <!-- Will never display because of ngIf -> I need an ngLet -->
+          <!-- Or I could do the ngIf for filters, list and gmap seperately which is dumb -->
+          <!-- Moved this error card to the bottom of this html file so the error still shows up -->
           <mat-card class="error" *ngIf="errorMessage; else loading">
-            Error loading the city trip list: {{ errorMessage }}. <br />
-            Please try again later.
+            <mat-card-content>
+              Error loading the city trip list: {{ errorMessage }}. <br />
+              Please try again later.
+            </mat-card-content>
           </mat-card>
         </ng-template>
       </div>
+      <!-- TODO nice extra, change depending on screenwidth -->
       <div *ngIf="trips.length > 0">
         <div>
           <div
@@ -213,3 +219,9 @@
     </div>
   </div>
 </div>
+<mat-card class="error" *ngIf="errorMessage">
+  <mat-card-content>
+    Error loading the city trip list: {{ errorMessage }}. <br />
+    Please try again later.
+  </mat-card-content>
+</mat-card>

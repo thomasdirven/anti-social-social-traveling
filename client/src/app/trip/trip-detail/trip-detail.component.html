@@ -1,6 +1,6 @@
-<div class="card-container">
+<div class="card-container" *ngIf="trip">
   <div class="card">
-    <mat-card *ngIf="trip">
+    <mat-card>
       <mat-card-header>
         <mat-card-title>
           {{ trip.city }} <mat-icon>flight</mat-icon>
@@ -39,14 +39,16 @@
         </mat-list>
 
         <!-- delete and restore buttons -->
-        <button *ngIf="!isDeleted"
+        <button
+          *ngIf="!isDeleted"
           mat-raised-button
           (click)="deleteTrip()"
           class="deleteTripButton"
         >
           <mat-icon [ngStyle]="{ color: 'red' }">delete_forever</mat-icon>
         </button>
-        <button *ngIf="isDeleted"
+        <button
+          *ngIf="isDeleted"
           mat-raised-button
           (click)="restoreTrip()"
           class="undoDeleteTripButton"
@@ -98,3 +100,18 @@
     </mat-card>
   </div>
 </div>
+<mat-card class="error" *ngIf="errorMessage">
+  <mat-card-content>
+    Error loading the city trip: {{ errorMessage }}. <br />
+    <br />
+    Please try again later. <br />
+    <br />
+    If you are able to load the full list of trips but not this one, then there
+    is probably no trip with this id on the server. <br />
+    If you deleted and restored your trip, the trip got renewed and got a new
+    id.
+    <br />
+    Go back to the list of trips to find the right trip (it will be there if it
+    was restored correctly).
+  </mat-card-content>
+</mat-card>

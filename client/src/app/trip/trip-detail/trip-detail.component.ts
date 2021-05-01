@@ -27,6 +27,12 @@ export class TripDetailComponent implements OnInit {
     this.route.paramMap.subscribe((pa) =>
       this._tripDataService
         .getTrip$(pa.get('id'))
+        .pipe(
+          catchError((err) => {
+            this.errorMessage = err;
+            return EMPTY;
+          })
+        )
         .subscribe((tr) => (this.trip = tr))
     );
 
