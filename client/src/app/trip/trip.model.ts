@@ -13,6 +13,7 @@ interface TripJson {
   longtitude: number;
   attractions: AttractionJson[];
   totalBudget: number;
+  organizer: string;
   // participants: Map<User, number>;
   participants: ParticipantJson[];
   // participants: number;
@@ -37,6 +38,9 @@ export class Trip {
     private _latitude: number,
     private _longtitude: number,
     private _totalBudget: number,
+    // TODO
+    // private _organizer: User,
+    private _organizer = "Thomas",
     // private _participants = new Map<User, number>(),
     // private _participants = new Map<string, string>(),
     private _participants = new Array<Participant>() // private _participants?: number,
@@ -71,6 +75,7 @@ export class Trip {
       latitude,
       longtitude,
       totalBudget,
+      json.organizer,
       // new Map(JSON.parse(json.participants)),
       json.participants.map(Participant.fromJSON)
     );
@@ -130,6 +135,9 @@ export class Trip {
     // what am i doing wrong, why do i need this for it to work??
     if (this._totalBudget > 0) return this._totalBudget;
     return null;
+  }
+  get organizer(): string {
+    return this._organizer;
   }
   get participants(): Participant[] {
     return this._participants;

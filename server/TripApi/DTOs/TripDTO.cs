@@ -22,6 +22,8 @@ namespace TripApi.DTOs
 
         public IList<AttractionDTO> Attractions { get; set; }
 
+        public string Organizer { get; set; }
+
         // TODO change to map <User, enum>
         //public int? Participants { get; set; }
         public IList<ParticipantDTO> Participants { get; set; }

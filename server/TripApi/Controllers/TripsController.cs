@@ -91,6 +91,7 @@ namespace TripApi.Controllers
                     Latitude = trip.Latitude,
                     Longtitude = trip.Longtitude,
                     TotalBudget = trip.TotalBudget,
+                    Organizer = trip.Organizer,
                 };
                 foreach (var a in trip.Attractions)
                     tripToCreate.AddAttraction(new Attraction(a.Name, a.Type, a.Budget));

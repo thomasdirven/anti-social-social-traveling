@@ -1,1 +1,100 @@
-<p>trip-detail works!</p>
+<div class="card-container">
+  <div class="card">
+    <mat-card *ngIf="trip">
+      <mat-card-header>
+        <mat-card-title>
+          {{ trip.city }} <mat-icon>flight</mat-icon>
+        </mat-card-title>
+        <!-- <span class="peopleGoing">
+            people who will might go (in orange)
+            <span style="color: orange">
+              {{ giveNumberOfGoingStatusParticipants(2) }}
+            </span>
+            <mat-icon>people</mat-icon>
+            people who will definitely go (in green)
+            <span style="color: green">
+              {{ giveNumberOfGoingStatusParticipants(1) }}
+            </span>
+          </span> -->
+        <mat-card-subtitle>
+          {{ trip.country }}
+        </mat-card-subtitle>
+        <mat-card-subtitle> created by {{ trip.organizer }} </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>
+          <em>Possible travel period: </em><br />
+          from {{ trip.startDate | date: "longDate" }} <br />
+          till {{ trip.endDate | date: "longDate" }}
+        </p>
+        <p>
+          <em>Length of city trip: </em><br />
+          {{ trip.minDays }} to {{ trip.maxDays }} days
+        </p>
+        <h4 mat-subheader>Things I really want to see:</h4>
+        <mat-list>
+          <mat-list-item *ngFor="let attraction of trip.attractions">
+            <app-attraction [attraction]="attraction"></app-attraction>
+          </mat-list-item>
+        </mat-list>
+
+        <!-- delete and restore buttons -->
+        <button *ngIf="!isDeleted"
+          mat-raised-button
+          (click)="deleteTrip()"
+          class="deleteTripButton"
+        >
+          <mat-icon [ngStyle]="{ color: 'red' }">delete_forever</mat-icon>
+        </button>
+        <button *ngIf="isDeleted"
+          mat-raised-button
+          (click)="restoreTrip()"
+          class="undoDeleteTripButton"
+        >
+          <mat-icon [ngStyle]="{ color: 'green' }">restore_from_trash</mat-icon>
+        </button>
+
+        <!-- decision buttons -->
+        <!-- <button
+            mat-raised-button
+            matTooltip="You don't want to go on this Trip"
+            aria-label="Button to be pressed if You don't want to go on this Trip"
+            (click)="addParticipant(0)"
+            class="notGoingTripButton"
+          >
+            <mat-icon [ngStyle]="{ color: 'red' }">clear</mat-icon>
+          </button>
+          <div
+            matTooltip="You are going on this Trip! :)"
+            [matTooltipDisabled]="!isUserParticipant(1)"
+          >
+            <button
+              mat-raised-button
+              matTooltip="You definitely want to go on this Trip"
+              aria-label="Button to be pressed if You definitely want to go on this Trip"
+              (click)="addParticipant(1)"
+              class="definitelyGoingTripButton"
+              [disabled]="isUserParticipant(1)"
+            >
+              <mat-icon [ngStyle]="{ color: 'green' }">where_to_vote</mat-icon>
+            </button>
+          </div>
+          <div
+            matTooltip="You might go on this Trip! :)"
+            [matTooltipDisabled]="!isUserParticipant(2)"
+          >
+            <button
+              mat-raised-button
+              matTooltip="You might go on this Trip"
+              aria-label="Button to be pressed if You might go on this Trip"
+              (click)="addParticipant(2)"
+              class="maybeGoingTripButton"
+              [disabled]="isUserParticipant(2)"
+            >
+              <mat-icon [ngStyle]="{ color: 'orange' }">add_location</mat-icon>
+            </button> 
+          </div> -->
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

@@ -26,6 +26,8 @@ namespace TripApi.Models
 
         public ICollection<Attraction> Attractions { get; private set; }
 
+        public string Organizer { get; set; }
+
         // TODO change to map <User, enum>
         //public int? Participants { get; set; }
         public ICollection<Participant> Participants { get; private set; }
