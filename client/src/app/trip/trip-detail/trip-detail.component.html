@@ -5,17 +5,17 @@
         <mat-card-title>
           {{ trip.city }} <mat-icon>flight</mat-icon>
         </mat-card-title>
-        <!-- <span class="peopleGoing">
-            people who will might go (in orange)
-            <span style="color: orange">
-              {{ giveNumberOfGoingStatusParticipants(2) }}
-            </span>
-            <mat-icon>people</mat-icon>
-            people who will definitely go (in green)
-            <span style="color: green">
-              {{ giveNumberOfGoingStatusParticipants(1) }}
-            </span>
-          </span> -->
+        <span class="peopleGoing">
+          <!-- people who might go (in orange) -->
+          <span style="color: orange">
+            {{ giveNumberOfGoingStatusParticipants(2) }}
+          </span>
+          <mat-icon>people</mat-icon>
+          <!-- people who will definitely go (in green) -->
+          <span style="color: green">
+            {{ giveNumberOfGoingStatusParticipants(1) }}
+          </span>
+        </span>
         <mat-card-subtitle>
           {{ trip.country }}
         </mat-card-subtitle>
@@ -31,6 +31,12 @@
           <em>Length of city trip: </em><br />
           {{ trip.minDays }} to {{ trip.maxDays }} days
         </p>
+        <p><em>Participants:</em></p>
+        <p *ngFor="let par of trip.participants">
+          UserId: {{ par.userId }} <br />
+          GoinStatus: {{ par.goingStatus == 1 ? "definitelyGoing" : "mightGo" }}
+        </p>
+
         <h4 mat-subheader>Things I really want to see:</h4>
         <mat-list>
           <mat-list-item *ngFor="let attraction of trip.attractions">
@@ -51,7 +57,7 @@
           *ngIf="isDeleted"
           mat-raised-button
           (click)="restoreTrip()"
-          class="undoDeleteTripButton"
+          class="restoreTripButton"
         >
           <mat-icon [ngStyle]="{ color: 'green' }">restore_from_trash</mat-icon>
         </button>

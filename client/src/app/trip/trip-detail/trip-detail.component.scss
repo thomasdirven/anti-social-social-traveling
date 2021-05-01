@@ -15,11 +15,12 @@
     transition: all 0.2s ease-in-out;
   }
 
-// .peopleGoing {
-//   // display: flex;
-//   right: 0;
-//   float: right;
-// }
+.peopleGoing {
+  // display: flex;
+  // right: 0;
+  // float: right;
+  margin-left: auto;
+}
 
 // dumbass material cards
 ::ng-deep .mat-card-header-text {
@@ -35,9 +36,9 @@
     width: 168px;
   }
 
-  .card-container .card:not(.highlight-card) {
-    cursor: pointer;
-  }
+  // .card-container .card:not(.highlight-card) {
+  //   cursor: pointer;
+  // }
 
   .card-container .card:not(.highlight-card):hover {
     // transform: translateY(-10px);
@@ -46,8 +47,7 @@
 
   .deleteTripButton{    
     float: right;
-  }
-  
+  }  
   .notGoingTripButton{    
     float: left;
   }
