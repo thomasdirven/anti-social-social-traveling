@@ -5,7 +5,6 @@ import { AttractionComponent } from './attraction/attraction.component';
 import { MaterialModule } from '../material/material.module';
 import { TripListComponent } from './trip-list/trip-list.component';
 import { AddTripComponent } from './add-trip/add-trip.component';
-import { HttpClientModule } from '@angular/common/http';
 import { AgmCoreModule } from '@agm/core';
 import { GmapComponent } from './gmap/gmap.component';
 import { GeocodeService } from './geocode.service';
@@ -23,10 +22,10 @@ import { TripResolver } from './TripResolver';
 // used for Maps JavaScript API and Geocoding API
 
 const tripRoutes: Routes = [
-  { path: 'trip/list', component: TripListComponent },
-  { path: 'trip/add', component: AddTripComponent },
+  { path: 'list', component: TripListComponent },
+  { path: 'add', component: AddTripComponent },
   {
-    path: 'trip/detail/:id',
+    path: 'detail/:id',
     component: TripDetailComponent,
     resolve: { trip: TripResolver },
   },
@@ -47,7 +46,6 @@ const tripRoutes: Routes = [
   ],
   imports: [
     CommonModule,
-    HttpClientModule,
     MaterialModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyByzFs-RMMy83HcDPftNNp_JddxVD4rurM',

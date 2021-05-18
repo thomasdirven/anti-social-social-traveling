@@ -9,10 +9,15 @@ import { TripResolver } from './trip/TripResolver';
 
 const appRoutes: Routes = [
   {
-    path: '',
-    redirectTo: 'trip/list',
-    pathMatch: 'full',
+    path: 'trip',
+    loadChildren: () =>
+      import('./trip/trip.module').then(mod => mod.TripModule)
   },
+  // {
+  //   path: '',
+  //   redirectTo: 'trip/list',
+  //   pathMatch: 'full',
+  // },
   { path: '**', component: PageNotFoundComponent },
 ];
 

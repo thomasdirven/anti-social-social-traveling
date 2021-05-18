@@ -24,7 +24,6 @@ import { LayoutModule } from '@angular/cdk/layout';
   declarations: [],
   imports: [
     CommonModule,
-    BrowserAnimationsModule,
     FlexLayoutModule,
     MatListModule,
     MatCardModule,
@@ -48,7 +47,6 @@ import { LayoutModule } from '@angular/cdk/layout';
     LayoutModule,
   ],
   exports: [
-    BrowserAnimationsModule,
     FlexLayoutModule,
     MatListModule,
     MatCardModule,
