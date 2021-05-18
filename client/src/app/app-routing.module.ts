@@ -2,22 +2,20 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { TripListComponent } from './trip/trip-list/trip-list.component';
-import { AddTripComponent } from './trip/add-trip/add-trip.component';
-import { TripDetailComponent } from './trip/trip-detail/trip-detail.component';
-import { TripResolver } from './trip/TripResolver';
+import { SelectivePreloadStrategy } from './SelectivePreloadStrategy';
 
 const appRoutes: Routes = [
   {
     path: 'trip',
     loadChildren: () =>
-      import('./trip/trip.module').then(mod => mod.TripModule)
+      import('./trip/trip.module').then((mod) => mod.TripModule),
+    data: { preload: true },
   },
-  // {
-  //   path: '',
-  //   redirectTo: 'trip/list',
-  //   pathMatch: 'full',
-  // },
+  {
+    path: '',
+    redirectTo: 'trip/list',
+    pathMatch: 'full',
+  },
   { path: '**', component: PageNotFoundComponent },
 ];
 
@@ -25,7 +23,10 @@ const appRoutes: Routes = [
   declarations: [],
   imports: [
     CommonModule,
-    RouterModule.forRoot(appRoutes, { enableTracing: true }),
+    RouterModule.forRoot(appRoutes, {
+      preloadingStrategy: SelectivePreloadStrategy,
+      // enableTracing: true,
+    }),
   ],
   exports: [RouterModule],
 })
