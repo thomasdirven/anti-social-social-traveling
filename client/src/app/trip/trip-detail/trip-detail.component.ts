@@ -24,17 +24,20 @@ export class TripDetailComponent implements OnInit {
     // id will only get new value on page refresh => wrong methodology
     // const id = this.route.snapshot.paramMap.get('id');
     // better with subscribe to paramMap
-    this.route.paramMap.subscribe((pa) =>
-      this._tripDataService
-        .getTrip$(pa.get('id'))
-        .pipe(
-          catchError((err) => {
-            this.errorMessage = err;
-            return EMPTY;
-          })
-        )
-        .subscribe((tr) => (this.trip = tr))
-    );
+
+    // this.route.paramMap.subscribe((pa) =>
+    //   this._tripDataService
+    //     .getTrip$(pa.get('id'))
+    //     .pipe(
+    //       catchError((err) => {
+    //         this.errorMessage = err;
+    //         return EMPTY;
+    //       })
+    //     )
+    //     .subscribe((tr) => (this.trip = tr))
+    // );
+
+    this.route.data.subscribe(item => (this.trip = item['trip']));
 
     // stuff for restore trip - WORKS with observables
     this._tripDataService.restoredTrip$
