@@ -126,6 +126,7 @@
             <div class="trip" *ngFor="let trip of filteredTrips">
               <!-- is hoverTrip a local variable in this html file?? -->
               <!-- it works, but how? -->
+              <!-- , trip.id -->
               <app-trip
                 [trip]="trip"
                 (mouseenter)="hoverTrip = trip"

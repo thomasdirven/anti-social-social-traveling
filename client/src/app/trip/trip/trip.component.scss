@@ -35,13 +35,19 @@
     width: 168px;
   }
 
-  .card-container .card:not(.highlight-card) {
-    cursor: pointer;
-  }
+  // .card-container .card:not(.highlight-card) {
+  //   cursor: pointer;
+  // }
 
   .card-container .card:not(.highlight-card):hover {
     transform: translateY(-10px);
     box-shadow: 0 4px 17px rgba(0, 0, 0, 0.35);
+  }
+
+  .extraInfoTripButton{
+    position: absolute;
+    right: 10px;
+    bottom: 150px;
   }
 
   .deleteTripButton{    

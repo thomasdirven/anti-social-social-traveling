@@ -55,6 +55,17 @@
           <mat-icon [ngStyle]="{ color: 'red' }">restore_from_trash</mat-icon>
         </button> -->
 
+        <!-- routing button -->
+        <button
+          mat-raised-button          
+          [routerLink]="['../detail', trip.id]"
+          matTooltip="See all details of this Trip"
+          aria-label="Button to be pressed if You want extra info about this Trip"
+          class="extraInfoTripButton"
+        >
+          <mat-icon [ngStyle]="{ color: 'black' }">info</mat-icon>
+        </button>
+        
         <!-- decision buttons -->
         <button
           mat-raised-button
