@@ -8,13 +8,6 @@ import { TripDetailComponent } from './trip/trip-detail/trip-detail.component';
 import { TripResolver } from './trip/TripResolver';
 
 const appRoutes: Routes = [
-  { path: 'trip/list', component: TripListComponent },
-  { path: 'trip/add', component: AddTripComponent },
-  {
-    path: 'trip/detail/:id',
-    component: TripDetailComponent,
-    resolve: { trip: TripResolver },
-  },
   {
     path: '',
     redirectTo: 'trip/list',
@@ -25,7 +18,10 @@ const appRoutes: Routes = [
 
 @NgModule({
   declarations: [],
-  imports: [CommonModule, RouterModule.forRoot(appRoutes)],
+  imports: [
+    CommonModule,
+    RouterModule.forRoot(appRoutes, { enableTracing: true }),
+  ],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

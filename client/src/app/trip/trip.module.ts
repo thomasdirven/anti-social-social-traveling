@@ -15,10 +15,22 @@ import { TripFilterCountryPipe } from './trip-filter-country.pipe';
 import { TripFilterCityPipe } from './trip-filter-city.pipe';
 import { TripFilterDateRangePipe } from './trip-filter-date-range.pipe';
 import { TripDetailComponent } from './trip-detail/trip-detail.component';
+import { RouterModule, Routes } from '@angular/router';
+import { TripResolver } from './TripResolver';
 
 // Google API key
 // AIzaSyByzFs-RMMy83HcDPftNNp_JddxVD4rurM
 // used for Maps JavaScript API and Geocoding API
+
+const tripRoutes: Routes = [
+  { path: 'trip/list', component: TripListComponent },
+  { path: 'trip/add', component: AddTripComponent },
+  {
+    path: 'trip/detail/:id',
+    component: TripDetailComponent,
+    resolve: { trip: TripResolver },
+  },
+];
 
 @NgModule({
   declarations: [
@@ -42,6 +54,7 @@ import { TripDetailComponent } from './trip-detail/trip-detail.component';
     }),
     ReactiveFormsModule,
     FormsModule,
+    RouterModule.forChild(tripRoutes)
   ],
   providers: [GeocodeService],
   exports: [TripListComponent, AddTripComponent],
