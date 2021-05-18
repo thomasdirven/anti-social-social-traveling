@@ -1,7 +1,7 @@
 # 2021-pieter-thomasdirven
 2021-pieter-thomasdirven created by GitHub Classroom
 
-# Recipe API - Monolithic Repository
+# Trip APP - Monolithic Repository
 
 ## Prerequisites
 
@@ -31,7 +31,7 @@ npm start
 ### Server
 
 ```
-cd Server/RecipeApi
+cd Server/TripApi
 dotnet watch run
 ```
 
@@ -50,7 +50,7 @@ ng build --prod
 ### Server
 
 ```
-cd Server/RecipeApi
+cd Server/TripApi
 dotnet run
 ```
 
