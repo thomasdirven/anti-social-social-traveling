@@ -8,6 +8,7 @@ import { MaterialModule } from './material/material.module';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { MainNavComponent } from './main-nav/main-nav.component';
 import { AppRoutingModule } from './app-routing.module';
+import { UserModule } from './user/user.module';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { AppRoutingModule } from './app-routing.module';
     MaterialModule,
     HttpClientModule,
     AppRoutingModule,
+    UserModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
