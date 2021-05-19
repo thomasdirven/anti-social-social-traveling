@@ -215,12 +215,15 @@
       </ng-template>
       <!-- shows google maps on webpage with markers of trip locations -->
       <div class="mapsComponent">
+        <div *ngIf="loggedInTraveler$ | async as loggedInTraveler">
         <app-gmap
           [trips]="filteredTrips"
           [hoverTrip]="this.hoverTrip"
+          [loggedInTraveler]="loggedInTraveler[0]"
         ></app-gmap>
         <!-- turned of to save free credit on https://console.cloud.google.com/ -->
       </div>
+    </div>
     </div>
   </div>
 </div>

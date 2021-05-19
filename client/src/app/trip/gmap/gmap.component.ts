@@ -1,6 +1,7 @@
 import { Component, Input, NgZone, OnInit } from '@angular/core';
 import { EMPTY, Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { Traveler } from 'src/app/user/traveler.model';
 import { TripDataService } from '../trip-data.service';
 import { Trip } from '../trip.model';
 // No longer used in latest version of agm -> using googl.maps
@@ -22,8 +23,7 @@ interface marker {
 export class GmapComponent implements OnInit {
   @Input() public trips: Trip[];
   @Input() public hoverTrip?: Trip;
-
-  public selectedUserId = 1;
+  @Input() public loggedInTraveler: Traveler;
 
   public bounceOnLoad = 'DROP';
   public setBounceOnLoad(str : string){
