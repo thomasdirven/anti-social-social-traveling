@@ -54,13 +54,29 @@ export class TripDataService {
     //// Necessary for DOM changes
     //// Didn't notice the differnce
     //this._trips = [...this._trips, trip]
+    //// og method
+    // return this.http
+    //   .post(`${environment.apiUrl}/trips/`, trip.toJSON())
+    //   .pipe(tap(console.log), catchError(this.handleError), map(Trip.fromJSON))
+    //   .subscribe((trip: Trip) => {
+    //     this._trips = [...this._trips, trip];
+    //     this._trips$.next(this._trips);
+    //   });
+    // temp new one so we can do errors as well
     return this.http
       .post(`${environment.apiUrl}/trips/`, trip.toJSON())
       .pipe(tap(console.log), catchError(this.handleError), map(Trip.fromJSON))
-      .subscribe((trip: Trip) => {
-        this._trips = [...this._trips, trip];
-        this._trips$.next(this._trips);
-      });
+      .pipe(
+        // temporary fix, while we use the behaviorsubject as a cache stream
+        catchError((err) => {
+          this._trips$.error(err);
+          return throwError(err);
+        }),
+        tap((trip: Trip) => {
+          this._trips = [...this._trips, trip];
+          this._trips$.next(this._trips);
+        })
+      );
   }
 
   // does the same as addNewTrip +++ pushes new trip with new id given by DB

@@ -13,6 +13,7 @@ import {
   Validators,
 } from '@angular/forms';
 import {
+  catchError,
   debounce,
   debounceTime,
   distinctUntilChanged,
@@ -23,6 +24,7 @@ import { GeocodeService } from '../geocode.service';
 import { Trip } from '../trip.model';
 import { Location } from '../geocode.service';
 import { TripDataService } from '../trip-data.service';
+import { EMPTY } from 'rxjs';
 
 function validateAttractionName(control: FormGroup): { [key: string]: any } {
   if (
@@ -48,7 +50,9 @@ export class AddTripComponent implements OnInit {
     'Event',
     'Other',
   ];
-
+  public errorMessage: string = '';
+  public confirmationMessage: string = '';
+  
   public tripFG: FormGroup;
 
   // @Output() public newTrip = new EventEmitter<Trip>();
@@ -382,7 +386,19 @@ export class AddTripComponent implements OnInit {
     );
     console.log(trip);
     // this.newTrip.emit(trip);
-    this._tripDataService.addNewTrip(trip);
+    //// og method
+    // this._tripDataService.addNewTrip(trip);
+    // temp new method so we can have error messages
+    this._tripDataService.addNewTrip(trip)
+    .pipe(
+      catchError((err) => {
+        this.errorMessage = err;
+        return EMPTY;
+      })
+    )
+    .subscribe((trip: Trip) => {
+      this.confirmationMessage = `a trip to ${trip.city} was successfully added`;
+    });
 
     // reset fields
     this._startDateStr = '';

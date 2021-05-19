@@ -206,6 +206,16 @@
     </form>
   </mat-card-content>
 </mat-card>
+<mat-card class="error" *ngIf="errorMessage" data-cy="appError">
+  Error while adding the Trip: {{ errorMessage }}
+</mat-card>
+<mat-card
+  class="confirmation"
+  *ngIf="confirmationMessage"
+  data-cy="appConfirmation"
+>
+  {{ confirmationMessage }}
+</mat-card>
 REMOVE {{ tripFG.value | json }} {{ tripFG.status }} <br />
 <!-- {{ spy.className }} <br /> -->
 {{ tripFG.get("city")["errors"] | json }}

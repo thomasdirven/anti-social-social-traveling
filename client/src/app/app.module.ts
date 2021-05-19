@@ -10,6 +10,7 @@ import { MainNavComponent } from './main-nav/main-nav.component';
 import { AppRoutingModule } from './app-routing.module';
 import { UserModule } from './user/user.module';
 import { TripModule } from './trip/trip.module';
+import { httpInterceptorProviders } from './interceptors';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,7 @@ import { TripModule } from './trip/trip.module';
     UserModule,
     AppRoutingModule,
   ],
-  providers: [],
+  providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

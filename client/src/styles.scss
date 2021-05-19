@@ -4,13 +4,25 @@
 /* Importing Bootstrap SCSS file. */
 // @import '~bootstrap/scss/bootstrap';
 
-// doesn't do anything
-@import '~@angular/material/_theming.scss';
-@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+@import "~@angular/material/_theming.scss";
+@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
 @include mat-core();
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.error {
+  background-color: #feebeb;
+  color: #c61e24;
+}
+
+.confirmation {
+  background-color: #ebfeeb;
+  color: #1ec624;
+}
 
 // @import '~bootstrap/scss/bootstrap';
-
