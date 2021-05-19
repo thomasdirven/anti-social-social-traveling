@@ -15,10 +15,12 @@ namespace TripApi.Controllers
     public class TripsController : ControllerBase
     {
         private readonly ITripRepository _tripRepository;
+        private readonly ITravelerRepository _travelerRepository;
 
-        public TripsController(ITripRepository context)
+        public TripsController(ITripRepository tripRepository, ITravelerRepository travelerRepository)
         {
-            _tripRepository = context;
+            _tripRepository = tripRepository;
+            _travelerRepository = travelerRepository;
         }
 
         // GET: api/trips
@@ -110,6 +112,7 @@ namespace TripApi.Controllers
         // PUT: api/trips/id
         /// <summary>
         /// Modifies a Trip
+        /// Only used to add participants to a trip
         /// </summary>
         /// <param name="id">The id of the Trip</param>
         /// <param name="trip">The modified Trip</param>
@@ -119,7 +122,7 @@ namespace TripApi.Controllers
             try
             {
                 // TODO after authentication
-                int selectedUserId = 1;
+                int selectedTravelerId = 1;
 
                 Trip tripToUpdate = _tripRepository.GetBy(id);
                 // 404 if trip with id doesn't exist
@@ -129,7 +132,7 @@ namespace TripApi.Controllers
                 // remove goingStatus that was already in participants for this user
                 foreach (var p in tripToUpdate.Participants.ToList())
                 {
-                    if (p.UserId == selectedUserId)
+                    if (p.TravelerId == selectedTravelerId)
                     {
                         tripToUpdate.DeleteParticipant(p);
                     }
@@ -141,9 +144,11 @@ namespace TripApi.Controllers
                 // add new goingStatus that was already in participants for this user
                 foreach (var p in trip.Participants.ToList())
                 {
-                    if (p.UserId == selectedUserId)
+                    if (p.TravelerId == selectedTravelerId)
                     {
-                        tripToUpdate.AddParticipant(new Participant(p.UserId, p.GoingStatus));
+                        Traveler traveler = _travelerRepository.GetById(selectedTravelerId);
+                        Console.WriteLine(traveler.FirstName);
+                        tripToUpdate.AddParticipant(new TripParticipant(p.TravelerId, p.TripId, traveler, tripToUpdate, p.GoingStatus));
                     }
                 }
                 //tripToUpdate.Participants = trip.Participants;

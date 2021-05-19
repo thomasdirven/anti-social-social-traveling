@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -37,6 +38,30 @@ namespace TripApi
 
             services.AddScoped<TripDataInitializer>();
             services.AddScoped<ITripRepository, TripRepository>();
+            services.AddScoped<ITravelerRepository, TravelerRepository>();
+
+            services.AddIdentity<IdentityUser, IdentityRole>(cfg => cfg.User.RequireUniqueEmail = true).AddEntityFrameworkStores<TripContext>();
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Password settings.
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequiredLength = 6;
+                options.Password.RequiredUniqueChars = 1;
+
+                // Lockout settings.
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.AllowedForNewUsers = true;
+
+                // User settings.
+                options.User.AllowedUserNameCharacters =
+                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+                options.User.RequireUniqueEmail = true;
+            });
 
             // <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
             // Swashbuckle.AspNetCore (replaced by NSwag)
@@ -85,7 +110,7 @@ namespace TripApi
                 endpoints.MapControllers();
             });
 
-            tripDataInitializer.InitializeData(); //.Wait();
+            tripDataInitializer.InitializeData().Wait();
         }
     }
 }

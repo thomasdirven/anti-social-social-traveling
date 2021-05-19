@@ -148,7 +148,7 @@ export class Trip {
   }
 
   // TODO will change later
-  addParticipant(code: number) {
+  addParticipant(goingStatus: number) {
     const userIdHere = 1;
     // this._participants.forEach(par => {
     //   if (par.userId == userIdHere){
@@ -157,18 +157,18 @@ export class Trip {
 
     // remove previous goingStatus of this user
     this._participants = this._participants.filter(
-      (par) => par.userId != userIdHere
+      (par) => par.travelerId != userIdHere
     );
 
     // add new goingStatus of this user for this trip
     // this._participants.set(userId, code.toString());
-    this._participants.push(new Participant(userIdHere, code));
+    this._participants.push(new Participant(userIdHere, this.id, goingStatus));
   }  
 
-  isUserParticipant(code: number) : boolean{
+  isUserParticipant(goingStatus: number) : boolean{
     const userIdHere = 1;
     let tempParticipants = this._participants.filter(
-      (par) => par.userId == userIdHere && par.goingStatus == code
+      (par) => par.travelerId == userIdHere && par.goingStatus == goingStatus
     );
     return tempParticipants.length == 1;
   }

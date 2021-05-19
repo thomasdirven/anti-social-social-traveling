@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System;
 using TripApi.Models;
 
 namespace TripApi.Data
 {
-    public class TripContext : DbContext
+    public class TripContext : IdentityDbContext
     {
         public TripContext(DbContextOptions<TripContext> options)
             : base(options)
@@ -23,6 +24,17 @@ namespace TripApi.Data
             // builder.Entity<Trip>().Property(r => r.Country).HasMaxLength(50);
             builder.Entity<Attraction>().Property(r => r.Name).IsRequired();
             // builder.Entity<Attraction>().Property(r => r.Type).HasMaxLength(50);
+            
+            builder.Entity<Traveler>().Property(c => c.LastName).IsRequired().HasMaxLength(50);
+            builder.Entity<Traveler>().Property(c => c.FirstName).IsRequired().HasMaxLength(50);
+            builder.Entity<Traveler>().Property(c => c.Email).IsRequired().HasMaxLength(100);
+            builder.Entity<Traveler>().Ignore(c => c.FavoriteTrips);
+            builder.Entity<Trip>().Ignore(c => c.Participants); //todo? good or bad idea?
+
+            builder.Entity<TripParticipant>().HasKey(f => new { f.TravelerId, f.TripId });
+            builder.Entity<TripParticipant>().HasOne(f => f.Traveler).WithMany(u => u.Favorites).HasForeignKey(f => f.TravelerId);
+            builder.Entity<TripParticipant>().HasOne(f => f.Trip).WithMany().HasForeignKey(f => f.TripId);
+
             builder.Entity<Trip>()
                 .HasMany(p => p.Participants)
                 .WithOne()
@@ -65,5 +77,6 @@ namespace TripApi.Data
         }
 
         public DbSet<Trip> Trips { get; set; }
+        public DbSet<Traveler> Travelers { get; set; }
     }
 }

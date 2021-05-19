@@ -26,7 +26,7 @@ namespace TripApi.DTOs
 
         // TODO change to map <User, enum>
         //public int? Participants { get; set; }
-        public IList<ParticipantDTO> Participants { get; set; }
+        public IList<TripParticipantDTO> Participants { get; set; }
 
         public int? TotalBudget { get; set; }
     }

@@ -30,7 +30,7 @@ namespace TripApi.Models
 
         // TODO change to map <User, enum>
         //public int? Participants { get; set; }
-        public ICollection<Participant> Participants { get; private set; }
+        public ICollection<TripParticipant> Participants { get; private set; }
 
         public int? TotalBudget { get; set; }
 
@@ -40,7 +40,7 @@ namespace TripApi.Models
         public Trip()
         {
             Attractions = new List<Attraction>();
-            Participants = new List<Participant>();
+            Participants = new List<TripParticipant>();
             //Created = DateTime.Now;
         }
 
@@ -56,8 +56,8 @@ namespace TripApi.Models
 
         public Attraction GetAttraction(int id) => Attractions.SingleOrDefault(i => i.Id == id);
 
-        public void AddParticipant(Participant participant) => Participants.Add(participant);
-        public void DeleteParticipant(Participant participant) => Participants.Remove(participant);
+        public void AddParticipant(TripParticipant participant) => Participants.Add(participant);
+        public void DeleteParticipant(TripParticipant participant) => Participants.Remove(participant);
         #endregion
     }
 }
