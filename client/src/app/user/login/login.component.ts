@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit {
       .subscribe(
         (val) => {
           if (val) {
-            this.router.navigate(['/recipe/list']);
+            this.router.navigate(['/trip/list']);
           } else {
             this.errorMessage = `Could not login`;
           }
