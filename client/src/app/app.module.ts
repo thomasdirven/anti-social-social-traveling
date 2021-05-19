@@ -9,25 +9,23 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { MainNavComponent } from './main-nav/main-nav.component';
 import { AppRoutingModule } from './app-routing.module';
 import { UserModule } from './user/user.module';
-import { LoginComponent } from './user/login/login.component';
-import { RegisterComponent } from './user/register/register.component';
+import { TripModule } from './trip/trip.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     PageNotFoundComponent,
     MainNavComponent,
-    LoginComponent,
-    RegisterComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     NgbModule,
+    TripModule,
     MaterialModule,
     HttpClientModule,
-    AppRoutingModule,
     UserModule,
+    AppRoutingModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
