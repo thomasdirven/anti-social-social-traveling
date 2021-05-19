@@ -1,6 +1,6 @@
- <!-- Would be nice if *ngLet exists -->
- <!-- this guy made it but I hope the angular team does it themselves -->
- <!-- https://www.npmjs.com/package/ng-let -->
+<!-- Would be nice if *ngLet exists -->
+<!-- this guy made it but I hope the angular team does it themselves -->
+<!-- https://www.npmjs.com/package/ng-let -->
 <div *ngIf="trips$ | async as trips">
   <div
     *ngIf="
@@ -115,23 +115,27 @@
       <!-- <div *ngIf="trips$ | async as trips; else loadingOrError"> -->
       <div #scrollingTrips class="tripsScroll">
         <div *ngIf="trips.length > 0; else loadingOrError">
-          <!-- <div fxLayout.xs="column" fxLayoutGap="" fxLayoutAlign="center">
+          <div *ngIf="loggedInTraveler$ | async as loggedInTraveler">
+            <!-- <div *ngIf="loggedInTraveler"> -->
+            <!-- <div fxLayout.xs="column" fxLayoutGap="" fxLayoutAlign="center">
             <div
               class="trip"
               *ngFor="let trip of filteredTrips"
               fxFlex="0 0 calc(33%-0.5)"
               fxFlex.xs="100%"
             > -->
-          <div fxLayoutGap="" fxLayoutAlign="center">
-            <div class="trip" *ngFor="let trip of filteredTrips">
-              <!-- is hoverTrip a local variable in this html file?? -->
-              <!-- it works, but how? -->
-              <!-- , trip.id -->
-              <app-trip
-                [trip]="trip"
-                (mouseenter)="hoverTrip = trip"
-                (mouseleave)="hoverTrip = null"
-              ></app-trip>
+            <div fxLayoutGap="" fxLayoutAlign="center">
+              <div class="trip" *ngFor="let trip of filteredTrips">
+                <!-- is hoverTrip a local variable in this html file?? -->
+                <!-- it works, but how? -->
+                <!-- , trip.id -->
+                <app-trip
+                  [trip]="trip"
+                  [loggedInTraveler]="loggedInTraveler[0]"
+                  (mouseenter)="hoverTrip = trip"
+                  (mouseleave)="hoverTrip = null"
+                ></app-trip>
+              </div>
             </div>
           </div>
         </div>

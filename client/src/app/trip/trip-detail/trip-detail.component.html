@@ -19,7 +19,9 @@
         <mat-card-subtitle>
           {{ trip.country }}
         </mat-card-subtitle>
-        <mat-card-subtitle> <em>organized by</em> {{ trip.organizerName }} </mat-card-subtitle>
+        <mat-card-subtitle>
+          <em>organized by</em> {{ trip.organizerName }}
+        </mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
         <p>
@@ -32,10 +34,14 @@
           {{ trip.minDays }} to {{ trip.maxDays }} days
         </p>
         <p><em>Participants:</em></p>
-        <p *ngFor="let par of trip.participants">
-          UserId: {{ par.userId }} <br />
-          GoinStatus: {{ par.goingStatus == 1 ? "definitelyGoing" : "mightGo" }}
-        </p>
+        <div *ngFor="let par of trip.participants">
+          <p *ngIf="par.goingStatus != 0">
+            TravelerId: {{ par.travelerId }} <br />
+            Full name: {{ par.travelerName }} <br />
+            Going status:
+            {{ par.goingStatus == 1 ? "is definitely going" : "might go" }}
+          </p>
+        </div>
 
         <h4 mat-subheader>Things I really want to see:</h4>
         <mat-list>

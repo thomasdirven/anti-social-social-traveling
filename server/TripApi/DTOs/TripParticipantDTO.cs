@@ -13,5 +13,7 @@ namespace TripApi.DTOs
         //public Trip Trip { get; set; }
 
         public int GoingStatus { get; set; }
+
+        public string TravelerName { get; set; }
     }
 }

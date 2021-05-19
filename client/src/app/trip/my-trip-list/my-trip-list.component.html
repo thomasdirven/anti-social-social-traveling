@@ -93,19 +93,24 @@
 
       <div class="myTrips">
         <div *ngIf="trips.length > 0; else loading">
-          <div
-            fxLayout="row wrap"
-            fxLayout.xs="column"
-            fxLayoutGap="0.5%"
-            fxLayoutAlign="center"
-          >
+          <div *ngIf="loggedInTraveler$ | async as loggedInTraveler">
             <div
-              class="trip"
-              *ngFor="let trip of filteredTrips"
-              fxFlex="0 0 calc(33%-0.5)"
-              fxFlex.xs="100%"
+              fxLayout="row wrap"
+              fxLayout.xs="column"
+              fxLayoutGap="0.5%"
+              fxLayoutAlign="center"
             >
-              <app-trip [trip]="trip"></app-trip>
+              <div
+                class="trip"
+                *ngFor="let trip of filteredTrips"
+                fxFlex="0 0 calc(33%-0.5)"
+                fxFlex.xs="100%"
+              >
+                <app-trip
+                  [trip]="trip"
+                  [loggedInTraveler]="loggedInTraveler[0]"
+                ></app-trip>
+              </div>
             </div>
           </div>
         </div>

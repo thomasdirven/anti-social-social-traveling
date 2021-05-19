@@ -16,13 +16,16 @@ namespace TripApi.Models
 
         public int GoingStatus { get; set; }
 
-        public TripParticipant(int travelerId, int tripId, Traveler traveler, Trip trip, int goingStatus)
+        public string TravelerName { get; set; }
+
+        public TripParticipant(int travelerId, int tripId, Traveler traveler, Trip trip, int goingStatus, string travelerName)
         {
             TravelerId = travelerId;
             TripId = tripId;
             Traveler = traveler;
             Trip = trip;
             GoingStatus = goingStatus;
+            TravelerName = travelerName;
         }
 
         public TripParticipant()

@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EMPTY } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
+import { Traveler } from 'src/app/user/traveler.model';
+import { UserDataService } from 'src/app/user/user-data.service';
 import { TripDataService } from '../trip-data.service';
 import { Trip } from '../trip.model';
 
@@ -11,6 +13,7 @@ import { Trip } from '../trip.model';
   styleUrls: ['./trip-detail.component.scss'],
 })
 export class TripDetailComponent implements OnInit {
+  // @Input() public loggedInTraveler: Traveler;
   public trip: Trip;
   public isDeleted = false;
   public errorMessage: string = '';
@@ -37,7 +40,7 @@ export class TripDetailComponent implements OnInit {
     //     .subscribe((tr) => (this.trip = tr))
     // );
 
-    this.route.data.subscribe(item => (this.trip = item['trip']));
+    this.route.data.subscribe((item) => (this.trip = item['trip']));
 
     // stuff for restore trip - WORKS with observables
     this._tripDataService.restoredTrip$
@@ -62,14 +65,20 @@ export class TripDetailComponent implements OnInit {
     this.isDeleted = false;
   }
 
-  addParticipant(code: number) {
-    this.trip.addParticipant(code);
-    this._tripDataService.updateTrip(this.trip);
-  }
+  // addParticipant(code: number) {
+  //   let travelerName =
+  //     this.loggedInTraveler.firstName + ' ' + this.loggedInTraveler.lastName;
+  //   this.trip.addParticipant(
+  //     this.loggedInTraveler.travelerId,
+  //     travelerName,
+  //     code
+  //   );
+  //   this._tripDataService.updateTrip(this.trip);
+  // }
 
-  isUserParticipant(code: number) {
-    return this.trip.isUserParticipant(code);
-  }
+  // isUserParticipant(code: number) {
+  //   return this.trip.isUserParticipant(this.loggedInTraveler.travelerId, code);
+  // }
 
   giveNumberOfGoingStatusParticipants(code: number): number {
     return this.trip.participants.filter((par) => par.goingStatus == code)

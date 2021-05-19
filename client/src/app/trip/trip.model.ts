@@ -43,9 +43,8 @@ export class Trip {
     private _organizerName: string,
     // private _participants = new Map<User, number>(),
     // private _participants = new Map<string, string>(),
-    private _participants = new Array<Participant>() // private _participants?: number,
-  ) //TODO more attributes
-  {}
+    private _participants = new Array<Participant>() // private _participants?: number, //TODO more attributes
+  ) {}
 
   static fromJSON(json: TripJson): Trip {
     const minDays =
@@ -149,8 +148,11 @@ export class Trip {
   }
 
   // TODO will change later
-  addParticipant(goingStatus: number) {
-    const userIdHere = 1;
+  addParticipant(
+    travelerId: number,
+    travelerName: string,
+    goingStatus: number
+  ) {
     // this._participants.forEach(par => {
     //   if (par.userId == userIdHere){
     //     this._participants.indexOf(par);
@@ -158,20 +160,20 @@ export class Trip {
 
     // remove previous goingStatus of this user
     this._participants = this._participants.filter(
-      (par) => par.travelerId != userIdHere
+      (par) => par.travelerId != travelerId
     );
 
     // add new goingStatus of this user for this trip
     // this._participants.set(userId, code.toString());
-    this._participants.push(new Participant(userIdHere, this.id, goingStatus));
-  }  
+    this._participants.push(
+      new Participant(travelerId, travelerName, this.id, goingStatus)
+    );
+  }
 
-  isUserParticipant(goingStatus: number) : boolean{
-    const userIdHere = 1;
+  isUserParticipant(travelerId: number, goingStatus: number): boolean {
     let tempParticipants = this._participants.filter(
-      (par) => par.travelerId == userIdHere && par.goingStatus == goingStatus
+      (par) => par.travelerId == travelerId && par.goingStatus == goingStatus
     );
     return tempParticipants.length == 1;
   }
-
 }

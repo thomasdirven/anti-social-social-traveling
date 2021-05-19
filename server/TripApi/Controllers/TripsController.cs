@@ -151,8 +151,12 @@ namespace TripApi.Controllers
         {
             try
             {
-                // TODO after authentication
-                int selectedTravelerId = 1;
+                // Todo, make cleaner, but no time so props no
+                Traveler traveler = _travelerRepository.GetBy(User.Identity.Name);
+
+                int selectedTravelerId = traveler.TravelerId;
+
+                Console.WriteLine("travelerid: " + selectedTravelerId);
 
                 Trip tripToUpdate = _tripRepository.GetBy(id);
                 // 404 if trip with id doesn't exist
@@ -176,9 +180,9 @@ namespace TripApi.Controllers
                 {
                     if (p.TravelerId == selectedTravelerId)
                     {
-                        Traveler traveler = _travelerRepository.GetById(selectedTravelerId);
-                        Console.WriteLine(traveler.FirstName);
-                        tripToUpdate.AddParticipant(new TripParticipant(p.TravelerId, p.TripId, traveler, tripToUpdate, p.GoingStatus));
+                        string travelerFullName = traveler.FirstName + ' ' + traveler.LastName;
+                        Console.WriteLine(travelerFullName);
+                        tripToUpdate.AddParticipant(new TripParticipant(p.TravelerId, p.TripId, traveler, tripToUpdate, p.GoingStatus, travelerFullName));
                     }
                 }
                 //tripToUpdate.Participants = trip.Participants;

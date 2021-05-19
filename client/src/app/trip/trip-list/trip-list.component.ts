@@ -13,6 +13,8 @@ import {
   switchMap,
 } from 'rxjs/operators';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UserDataService } from 'src/app/user/user-data.service';
+import { Traveler } from 'src/app/user/traveler.model';
 
 @Component({
   selector: 'app-trip-list',
@@ -22,6 +24,8 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 export class TripListComponent implements OnInit {
   // variable to cache the results
   private _fetchTrips$: Observable<Trip[]>;
+  private _fetchTraveler$: Observable<Traveler[]>;
+  // public loggedInTraveler: Traveler;
   // this is needlessly cashing, keeping state, always avoid keeping state if you can
   public errorMessage: string = '';
 
@@ -47,9 +51,9 @@ export class TripListComponent implements OnInit {
   // private _endDateStr: string;
 
   constructor(
-    private _tripDataService: TripDataService
-  ) // private fb: FormBuilder
-  {
+    private _tripDataService: TripDataService,
+    private _userDataService: UserDataService // private fb: FormBuilder
+  ) {
     this.filterTripCity$
       .pipe(distinctUntilChanged(), debounceTime(150))
       .subscribe((val) => (this.filterTripCity = val));
@@ -59,6 +63,34 @@ export class TripListComponent implements OnInit {
     // this.filterTripDateRange$
     //   .pipe(distinctUntilChanged(), debounceTime(150))
     //   .subscribe((val) => (this.filterTripDateRange = val));
+    this._fetchTrips$ = this._tripDataService.allTrips$.pipe(
+      catchError((err) => {
+        this.errorMessage = err;
+        // already logged in tripDataService
+        // console.log(err);
+        return EMPTY;
+      })
+    );
+    this._fetchTraveler$ = this._userDataService.theLoggedInTraveler$.pipe(
+      tap(console.log),
+      catchError((err) => {
+        this.errorMessage = err;
+        console.log(err);
+        return EMPTY;
+      })
+    );
+    // this._userDataService.theLoggedInTraveler$
+    // .pipe(
+    //   tap(console.log),
+    //   catchError((err) => {
+    //     this.errorMessage = err;
+    //     console.log(err);
+    //     return EMPTY;
+    //   })
+    // )
+    // .subscribe(
+    //   (loggedInTraveler) => (this.loggedInTraveler = loggedInTraveler)
+    // );
   }
 
   // not in use, was replaced by filterTripCity$
@@ -68,6 +100,10 @@ export class TripListComponent implements OnInit {
 
   get trips$(): Observable<Trip[]> {
     return this._fetchTrips$;
+  }
+
+  get loggedInTraveler$(): Observable<Traveler[]> {
+    return this._fetchTraveler$;
   }
 
   // Add-Trip component will speak to tripDataService now
@@ -90,14 +126,35 @@ export class TripListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this._fetchTrips$ = this._tripDataService.allTrips$.pipe(
-      catchError((err) => {
-        this.errorMessage = err;
-        // already logged in tripDataService
-        // console.log(err);
-        return EMPTY;
-      })
-    );
+    // this._fetchTrips$ = this._tripDataService.allTrips$.pipe(
+    //   catchError((err) => {
+    //     this.errorMessage = err;
+    //     // already logged in tripDataService
+    //     // console.log(err);
+    //     return EMPTY;
+    //   })
+    // );
+    // this._fetchTraveler$ = this._userDataService.theLoggedInTraveler$
+    //   .pipe(
+    //     tap(console.log),
+    //     catchError((err) => {
+    //       this.errorMessage = err;
+    //       console.log(err);
+    //       return EMPTY;
+    //     })
+    //   );
+    // this._userDataService.theLoggedInTraveler$
+    // .pipe(
+    //   tap(console.log),
+    //   catchError((err) => {
+    //     this.errorMessage = err;
+    //     console.log(err);
+    //     return EMPTY;
+    //   })
+    // )
+    // .subscribe(
+    //   (loggedInTraveler) => (this.loggedInTraveler = loggedInTraveler)
+    // );
     // this.tripFilterDateRangeFG = this.fb.group({
     //   startDate: [''],
     //   endDate: [''],
@@ -118,17 +175,17 @@ export class TripListComponent implements OnInit {
 
   // Scroll on hover stuff
   public timer: ReturnType<typeof setTimeout>;
-  
-  scrollDiv(elementToScroll:HTMLElement, depl) {
+
+  scrollDiv(elementToScroll: HTMLElement, depl) {
     // console.log(elementToScroll);
     elementToScroll.scrollLeft -= depl;
     // console.log('scrolling...');
-    this.timer = setTimeout(()=>{
+    this.timer = setTimeout(() => {
       this.scrollDiv(elementToScroll, depl);
     }, 30);
   }
 
-  stopTimer(timer:number) {
+  stopTimer(timer: number) {
     clearTimeout(timer);
   }
 }
