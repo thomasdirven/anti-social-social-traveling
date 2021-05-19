@@ -11,13 +11,19 @@ import { Trip } from './trip.model';
 export class TripDataService {
   // local copy of the trips (local caching)
   private _trips: Trip[];
+  private _myTrips: Trip[];
   private _trips$ = new BehaviorSubject<Trip[]>([]);
+  private _myTrips$ = new BehaviorSubject<Trip[]>([]);
   private _restoredTrip$ = new Subject<Trip>();
 
   constructor(private http: HttpClient) {
     this.trips$.subscribe((trips: Trip[]) => {
       this._trips = trips;
       this._trips$.next(this._trips);
+    });
+    this.myTrips$.subscribe((trips: Trip[]) => {
+      this._myTrips = trips;
+      this._myTrips$.next(this._myTrips);
     });
   }
 
@@ -28,10 +34,24 @@ export class TripDataService {
     // return this.trips$;
   }
 
+  get allMyTrips$(): Observable<Trip[]> {
+    return this._myTrips$;
+  }
+
   get trips$(): Observable<Trip[]> {
     // return this._trips;
     return this.http.get(`${environment.apiUrl}/trips/`).pipe(
       delay(1200), // to test mat-spinner loading
+      // tap(console.log), // for debugging in console
+      shareReplay(1),
+      catchError(this.handleError),
+      map((list: any[]): Trip[] => list.map(Trip.fromJSON))
+    );
+  }
+
+  get myTrips$(): Observable<Trip[]> {
+    return this.http.get(`${environment.apiUrl}/trips/mytrips/`).pipe(
+      delay(800), // to test mat-spinner loading
       // tap(console.log), // for debugging in console
       shareReplay(1),
       catchError(this.handleError),

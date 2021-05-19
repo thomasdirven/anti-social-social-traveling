@@ -13,7 +13,7 @@ interface TripJson {
   longtitude: number;
   attractions: AttractionJson[];
   totalBudget: number;
-  organizer: string;
+  organizerName: string;
   // participants: Map<User, number>;
   participants: ParticipantJson[];
   // participants: number;
@@ -40,7 +40,7 @@ export class Trip {
     private _totalBudget: number,
     // TODO
     // private _organizer: User,
-    private _organizer = "Thomas",
+    private _organizerName: string,
     // private _participants = new Map<User, number>(),
     // private _participants = new Map<string, string>(),
     private _participants = new Array<Participant>() // private _participants?: number,
@@ -75,7 +75,7 @@ export class Trip {
       latitude,
       longtitude,
       totalBudget,
-      json.organizer,
+      json.organizerName,
       // new Map(JSON.parse(json.participants)),
       json.participants.map(Participant.fromJSON)
     );
@@ -95,6 +95,7 @@ export class Trip {
       latitude: this.latitude,
       longtitude: this.longtitude,
       totalBudget: this.totalBudget,
+      organizerName: this.organizerName,
       // participants: JSON.stringify([...this.participants]),
       participants: this.participants.map((par) => par.toJSON()),
     };
@@ -136,8 +137,8 @@ export class Trip {
     if (this._totalBudget > 0) return this._totalBudget;
     return null;
   }
-  get organizer(): string {
-    return this._organizer;
+  get organizerName(): string {
+    return this._organizerName;
   }
   get participants(): Participant[] {
     return this._participants;

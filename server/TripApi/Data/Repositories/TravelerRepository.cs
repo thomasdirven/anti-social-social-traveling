@@ -22,7 +22,7 @@ namespace TripApi.Data.Repositories
 
         public Traveler GetBy(string email)
         {
-            return _travelers.Include(c => c.Favorites).ThenInclude(f => f.Trip).ThenInclude(r => r.Attractions).SingleOrDefault(c => c.Email == email);
+            return _travelers.Include(c => c.OrganizerTrips).ThenInclude(f => f.Trip).ThenInclude(r => r.Attractions).SingleOrDefault(c => c.Email == email);
         }
 
         public void Add(Traveler traveler)

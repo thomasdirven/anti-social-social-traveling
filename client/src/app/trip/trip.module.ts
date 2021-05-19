@@ -16,6 +16,7 @@ import { TripFilterDateRangePipe } from './trip-filter-date-range.pipe';
 import { TripDetailComponent } from './trip-detail/trip-detail.component';
 import { RouterModule, Routes } from '@angular/router';
 import { TripResolver } from './TripResolver';
+import { MyTripListComponent } from './my-trip-list/my-trip-list.component';
 
 // Google API key
 // AIzaSyByzFs-RMMy83HcDPftNNp_JddxVD4rurM
@@ -24,6 +25,7 @@ import { TripResolver } from './TripResolver';
 const tripRoutes: Routes = [
   { path: 'list', component: TripListComponent },
   { path: 'add', component: AddTripComponent },
+  { path: 'mytrips', component: MyTripListComponent },
   {
     path: 'detail/:id',
     component: TripDetailComponent,
@@ -43,6 +45,7 @@ const tripRoutes: Routes = [
     TripFilterCityPipe,
     TripFilterDateRangePipe,
     TripDetailComponent,
+    MyTripListComponent,
   ],
   imports: [
     CommonModule,
@@ -52,9 +55,9 @@ const tripRoutes: Routes = [
     }),
     ReactiveFormsModule,
     FormsModule,
-    RouterModule.forChild(tripRoutes)
+    RouterModule.forChild(tripRoutes),
   ],
   providers: [GeocodeService],
-  exports: [TripListComponent, AddTripComponent],
+  exports: [TripListComponent, AddTripComponent, MyTripListComponent],
 })
 export class TripModule {}

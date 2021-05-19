@@ -383,6 +383,7 @@ export class AddTripComponent implements OnInit {
       this._location.lat,
       this._location.lng,
       this.tripFG.value.totalBudget,
+      'Name of the organizer' // it's given in the backend, this is just a placeholder
     );
     console.log(trip);
     // this.newTrip.emit(trip);

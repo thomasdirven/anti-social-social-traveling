@@ -116,6 +116,7 @@ export class TripListComponent implements OnInit {
     // });
   }
 
+  // Scroll on hover stuff
   public timer: ReturnType<typeof setTimeout>;
   
   scrollDiv(elementToScroll:HTMLElement, depl) {

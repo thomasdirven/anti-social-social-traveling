@@ -1,0 +1,127 @@
+<div *ngIf="myTrips$ | async as trips; else loading">
+  <div
+    *ngIf="
+      trips
+        | tripFilterCity: filterTripCity
+        | tripFilterCountry: filterTripCountry
+        | tripFilterDateRange: filterTripDateRange as filteredTrips
+    "
+  >
+    <!-- <div fxLayout="column" fxLayoutGap="2%"> -->
+    <div fxLayout="column">
+      <mat-card>
+        <form>
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="City to filter on"
+              type="text"
+              (keyup)="this.filterTripCity$.next($event.target.value)"
+              #filterCityValue
+            />
+            <button
+              mat-button
+              *ngIf="filterTripCity"
+              matSuffix
+              mat-icon-button
+              aria-label="Clear"
+              (click)="this.filterTripCity$.next('')"
+              (click)="filterCityValue.value = ''"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+          <span> &nbsp; | &nbsp; </span>
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="Country to filter on"
+              type="text"
+              (keyup)="this.filterTripCountry$.next($event.target.value)"
+              #filterCountryValue
+            />
+            <button
+              mat-button
+              *ngIf="filterTripCountry"
+              matSuffix
+              mat-icon-button
+              aria-label="Clear"
+              (click)="this.filterTripCountry$.next('')"
+              (click)="filterCountryValue.value = ''"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+          <span> &nbsp; | &nbsp; </span>
+          <mat-form-field appearance="fill">
+            <mat-label>Filter on date range</mat-label>
+            <mat-date-range-input [rangePicker]="picker">
+              <input
+                matStartDate
+                placeholder="Start date"
+                (dateInput)="inputEventStartDate($event)"
+              />
+              <input
+                matEndDate
+                placeholder="End date"
+                (dateInput)="inputEventEndDate($event)"
+              />
+            </mat-date-range-input>
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="picker"
+            ></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+          </mat-form-field>
+          <span> &nbsp; | &nbsp; </span>
+          <!-- type="reset" sounds great, doesn't work, placeholders don't fall back into place -->
+          <button
+            mat-raised-button
+            type="reset"
+            (click)="this.filterTripDateRange[0] = null"
+            (click)="this.filterTripDateRange[1] = null"
+            (click)="this.filterTripCity$.next('')"
+            (click)="filterCityValue.value = ''"
+            (click)="this.filterTripCountry$.next('')"
+            (click)="filterCountryValue.value = ''"
+          >
+            Reset Filters
+          </button>
+          <span> &nbsp; | &nbsp; Found {{ filteredTrips.length }} trips</span>
+        </form>
+      </mat-card>
+
+      <div class="myTrips">
+        <div *ngIf="trips.length > 0; else loading">
+          <div
+            fxLayout="row wrap"
+            fxLayout.xs="column"
+            fxLayoutGap="0.5%"
+            fxLayoutAlign="center"
+          >
+            <div
+              class="trip"
+              *ngFor="let trip of filteredTrips"
+              fxFlex="0 0 calc(33%-0.5)"
+              fxFlex.xs="100%"
+            >
+              <app-trip [trip]="trip"></app-trip>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-template #loading>
+        <mat-spinner></mat-spinner>
+      </ng-template>
+    </div>
+  </div>
+</div>
+<ng-template #loading>
+  <mat-spinner></mat-spinner>
+</ng-template>
+<mat-card class="error" *ngIf="errorMessage">
+  <mat-card-content>
+    Error loading the city trip list: {{ errorMessage }}. <br />
+    Please try again later.
+  </mat-card-content>
+</mat-card>

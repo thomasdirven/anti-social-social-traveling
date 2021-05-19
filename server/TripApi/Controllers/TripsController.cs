@@ -53,6 +53,27 @@ namespace TripApi.Controllers
             }
         }
 
+        // GET: api/mytrips
+        /// <summary>
+        /// Get Trips that the logged in user organized ordered by startDate
+        /// </summary>
+        /// <returns>Array of Trips</returns>
+        [HttpGet("MyTrips")]
+        public ActionResult<IEnumerable<Trip>> GetMyTrips()
+        {
+            try
+            {
+                Traveler traveler = _travelerRepository.GetBy(User.Identity.Name);
+                Console.WriteLine(traveler.LastName);
+                Console.WriteLine(traveler.MyTrips.Count());
+                return traveler.MyTrips.OrderBy(t => t.StartDate).ToList();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
         // GET: api/trips/id
         /// <summary>
         /// Get Trip with given id
@@ -60,6 +81,7 @@ namespace TripApi.Controllers
         /// <param name="id">The id of the Trip</param>
         /// <returns>The Trip</returns>
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public ActionResult<Trip> GetTrip(int id)
         {
             try
@@ -84,6 +106,7 @@ namespace TripApi.Controllers
         {
             try
             {
+                Traveler traveler = _travelerRepository.GetBy(User.Identity.Name);
                 Console.WriteLine(trip.Latitude);
                 Console.WriteLine(trip.Longtitude);
                 Trip tripToCreate = new Trip()
@@ -97,10 +120,13 @@ namespace TripApi.Controllers
                     Latitude = trip.Latitude,
                     Longtitude = trip.Longtitude,
                     TotalBudget = trip.TotalBudget,
-                    Organizer = trip.Organizer,
+                    OrganizerName = (traveler.FirstName + ' ' + traveler.LastName),
+                    TravelerId = traveler.TravelerId,
                 };
                 foreach (var a in trip.Attractions)
                     tripToCreate.AddAttraction(new Attraction(a.Name, a.Type, a.Budget));
+
+                traveler.AddMyTrip(tripToCreate);
                 _tripRepository.Add(tripToCreate);
                 _tripRepository.SaveChanges();
 
@@ -221,6 +247,7 @@ namespace TripApi.Controllers
         /// <param name="attractionId">id of the Attraction</param>
         /// <returns>An Attraction of the Trip</returns>
         [HttpGet("{id}/attractions/{attractionId}")]
+        [AllowAnonymous]
         public ActionResult<Attraction> GetAttraction(int id, int attractionId)
         {
             try

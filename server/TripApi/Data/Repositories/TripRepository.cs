@@ -20,7 +20,7 @@ namespace TripApi.Data.Repositories
         {
             return _trips.Include(t => t.Attractions).Include(t => t.Participants).ToList();
         }
-
+       
         public Trip GetBy(int id)
         {
             return _trips.Include(t => t.Attractions).Include(t => t.Participants).SingleOrDefault(t => t.Id == id);

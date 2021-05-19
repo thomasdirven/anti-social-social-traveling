@@ -22,13 +22,22 @@ namespace TripApi.Data
             if (_dbContext.Database.EnsureCreated())
             {
                 //seeding the database with recipes, see DBContext
-                Traveler customer = new Traveler { Email = "tripmaster@hogent.be", FirstName = "Thomas", LastName = "Dirven" };
-                _dbContext.Travelers.Add(customer);
-                await CreateUser(customer.Email, "P@ssword1111");
-                Traveler student = new Traveler { Email = "student@hogent.be", FirstName = "Student", LastName = "Hogent" };
-                _dbContext.Travelers.Add(student);
-                //student.AddFavoriteTrip(_dbContext.Trips.First(), 1);
-                await CreateUser(student.Email, "P@ssword1111");
+                Traveler admin = new Traveler { Email = "tripmaster@hogent.be", FirstName = "Thomas", LastName = "Dirven" };
+                _dbContext.Travelers.Add(admin);
+                admin.AddMyTrip(_dbContext.Trips.SingleOrDefault(t => t.Id == 1));
+                admin.AddMyTrip(_dbContext.Trips.SingleOrDefault(t => t.Id == 2));
+                admin.AddMyTrip(_dbContext.Trips.SingleOrDefault(t => t.Id == 3));
+                admin.AddMyTrip(_dbContext.Trips.SingleOrDefault(t => t.Id == 5));
+                admin.AddMyTrip(_dbContext.Trips.SingleOrDefault(t => t.Id == 6));
+                admin.AddMyTrip(_dbContext.Trips.SingleOrDefault(t => t.Id == 7));
+                //admin.AddMyTrip(_dbContext.Trips.SingleOrDefault(t => t.Id == 8));
+                admin.AddMyTrip(_dbContext.Trips.SingleOrDefault(t => t.Id == 9));
+                await CreateUser(admin.Email, "P@ssword1111");
+                Traveler standardUser = new Traveler { Email = "student@hogent.be", FirstName = "Gaston", LastName = "D'Haese" };
+                _dbContext.Travelers.Add(standardUser);
+                standardUser.AddMyTrip(_dbContext.Trips.SingleOrDefault(t => t.Id == 4));
+                standardUser.AddMyTrip(_dbContext.Trips.SingleOrDefault(t => t.Id == 10));
+                await CreateUser(standardUser.Email, "P@ssword1111");
                 _dbContext.SaveChanges();
             }
         }

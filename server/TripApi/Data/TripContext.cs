@@ -28,8 +28,13 @@ namespace TripApi.Data
             builder.Entity<Traveler>().Property(c => c.LastName).IsRequired().HasMaxLength(50);
             builder.Entity<Traveler>().Property(c => c.FirstName).IsRequired().HasMaxLength(50);
             builder.Entity<Traveler>().Property(c => c.Email).IsRequired().HasMaxLength(100);
+            builder.Entity<Traveler>().Ignore(c => c.MyTrips);
             builder.Entity<Traveler>().Ignore(c => c.FavoriteTrips);
             builder.Entity<Trip>().Ignore(c => c.Participants); //todo? good or bad idea?
+
+            builder.Entity<OrganizerTrip>().HasKey(f => new { f.TravelerId, f.TripId });
+            builder.Entity<OrganizerTrip>().HasOne(f => f.Traveler).WithMany(u => u.OrganizerTrips).HasForeignKey(f => f.TravelerId);
+            builder.Entity<OrganizerTrip>().HasOne(f => f.Trip).WithMany().HasForeignKey(f => f.TripId);
 
             builder.Entity<TripParticipant>().HasKey(f => new { f.TravelerId, f.TripId });
             builder.Entity<TripParticipant>().HasOne(f => f.Traveler).WithMany(u => u.Favorites).HasForeignKey(f => f.TravelerId);
@@ -43,16 +48,16 @@ namespace TripApi.Data
 
             //Another way to seed the database
             builder.Entity<Trip>().HasData(
-                 new Trip { Id = 1, City = "Barcelona", Country = "Spain", StartDate = new DateTime(2021, 7, 14), EndDate = new DateTime(2021, 7, 25), MinDays = 2, MaxDays = 5, TotalBudget = 550, Latitude = 41.3850639, Longtitude = 2.1734035, Organizer = "Thomas Dirven" },
-                 new Trip { Id = 2, City = "Paris", Country = "France", StartDate = new DateTime(2021, 7, 20), EndDate = new DateTime(2021, 8, 2), MinDays = 3, MaxDays = 8, TotalBudget = 550, Latitude = 48.856614, Longtitude = 2.3522219, Organizer = "Thomas Dirven" },
-                 new Trip { Id = 3, City = "Prague", Country = "Czech Republic", StartDate = new DateTime(2021, 7, 10), EndDate = new DateTime(2021, 8, 10), MinDays = 4, MaxDays = 7, TotalBudget = 550, Latitude = 50.0755381, Longtitude = 14.4378005, Organizer = "Thomas Dirven" },
-                 new Trip { Id = 4, City = "Cannes", Country = "France", StartDate = new DateTime(2021, 7, 6), EndDate = new DateTime(2021, 7, 17), MinDays = 3, MaxDays = 6, TotalBudget = 550, Latitude = 43.552847, Longtitude = 7.017369, Organizer = "Thomas Dirven" },
-                 new Trip { Id = 5, City = "Dubrovnik", Country = "Croatia", StartDate = new DateTime(2021, 8, 25), EndDate = new DateTime(2021, 9, 16), MinDays = 4, MaxDays = 6, TotalBudget = 550, Latitude = 42.65066059, Longtitude = 18.0944238, Organizer = "Thomas Dirven" },
-                 new Trip { Id = 6, City = "Lisbon", Country = "Portugal", StartDate = new DateTime(2021, 5, 4), EndDate = new DateTime(2021, 5, 9), MinDays = 2, MaxDays = 5, TotalBudget = 550, Latitude = 38.7222524, Longtitude = -9.1393366, Organizer = "Thomas Dirven" },
-                 new Trip { Id = 7, City = "Milan", Country = "Italy", StartDate = new DateTime(2021, 6, 20), EndDate = new DateTime(2021, 7, 2), MinDays = 3, MaxDays = 8, TotalBudget = 550, Latitude = 45.4642035, Longtitude = 9.189982, Organizer = "Thomas Dirven" },
-                 //new Trip { Id = 8, City = "Copenhagen", Country = "Denmark", StartDate = new DateTime(2021, 9, 19), EndDate = new DateTime(2021, 10, 1), MinDays = 4, MaxDays = 7, TotalBudget = 550, Latitude = 55.6760968, Longtitude = 12.5683372, Organizer = "Thomas Dirven" },
-                 new Trip { Id = 9, City = "Dublin", Country = "Ireland", StartDate = new DateTime(2021, 10, 5), EndDate = new DateTime(2021, 10, 17), MinDays = 3, MaxDays = 6, TotalBudget = 550, Latitude = 53.3498053, Longtitude = -6.2603097, Organizer = "Thomas Dirven" },
-                 new Trip { Id = 10, City = "Athens", Country = "Greece", StartDate = new DateTime(2021, 11, 7), EndDate = new DateTime(2021, 11, 16), MinDays = 4, MaxDays = 6, TotalBudget = 550, Latitude = 37.9838096, Longtitude = 23.7275388, Organizer = "Thomas Dirven" }
+                 new Trip { Id = 1, City = "Barcelona", Country = "Spain", StartDate = new DateTime(2021, 7, 14), EndDate = new DateTime(2021, 7, 25), MinDays = 2, MaxDays = 5, TotalBudget = 550, Latitude = 41.3850639, Longtitude = 2.1734035, OrganizerName = "Thomas Dirven", TravelerId = 1 },
+                 new Trip { Id = 2, City = "Paris", Country = "France", StartDate = new DateTime(2021, 7, 20), EndDate = new DateTime(2021, 8, 2), MinDays = 3, MaxDays = 8, TotalBudget = 550, Latitude = 48.856614, Longtitude = 2.3522219, OrganizerName = "Thomas Dirven", TravelerId = 1 },
+                 new Trip { Id = 3, City = "Prague", Country = "Czech Republic", StartDate = new DateTime(2021, 7, 10), EndDate = new DateTime(2021, 8, 10), MinDays = 4, MaxDays = 7, TotalBudget = 550, Latitude = 50.0755381, Longtitude = 14.4378005, OrganizerName = "Thomas Dirven", TravelerId = 1 },
+                 new Trip { Id = 4, City = "Cannes", Country = "France", StartDate = new DateTime(2021, 7, 6), EndDate = new DateTime(2021, 7, 17), MinDays = 3, MaxDays = 6, TotalBudget = 550, Latitude = 43.552847, Longtitude = 7.017369, OrganizerName = "Gaston D'Haese", TravelerId = 2 },
+                 new Trip { Id = 5, City = "Dubrovnik", Country = "Croatia", StartDate = new DateTime(2021, 8, 25), EndDate = new DateTime(2021, 9, 16), MinDays = 4, MaxDays = 6, TotalBudget = 550, Latitude = 42.65066059, Longtitude = 18.0944238, OrganizerName = "Thomas Dirven", TravelerId = 1 },
+                 new Trip { Id = 6, City = "Lisbon", Country = "Portugal", StartDate = new DateTime(2021, 5, 4), EndDate = new DateTime(2021, 5, 9), MinDays = 2, MaxDays = 5, TotalBudget = 550, Latitude = 38.7222524, Longtitude = -9.1393366, OrganizerName = "Thomas Dirven", TravelerId = 1 },
+                 new Trip { Id = 7, City = "Milan", Country = "Italy", StartDate = new DateTime(2021, 6, 20), EndDate = new DateTime(2021, 7, 2), MinDays = 3, MaxDays = 8, TotalBudget = 550, Latitude = 45.4642035, Longtitude = 9.189982, OrganizerName = "Thomas Dirven", TravelerId = 1 },
+                 //new Trip { Id = 8, City = "Copenhagen", Country = "Denmark", StartDate = new DateTime(2021, 9, 19), EndDate = new DateTime(2021, 10, 1), MinDays = 4, MaxDays = 7, TotalBudget = 550, Latitude = 55.6760968, Longtitude = 12.5683372, Organizer = "Thomas Dirven", TravelerId = 1 },
+                 new Trip { Id = 9, City = "Dublin", Country = "Ireland", StartDate = new DateTime(2021, 10, 5), EndDate = new DateTime(2021, 10, 17), MinDays = 3, MaxDays = 6, TotalBudget = 550, Latitude = 53.3498053, Longtitude = -6.2603097, OrganizerName = "Thomas Dirven", TravelerId = 1 },
+                 new Trip { Id = 10, City = "Athens", Country = "Greece", StartDate = new DateTime(2021, 11, 7), EndDate = new DateTime(2021, 11, 16), MinDays = 4, MaxDays = 6, TotalBudget = 550, Latitude = 37.9838096, Longtitude = 23.7275388, OrganizerName = "Gaston D'Haese", TravelerId = 2 }
             );
 
             builder.Entity<Attraction>().HasData(
