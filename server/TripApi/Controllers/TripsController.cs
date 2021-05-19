@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,6 +13,7 @@ namespace TripApi.Controllers
     [ApiConventionType(typeof(DefaultApiConventions))]
     [Produces("application/json")]
     [Route("api/[controller]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ApiController]
     public class TripsController : ControllerBase
     {
@@ -33,6 +36,7 @@ namespace TripApi.Controllers
         /// <param name="attractionName"></param>
         /// <returns>Array of Trips</returns>
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult<IEnumerable<Trip>> GetTrips(string city = null, string country = null, string attractionName = null)
         {
             try

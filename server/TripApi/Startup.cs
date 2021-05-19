@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -12,6 +14,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
+using NSwag;
+using NSwag.Generation.Processors.Security;
 using TripApi.Data;
 using TripApi.Data.Repositories;
 using TripApi.Models;
@@ -63,6 +68,26 @@ namespace TripApi
                 options.User.RequireUniqueEmail = true;
             });
 
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(
+                      Encoding.UTF8.GetBytes(Configuration["Tokens:Key"])),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    RequireExpirationTime = true //Ensure token hasn't expired
+                };
+            });
+
             // <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
             // Swashbuckle.AspNetCore (replaced by NSwag)
             //services.AddSwaggerGen(c =>
@@ -76,6 +101,17 @@ namespace TripApi
                 c.Title = "Trip API";
                 c.Version = "v1";
                 c.Description = "The Trip API documentation description.";
+
+                c.AddSecurity("JWT", Enumerable.Empty<string>(), new OpenApiSecurityScheme
+                {
+                    Type = OpenApiSecuritySchemeType.ApiKey,
+                    Name = "Authorization",
+                    In = OpenApiSecurityApiKeyLocation.Header,
+                    Description = "Type into the textbox: Bearer {your JWT token}."
+                });
+
+                c.OperationProcessors.Add(
+                    new AspNetCoreOperationSecurityScopeProcessor("JWT")); //adds the token when a request is send
             }); //for OpenAPI 3.0 else AddSwaggerDocument();
 
             services.AddCors(options => options.AddPolicy("AllowAllOrigins", builder => builder.AllowAnyOrigin()));
@@ -102,6 +138,8 @@ namespace TripApi
             app.UseCors("AllowAllOrigins");
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
