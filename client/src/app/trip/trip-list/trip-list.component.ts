@@ -64,7 +64,7 @@ export class TripListComponent implements OnInit {
     // this.filterTripDateRange$
     //   .pipe(distinctUntilChanged(), debounceTime(150))
     //   .subscribe((val) => (this.filterTripDateRange = val));
-    this._fetchTrips$ = this._tripDataService.allTrips$.pipe(
+    this._fetchTrips$ = this._tripDataService.trips$.pipe(
       catchError((err) => {
         this.errorMessage = err;
         // already logged in tripDataService

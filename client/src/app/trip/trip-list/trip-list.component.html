@@ -227,7 +227,7 @@
     </div>
   </div>
 </div>
-<mat-card class="error" *ngIf="errorMessage">
+<mat-card class="error" *ngIf="errorMessage" data-cy="appError">
   <mat-card-content>
     Error loading the city trip list: {{ errorMessage }}. <br />
     Please try again later.

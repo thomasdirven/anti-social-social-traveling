@@ -15,4 +15,16 @@ describe("show all trips on successful login", function () {
     cy.visit("/");
     cy.get("[data-cy=tripCard]").should("have.length", 9);
   });
+
+  it('on error should show error message', function() {
+    cy.server();
+    cy.route({
+      method: 'GET',
+      url: '/api/trips',
+      status: 500,
+      response: 'ERROR'
+    });
+    cy.visit('/');
+    cy.get('[data-cy=appError]').should('be.visible');
+});
 });
