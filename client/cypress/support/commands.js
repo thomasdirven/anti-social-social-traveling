@@ -23,3 +23,21 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+
+Cypress.Commands.add('login', () => {
+    const email = 'thomas@hogent.be';
+  
+    cy.request({
+      method: 'POST',
+      url: '/api/account',
+      body: { email, password: 'P@ssword1111' },
+    }).then((res) => localStorage.setItem('currentUser', res.body));
+  });
+  
+  Cypress.Commands.add('register', (email, password) => {
+    cy.request({
+      method: 'POST',
+      url: '/api/account/register',
+      body: { email, password },
+    }).then((res) => localStorage.setItem('currentUser', res.body));
+  });
