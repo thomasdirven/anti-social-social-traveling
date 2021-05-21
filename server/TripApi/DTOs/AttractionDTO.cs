@@ -7,8 +7,10 @@ namespace TripApi.DTOs
         [Required]
         public string Name { get; set; }
 
+        // Optional
         public string Type { get; set; }
 
+        // Optional
         public double? Budget { get; set; }
     }
 }

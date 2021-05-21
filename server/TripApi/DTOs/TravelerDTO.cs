@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace TripApi.DTOs
 {
-    public class TravelerDTO
+    public class TravelerDTO // No validation needed for current ussage
     {
         public int TravelerId { get; set; }
 

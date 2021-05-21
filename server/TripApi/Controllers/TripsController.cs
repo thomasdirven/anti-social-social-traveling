@@ -150,6 +150,11 @@ namespace TripApi.Controllers
         {
             try
             {
+                // I wanted to demonstrate I can use a PUT method
+                // I know I'm sending the entire trip with all the participants
+                // but only the goingStatus of the logged in user can be changed
+                // so it's secure, you cannot change the goingstatus of another user
+
                 // Todo, make cleaner, but no time so props no
                 Traveler traveler = _travelerRepository.GetBy(User.Identity.Name);
 
