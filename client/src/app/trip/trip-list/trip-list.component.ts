@@ -52,9 +52,9 @@ export class TripListComponent implements OnInit {
 
   constructor(
     private _tripDataService: TripDataService,
-    private _userDataService: UserDataService,
-    // private fb: FormBuilder
-  ) {
+    private _userDataService: UserDataService
+  ) // private fb: FormBuilder
+  {
     this.filterTripCity$
       .pipe(distinctUntilChanged(), debounceTime(150))
       .subscribe((val) => (this.filterTripCity = val));
@@ -188,5 +188,10 @@ export class TripListComponent implements OnInit {
 
   stopTimer(timer: number) {
     clearTimeout(timer);
+  }
+
+  displayScrollStuff(numberOfTrips: number): Boolean {
+    if (numberOfTrips == 0) return false;
+    return (window.innerWidth - 200) < (numberOfTrips * 290);
   }
 }
