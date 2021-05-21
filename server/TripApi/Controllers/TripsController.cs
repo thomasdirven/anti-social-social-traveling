@@ -29,7 +29,7 @@ namespace TripApi.Controllers
         // GET: api/trips
         /// <summary>
         /// Get all Trips ordered by startDate
-        /// Ability to filter search results with parameters
+        /// (Ability to filter search results with parameters)
         /// </summary>
         /// <param name="city"></param>
         /// <param name="country"></param>
@@ -140,8 +140,8 @@ namespace TripApi.Controllers
 
         // PUT: api/trips/id
         /// <summary>
-        /// Modifies a Trip
-        /// Only used to add participants to a trip
+        /// Modifies a Trip - 
+        /// Only used to add/remove logged in user as participant to a trip
         /// </summary>
         /// <param name="id">The id of the Trip</param>
         /// <param name="trip">The modified Trip</param>
@@ -224,9 +224,11 @@ namespace TripApi.Controllers
             }
         }
 
+        // Below are 4 api calls that are not used by the client
+
         // GET: api/trips/id/attractions
         /// <summary>
-        /// Get all Attractions for a Trip
+        /// Get all Attractions of a Trip (currently NOT used by client)
         /// </summary>
         /// <param name="id">id of the Trip</param>
         /// <returns>all Attractions of the Trip</returns>
@@ -249,7 +251,7 @@ namespace TripApi.Controllers
 
         // GET: api/trips/id/attractions/attractionId
         /// <summary>
-        /// Get an Attraction for a Trip
+        /// Get an Attraction of a Trip (currently NOT used by client)
         /// </summary>
         /// <param name="id">id of the Trip</param>
         /// <param name="attractionId">id of the Attraction</param>
@@ -272,7 +274,7 @@ namespace TripApi.Controllers
 
         // POST: api/trip/id/attractions
         /// <summary>
-        /// Adds an attraction to a trip
+        /// Adds an attraction to a trip (currently NOT used by client)
         /// </summary>
         /// <param name="id">id of the Trip</param>
         /// <param name="attraction">the Attraction to be added</param>
@@ -295,7 +297,7 @@ namespace TripApi.Controllers
 
         // DELETE: api/trip/id/attractions/attractionId
         /// <summary>
-        /// Deletes an Attraction of a Trip
+        /// Deletes an Attraction of a Trip (currently NOT used by client)
         /// </summary>
         /// <param name="id">id of the Trip</param>
         /// <param name="attractionId">id of the Attraction</param>
