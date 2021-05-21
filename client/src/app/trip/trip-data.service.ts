@@ -94,7 +94,11 @@ export class TripDataService {
         }),
         tap((trip: Trip) => {
           this._trips = [...this._trips, trip];
+          this._trips.sort((a,b)=>a.startDate.getTime()-b.startDate.getTime())
           this._trips$.next(this._trips);
+          this._myTrips = [...this._myTrips, trip];
+          this._myTrips.sort((a,b)=>a.startDate.getTime()-b.startDate.getTime())
+          this._myTrips$.next(this._myTrips);
         })
       );
   }

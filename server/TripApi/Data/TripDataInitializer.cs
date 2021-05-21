@@ -22,22 +22,27 @@ namespace TripApi.Data
             if (_dbContext.Database.EnsureCreated())
             {
                 //seeding the database with recipes, see DBContext
-                Traveler admin = new Traveler { Email = "tripmaster@hogent.be", FirstName = "Thomas", LastName = "Dirven" };
-                _dbContext.Travelers.Add(admin);
-                admin.AddMyTrip(_dbContext.Trips.SingleOrDefault(t => t.Id == 1));
-                admin.AddMyTrip(_dbContext.Trips.SingleOrDefault(t => t.Id == 2));
-                admin.AddMyTrip(_dbContext.Trips.SingleOrDefault(t => t.Id == 3));
-                admin.AddMyTrip(_dbContext.Trips.SingleOrDefault(t => t.Id == 5));
-                admin.AddMyTrip(_dbContext.Trips.SingleOrDefault(t => t.Id == 6));
-                admin.AddMyTrip(_dbContext.Trips.SingleOrDefault(t => t.Id == 7));
+                Traveler thomas = new Traveler { Email = "thomas@hogent.be", FirstName = "Thomas", LastName = "Dirven" };
+                _dbContext.Travelers.Add(thomas);
+                thomas.AddMyTrip(_dbContext.Trips.SingleOrDefault(t => t.Id == 1));
+                thomas.AddMyTrip(_dbContext.Trips.SingleOrDefault(t => t.Id == 2));
+                thomas.AddMyTrip(_dbContext.Trips.SingleOrDefault(t => t.Id == 3));
+                //admin.AddMyTrip(_dbContext.Trips.SingleOrDefault(t => t.Id == 5));
+                //admin.AddMyTrip(_dbContext.Trips.SingleOrDefault(t => t.Id == 6));
+                thomas.AddMyTrip(_dbContext.Trips.SingleOrDefault(t => t.Id == 7));
                 //admin.AddMyTrip(_dbContext.Trips.SingleOrDefault(t => t.Id == 8));
-                admin.AddMyTrip(_dbContext.Trips.SingleOrDefault(t => t.Id == 9));
-                await CreateUser(admin.Email, "P@ssword1111");
-                Traveler standardUser = new Traveler { Email = "student@hogent.be", FirstName = "Gaston", LastName = "D'Haese" };
-                _dbContext.Travelers.Add(standardUser);
-                standardUser.AddMyTrip(_dbContext.Trips.SingleOrDefault(t => t.Id == 4));
-                standardUser.AddMyTrip(_dbContext.Trips.SingleOrDefault(t => t.Id == 10));
-                await CreateUser(standardUser.Email, "P@ssword1111");
+                thomas.AddMyTrip(_dbContext.Trips.SingleOrDefault(t => t.Id == 9));
+                await CreateUser(thomas.Email, "P@ssword1111");
+                Traveler gaston = new Traveler { Email = "gaston@hogent.be", FirstName = "Gaston", LastName = "D'Haese" }; // Gaston D'Haese
+                _dbContext.Travelers.Add(gaston);
+                gaston.AddMyTrip(_dbContext.Trips.SingleOrDefault(t => t.Id == 4));
+                gaston.AddMyTrip(_dbContext.Trips.SingleOrDefault(t => t.Id == 10));
+                await CreateUser(gaston.Email, "P@ssword1111");
+                Traveler eddy = new Traveler { Email = "eddy@hogent.be", FirstName = "Eddy", LastName = "Walput" }; // Eddy Walput
+                _dbContext.Travelers.Add(eddy);
+                eddy.AddMyTrip(_dbContext.Trips.SingleOrDefault(t => t.Id == 5));
+                eddy.AddMyTrip(_dbContext.Trips.SingleOrDefault(t => t.Id == 6));
+                await CreateUser(eddy.Email, "P@ssword1111");
                 _dbContext.SaveChanges();
             }
         }

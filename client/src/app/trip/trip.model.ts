@@ -14,6 +14,7 @@ interface TripJson {
   attractions: AttractionJson[];
   totalBudget: number;
   organizerName: string;
+  travelerId: number;
   // participants: Map<User, number>;
   participants: ParticipantJson[];
   // participants: number;
@@ -41,9 +42,10 @@ export class Trip {
     // TODO
     // private _organizer: User,
     private _organizerName: string,
+    private _travelerId?: number,
     // private _participants = new Map<User, number>(),
     // private _participants = new Map<string, string>(),
-    private _participants = new Array<Participant>() // private _participants?: number, //TODO more attributes
+    private _participants = new Array<Participant>(), // private _participants?: number, //TODO more attributes
   ) {}
 
   static fromJSON(json: TripJson): Trip {
@@ -75,6 +77,7 @@ export class Trip {
       longtitude,
       totalBudget,
       json.organizerName,
+      json.travelerId,
       // new Map(JSON.parse(json.participants)),
       json.participants.map(Participant.fromJSON)
     );
@@ -95,6 +98,7 @@ export class Trip {
       longtitude: this.longtitude,
       totalBudget: this.totalBudget,
       organizerName: this.organizerName,
+      travelerId: this._travelerId,
       // participants: JSON.stringify([...this.participants]),
       participants: this.participants.map((par) => par.toJSON()),
     };
@@ -138,6 +142,9 @@ export class Trip {
   }
   get organizerName(): string {
     return this._organizerName;
+  }
+  get travelerId(): number {
+    return this._travelerId;
   }
   get participants(): Participant[] {
     return this._participants;

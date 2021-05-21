@@ -27,13 +27,20 @@
         <p>
           <em>Possible travel period: </em><br />
           from {{ trip.startDate | date: "longDate" }} <br />
-          till {{ trip.endDate | date: "longDate" }}
+          until {{ trip.endDate | date: "longDate" }}
         </p>
         <p>
           <em>Length of city trip: </em><br />
           {{ trip.minDays }} to {{ trip.maxDays }} days
         </p>
-        <p><em>Participants:</em></p>
+        <p *ngIf="trip.totalBudget">
+          <em>Budget of city trip: </em><br />
+          {{ trip.totalBudget }} $
+        </p>
+        <p>
+          <em>Participants:</em> <br />
+          <span *ngIf="!isAnyoneGoing()"> No one is going on this trip. </span>
+        </p>
         <div *ngFor="let par of trip.participants">
           <p *ngIf="par.goingStatus != 0">
             TravelerId: {{ par.travelerId }} <br />
@@ -44,6 +51,9 @@
         </div>
 
         <h4 mat-subheader>Things I really want to see:</h4>
+        <p *ngIf="trip.attractions.length == 0">
+          No tourist attractions were specified by the organizer for this trip.
+        </p>
         <mat-list>
           <mat-list-item *ngFor="let attraction of trip.attractions">
             <app-attraction [attraction]="attraction"></app-attraction>
@@ -51,63 +61,74 @@
         </mat-list>
 
         <!-- delete and restore buttons -->
-        <button
-          *ngIf="!isDeleted"
-          mat-raised-button
-          (click)="deleteTrip()"
-          class="deleteTripButton"
-        >
-          <mat-icon [ngStyle]="{ color: 'red' }">delete_forever</mat-icon>
-        </button>
-        <button
-          *ngIf="isDeleted"
-          mat-raised-button
-          (click)="restoreTrip()"
-          class="restoreTripButton"
-        >
-          <mat-icon [ngStyle]="{ color: 'green' }">restore_from_trash</mat-icon>
-        </button>
-
-        <!-- decision buttons -->
-        <!-- <button
-            mat-raised-button
-            matTooltip="You don't want to go on this Trip"
-            aria-label="Button to be pressed if You don't want to go on this Trip"
-            (click)="addParticipant(0)"
-            class="notGoingTripButton"
-          >
-            <mat-icon [ngStyle]="{ color: 'red' }">clear</mat-icon>
-          </button>
-          <div
-            matTooltip="You are going on this Trip! :)"
-            [matTooltipDisabled]="!isUserParticipant(1)"
-          >
+        <!-- Only the organizer of the trip can delete this trip -->
+        <div *ngIf="loggedInTraveler$ | async as loggedInTraveler">
+          <div *ngIf="trip.travelerId == loggedInTraveler[0].travelerId">
             <button
               mat-raised-button
-              matTooltip="You definitely want to go on this Trip"
-              aria-label="Button to be pressed if You definitely want to go on this Trip"
-              (click)="addParticipant(1)"
-              class="definitelyGoingTripButton"
-              [disabled]="isUserParticipant(1)"
+              matTooltip="Delete this Trip"
+              aria-label="Button to be pressed if you want to delete this Trip"
+              (click)="deleteTrip()"
+              class="deleteTripButton"
+              [disabled]="isDeleted"
             >
-              <mat-icon [ngStyle]="{ color: 'green' }">where_to_vote</mat-icon>
+              <mat-icon [ngStyle]="{ color: 'red' }">delete_forever</mat-icon>
+            </button>
+            <button
+              mat-raised-button
+              matTooltip="Restore this Trip"
+              aria-label="Button to be pressed if you want to restore this Trip"
+              (click)="restoreTrip()"
+              class="restoreTripButton"
+              [disabled]="!isDeleted"
+            >
+              <mat-icon [ngStyle]="{ color: 'green' }"
+                >restore_from_trash</mat-icon
+              >
             </button>
           </div>
-          <div
-            matTooltip="You might go on this Trip! :)"
-            [matTooltipDisabled]="!isUserParticipant(2)"
+
+        <!-- decision buttons -->
+        <button
+          mat-raised-button
+          matTooltip="You don't want to go on this Trip"
+          aria-label="Button to be pressed if You don't want to go on this Trip"
+          (click)="addParticipant(loggedInTraveler[0], 0)"
+          class="notGoingTripButton"
+        >
+          <mat-icon [ngStyle]="{ color: 'red' }">clear</mat-icon>
+        </button>
+        <div
+          matTooltip="You are going on this Trip! :)"
+          [matTooltipDisabled]="!isUserParticipant(loggedInTraveler[0], 1)"
+        >
+          <button
+            mat-raised-button
+            matTooltip="You definitely want to go on this Trip"
+            aria-label="Button to be pressed if You definitely want to go on this Trip"
+            (click)="addParticipant(loggedInTraveler[0], 1)"
+            class="definitelyGoingTripButton"
+            [disabled]="isUserParticipant(loggedInTraveler[0], 1)"
           >
-            <button
-              mat-raised-button
-              matTooltip="You might go on this Trip"
-              aria-label="Button to be pressed if You might go on this Trip"
-              (click)="addParticipant(2)"
-              class="maybeGoingTripButton"
-              [disabled]="isUserParticipant(2)"
-            >
-              <mat-icon [ngStyle]="{ color: 'orange' }">add_location</mat-icon>
-            </button> 
-          </div> -->
+            <mat-icon [ngStyle]="{ color: 'green' }">where_to_vote</mat-icon>
+          </button>
+        </div>
+        <div
+          matTooltip="You might go on this Trip! :)"
+          [matTooltipDisabled]="!isUserParticipant(loggedInTraveler[0], 2)"
+        >
+          <button
+            mat-raised-button
+            matTooltip="You might go on this Trip"
+            aria-label="Button to be pressed if You might go on this Trip"
+            (click)="addParticipant(loggedInTraveler[0], 2)"
+            class="maybeGoingTripButton"
+            [disabled]="isUserParticipant(loggedInTraveler[0], 2)"
+          >
+            <mat-icon [ngStyle]="{ color: 'orange' }">add_location</mat-icon>
+          </button>
+        </div>
+      </div>
       </mat-card-content>
     </mat-card>
   </div>

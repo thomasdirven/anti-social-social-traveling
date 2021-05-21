@@ -41,7 +41,7 @@ export class MyTripListComponent implements OnInit {
     this.filterTripCountry$
       .pipe(distinctUntilChanged(), debounceTime(150))
       .subscribe((val) => (this.filterTripCountry = val));
-    this._fetchMyTrips$ = this._tripDataService.allTrips$.pipe(
+    this._fetchMyTrips$ = this._tripDataService.allMyTrips$.pipe(
       catchError((err) => {
         this.errorMessage = err;
         // already logged in tripDataService

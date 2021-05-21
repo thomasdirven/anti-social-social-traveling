@@ -36,7 +36,7 @@ namespace TripApi.Controllers
         /// <param name="attractionName"></param>
         /// <returns>Array of Trips</returns>
         [HttpGet]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public ActionResult<IEnumerable<Trip>> GetTrips(string city = null, string country = null, string attractionName = null)
         {
             try
@@ -64,8 +64,8 @@ namespace TripApi.Controllers
             try
             {
                 Traveler traveler = _travelerRepository.GetBy(User.Identity.Name);
-                Console.WriteLine(traveler.LastName);
-                Console.WriteLine(traveler.MyTrips.Count());
+                //Console.WriteLine(traveler.LastName);
+                //Console.WriteLine(traveler.MyTrips.Count());
                 return traveler.MyTrips.OrderBy(t => t.StartDate).ToList();
             }
             catch (Exception ex)
@@ -81,7 +81,6 @@ namespace TripApi.Controllers
         /// <param name="id">The id of the Trip</param>
         /// <returns>The Trip</returns>
         [HttpGet("{id}")]
-        [AllowAnonymous]
         public ActionResult<Trip> GetTrip(int id)
         {
             try
@@ -156,7 +155,7 @@ namespace TripApi.Controllers
 
                 int selectedTravelerId = traveler.TravelerId;
 
-                Console.WriteLine("travelerid: " + selectedTravelerId);
+                //Console.WriteLine("travelerid: " + selectedTravelerId);
 
                 Trip tripToUpdate = _tripRepository.GetBy(id);
                 // 404 if trip with id doesn't exist
@@ -181,7 +180,7 @@ namespace TripApi.Controllers
                     if (p.TravelerId == selectedTravelerId)
                     {
                         string travelerFullName = traveler.FirstName + ' ' + traveler.LastName;
-                        Console.WriteLine(travelerFullName);
+                        //Console.WriteLine(travelerFullName);
                         tripToUpdate.AddParticipant(new TripParticipant(p.TravelerId, p.TripId, traveler, tripToUpdate, p.GoingStatus, travelerFullName));
                     }
                 }
@@ -251,7 +250,6 @@ namespace TripApi.Controllers
         /// <param name="attractionId">id of the Attraction</param>
         /// <returns>An Attraction of the Trip</returns>
         [HttpGet("{id}/attractions/{attractionId}")]
-        [AllowAnonymous]
         public ActionResult<Attraction> GetAttraction(int id, int attractionId)
         {
             try

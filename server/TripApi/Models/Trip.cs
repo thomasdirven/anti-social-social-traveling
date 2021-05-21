@@ -29,7 +29,7 @@ namespace TripApi.Models
         // Todo -> change to Traverler or TravelerId
         public string OrganizerName { get; set; }
 
-        public int TravelerId { get; set; }
+        public int TravelerId { get; set; } // Organizer his/her TravelerId
 
         // TODO change to map <User, enum>
         //public int? Participants { get; set; }

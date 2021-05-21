@@ -52,7 +52,8 @@ export class TripListComponent implements OnInit {
 
   constructor(
     private _tripDataService: TripDataService,
-    private _userDataService: UserDataService // private fb: FormBuilder
+    private _userDataService: UserDataService,
+    // private fb: FormBuilder
   ) {
     this.filterTripCity$
       .pipe(distinctUntilChanged(), debounceTime(150))

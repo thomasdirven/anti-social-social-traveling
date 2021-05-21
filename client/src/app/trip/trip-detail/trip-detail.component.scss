@@ -46,8 +46,16 @@
   }
 
   .deleteTripButton{    
-    float: right;
-  }  
+    // float: right;
+    position: absolute;
+    right: 10px;
+    top: 70px;
+  } 
+  .restoreTripButton{
+    position: absolute;
+    right: 10px;
+    top: 120px;
+  }
   .notGoingTripButton{    
     float: left;
   }

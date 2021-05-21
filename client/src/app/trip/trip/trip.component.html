@@ -33,7 +33,7 @@
         <p>
           <em>Possible travel period: </em><br />
           from {{ trip.startDate | date: "longDate" }} <br />
-          till {{ trip.endDate | date: "longDate" }}
+          until {{ trip.endDate | date: "longDate" }}
         </p>
         <p>
           <em>Length of city trip: </em><br />
@@ -45,6 +45,10 @@
             <app-attraction [attraction]="attraction"></app-attraction>
           </mat-list-item>
         </mat-list> -->
+        
+        <mat-card-subtitle>
+          <em>organized by</em> {{ trip.organizerName }}
+        </mat-card-subtitle>
 
         <!-- delete and restore buttons -->
         <!-- <button
