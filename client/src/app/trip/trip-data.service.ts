@@ -113,6 +113,9 @@ export class TripDataService {
         this._trips = [...this._trips, trip];
         this._trips.sort((a,b)=>a.startDate.getTime()-b.startDate.getTime());
         this._trips$.next(this._trips);
+        this._myTrips = [...this._myTrips, trip];
+        this._myTrips.sort((a,b)=>a.startDate.getTime()-b.startDate.getTime());
+        this._myTrips$.next(this._myTrips);
         this._restoredTrip$.next(trip);
       });
   }
@@ -124,6 +127,8 @@ export class TripDataService {
       .subscribe(() => {
         this._trips = this._trips.filter((tr) => tr.id != trip.id);
         this._trips$.next(this._trips);
+        this._myTrips = this._myTrips.filter((tr) => tr.id != trip.id);
+        this._myTrips$.next(this._myTrips);
       });
   }
 
@@ -137,8 +142,15 @@ export class TripDataService {
         // so the id differs from the location in the array
         // this._trips[trip.id] = trip;
         // instead you should do this
-        this._trips[this._trips.indexOf(trip)] = trip;
+        // this._trips[this._trips.indexOf(trip)] = trip;
+        // this._trips$.next(this._trips);
+        // this used to work but not anymore since extra participant stuff
+        console.log(trip.id);
+        console.log(this._trips.findIndex(obj => obj.id == trip.id));
+        this._trips[this._trips.findIndex(obj => obj.id == trip.id)] = trip;
         this._trips$.next(this._trips);
+        this._myTrips[this._myTrips.findIndex(obj => obj.id == trip.id)] = trip;
+        this._myTrips$.next(this._myTrips);
       });
   }
 
