@@ -8,6 +8,7 @@ namespace TripApi.Models
 
         public int TripId { get; set; }
 
+        [JsonIgnore]
         public Traveler Traveler { get; set; }
 
         // Avoid self referencing loop

@@ -94,10 +94,10 @@ export class TripDataService {
         }),
         tap((trip: Trip) => {
           this._trips = [...this._trips, trip];
-          this._trips.sort((a,b)=>a.startDate.getTime()-b.startDate.getTime())
+          this._trips.sort((a,b)=>a.startDate.getTime()-b.startDate.getTime());
           this._trips$.next(this._trips);
           this._myTrips = [...this._myTrips, trip];
-          this._myTrips.sort((a,b)=>a.startDate.getTime()-b.startDate.getTime())
+          this._myTrips.sort((a,b)=>a.startDate.getTime()-b.startDate.getTime());
           this._myTrips$.next(this._myTrips);
         })
       );
@@ -111,6 +111,7 @@ export class TripDataService {
       .pipe(tap(console.log), catchError(this.handleError), map(Trip.fromJSON))
       .subscribe((trip: Trip) => {
         this._trips = [...this._trips, trip];
+        this._trips.sort((a,b)=>a.startDate.getTime()-b.startDate.getTime());
         this._trips$.next(this._trips);
         this._restoredTrip$.next(trip);
       });
@@ -121,7 +122,7 @@ export class TripDataService {
       .delete(`${environment.apiUrl}/trips/${trip.id}`)
       .pipe(tap(console.log), catchError(this.handleError))
       .subscribe(() => {
-        this._trips = this._trips.filter((rec) => rec.id != trip.id);
+        this._trips = this._trips.filter((tr) => tr.id != trip.id);
         this._trips$.next(this._trips);
       });
   }
