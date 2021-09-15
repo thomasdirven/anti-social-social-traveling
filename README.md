@@ -1,7 +1,12 @@
-# 2021-pieter-thomasdirven
-2021-pieter-thomasdirven created by GitHub Classroom
+# Anti-Social-Social-Travelling
 
-# Trip APP - Monolithic Repository
+School assignment: We had to come up with our own idea for an Angular app with a .NET REST-API. 
+
+Here is the result. I made a travel app, will do a video on this in the near future.
+
+Google API key in the commit history has been replaced so don't try stealing it ;)
+
+# Anti-Social-Social-Traveling - Trip APP - Monolithic Repository
 
 ## Prerequisites
 
@@ -10,8 +15,7 @@
 - Angular CLI installed
   - `npm install -g @angular/cli`
 - DotNet 5.0 Installed
-- SQL Database installed on localhost 
-  - If you're an apple fanboi, refer to Web III for running a SQL Server Database in a Docker container.
+- SQL Database installed on localhost
 
 ## Getting started -  Development
 
