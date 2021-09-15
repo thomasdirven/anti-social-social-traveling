@@ -17,6 +17,14 @@ namespace TripApi.Controllers
     [ApiController]
     public class TripsController : ControllerBase
     {
+        // Resource
+        // URI Unique ident
+        // HTTP - GET, Post, put, delete, patch => Uniform Interface
+        // Representation => json, xml
+        // Reponse codes with feedback
+        // every request = idependent => stateless
+        // document your api
+
         private readonly ITripRepository _tripRepository;
         private readonly ITravelerRepository _travelerRepository;
 

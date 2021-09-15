@@ -11,6 +11,7 @@ import { Traveler } from './traveler.model';
 export class UserDataService {
   private _traveler: Traveler[];
   private _traveler$ = new BehaviorSubject<Traveler[]>([]);
+  // private _traveler$ = new Subject<Traveler[]>();
 
   constructor(private http: HttpClient) {
     this.loggedInTraveler$.subscribe((traveler: Traveler[]) => {

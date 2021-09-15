@@ -1,4 +1,4 @@
-<div *ngIf="myTrips$ | async as trips; else loading">
+<div *ngIf="myTrips$ | async as trips">
   <div
     *ngIf="
       trips
@@ -7,7 +7,6 @@
         | tripFilterDateRange: filterTripDateRange as filteredTrips
     "
   >
-    <!-- <div fxLayout="column" fxLayoutGap="2%"> -->
     <div fxLayout="column">
       <mat-card>
         <form>
@@ -92,7 +91,7 @@
       </mat-card>
 
       <div class="myTrips">
-        <div *ngIf="trips.length > 0; else loading">
+        <div *ngIf="trips.length > 0; else loadingOrError">
           <div *ngIf="loggedInTraveler$ | async as loggedInTraveler">
             <div
               fxLayout="row wrap"
@@ -114,18 +113,20 @@
           </div>
         </div>
       </div>
-      <ng-template #loading>
+      <!-- <ng-template #loading>
         <mat-spinner></mat-spinner>
-      </ng-template>
+      </ng-template> -->
     </div>
   </div>
 </div>
+<ng-template #loadingOrError>         
+  <mat-card class="error" *ngIf="errorMessage" data-cy="appError">
+    <mat-card-content>
+      Error loading the city trip list: {{ errorMessage }}. <br />
+      Please try again later.
+    </mat-card-content>
+  </mat-card>
+</ng-template>
 <ng-template #loading>
   <mat-spinner></mat-spinner>
 </ng-template>
-<mat-card class="error" *ngIf="errorMessage">
-  <mat-card-content>
-    Error loading the city trip list: {{ errorMessage }}. <br />
-    Please try again later.
-  </mat-card-content>
-</mat-card>

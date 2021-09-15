@@ -35,7 +35,9 @@ export class GmapComponent implements OnInit {
 
   public isCheckedMapTypeControl = true;
 
-  constructor(private zone: NgZone) {}
+  constructor(
+    private zone: NgZone
+    ) {}
 
   public hoverIcon = {
     url:

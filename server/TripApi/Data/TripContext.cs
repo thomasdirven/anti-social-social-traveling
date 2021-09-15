@@ -30,7 +30,7 @@ namespace TripApi.Data
             builder.Entity<Traveler>().Property(c => c.Email).IsRequired().HasMaxLength(100);
             builder.Entity<Traveler>().Ignore(c => c.MyTrips);
             builder.Entity<Traveler>().Ignore(c => c.FavoriteTrips);
-            builder.Entity<Trip>().Ignore(c => c.Participants); //todo? good or bad idea?
+            builder.Entity<Trip>().Ignore(c => c.Participants);
 
             builder.Entity<OrganizerTrip>().HasKey(f => new { f.TravelerId, f.TripId });
             builder.Entity<OrganizerTrip>().HasOne(f => f.Traveler).WithMany(u => u.OrganizerTrips).HasForeignKey(f => f.TravelerId);
@@ -48,7 +48,7 @@ namespace TripApi.Data
 
             //Another way to seed the database
             builder.Entity<Trip>().HasData(
-                 new Trip { Id = 1, City = "Barcelona", Country = "Spain", StartDate = new DateTime(2021, 5, 21), EndDate = new DateTime(2021, 5, 29), MinDays = 2, MaxDays = 5, TotalBudget = 550, Latitude = 41.3850639, Longtitude = 2.1734035, OrganizerName = "Thomas Dirven", TravelerId = 1 },
+                 new Trip { Id = 1, City = "Barcelona", Country = "Spain", StartDate = new DateTime(2021, 6, 21), EndDate = new DateTime(2021, 6, 29), MinDays = 2, MaxDays = 5, TotalBudget = 550, Latitude = 41.3850639, Longtitude = 2.1734035, OrganizerName = "Thomas Dirven", TravelerId = 1 },
                  new Trip { Id = 2, City = "Paris", Country = "France", StartDate = new DateTime(2021, 7, 20), EndDate = new DateTime(2021, 8, 2), MinDays = 3, MaxDays = 8, TotalBudget = 550, Latitude = 48.856614, Longtitude = 2.3522219, OrganizerName = "Thomas Dirven", TravelerId = 1 },
                  new Trip { Id = 3, City = "Prague", Country = "Czech Republic", StartDate = new DateTime(2021, 7, 10), EndDate = new DateTime(2021, 8, 10), MinDays = 4, MaxDays = 7, TotalBudget = 550, Latitude = 50.0755381, Longtitude = 14.4378005, OrganizerName = "Thomas Dirven", TravelerId = 1 },
                  new Trip { Id = 4, City = "Cannes", Country = "France", StartDate = new DateTime(2021, 7, 6), EndDate = new DateTime(2021, 7, 17), MinDays = 3, MaxDays = 6, TotalBudget = 550, Latitude = 43.552847, Longtitude = 7.017369, OrganizerName = "Gaston D'Haese", TravelerId = 2 },

@@ -45,6 +45,11 @@ export class TripDataService {
       // tap(console.log), // for debugging in console
       shareReplay(1),
       catchError(this.handleError),
+      // temp fix for behaviorSubject
+      catchError((err) => {
+        this._trips$.error(err);
+        return throwError(err);
+      }),
       map((list: any[]): Trip[] => list.map(Trip.fromJSON))
     );
   }
@@ -55,6 +60,11 @@ export class TripDataService {
       // tap(console.log), // for debugging in console
       shareReplay(1),
       catchError(this.handleError),
+      // temp fix for behaviorSubject
+      catchError((err) => {
+        this._myTrips$.error(err);
+        return throwError(err);
+      }),
       map((list: any[]): Trip[] => list.map(Trip.fromJSON))
     );
   }
@@ -85,7 +95,9 @@ export class TripDataService {
     // temp new one so we can do errors as well
     return this.http
       .post(`${environment.apiUrl}/trips/`, trip.toJSON())
-      .pipe(tap(console.log), catchError(this.handleError), map(Trip.fromJSON))
+      .pipe(
+        // tap(console.log), 
+        catchError(this.handleError), map(Trip.fromJSON))
       .pipe(
         // temporary fix, while we use the behaviorsubject as a cache stream
         catchError((err) => {
@@ -108,7 +120,9 @@ export class TripDataService {
   restoreTrip(trip: Trip) {
     return this.http
       .post(`${environment.apiUrl}/trips/`, trip.toJSON())
-      .pipe(tap(console.log), catchError(this.handleError), map(Trip.fromJSON))
+      .pipe(
+        // tap(console.log), 
+        catchError(this.handleError), map(Trip.fromJSON))
       .subscribe((trip: Trip) => {
         this._trips = [...this._trips, trip];
         this._trips.sort((a,b)=>a.startDate.getTime()-b.startDate.getTime());

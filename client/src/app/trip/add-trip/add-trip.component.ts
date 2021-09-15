@@ -335,12 +335,10 @@ export class AddTripComponent implements OnInit {
           if (this._location.city !== this.city.value) {
             this.city.setValue(this._location.city);
             this._autoCorrectCity = true;
-            // this._dbTime = 50;
           }
           if (this._location.country !== this.country.value) {
             this.country.setValue(this._location.country);
             this._autoCorrectCountry = true;
-            // this._dbTime = 50;
           }
         }
         if (

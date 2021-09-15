@@ -7,18 +7,48 @@
     [disableDefaultUI]="false"
     (mapReady)="mapReadyHandler($event)"
   >
-    <agm-marker
-      *ngFor="let trip of trips; let i = index"
-      (markerClick)="clickedMarker(T, i)"
-      [latitude]="trip.latitude"
-      [longitude]="trip.longtitude"
-      [markerDraggable]="false"
-      [animation]="'DROP'"
-    >
-      <agm-info-window>
-        <strong>{{ trip.city }}, {{ trip.country }}</strong>
-      </agm-info-window>
-    </agm-marker>
+    <ng-container *ngFor="let trip of trips; let i = index">
+      <agm-marker
+        (markerClick)="clickedMarker(T, i)"
+        [latitude]="trip.latitude"
+        [longitude]="trip.longtitude"
+        [markerDraggable]="false"
+        [animation]="'DROP'"
+        [ngStyle]="{ display: trip == this.hoverTrip ? 'none' : 'inline' }"
+      >
+        <agm-info-window>
+          <strong>{{ trip.city }}, {{ trip.country }}</strong>
+        </agm-info-window>
+      </agm-marker>
+      <ng-container
+        *ngFor="let participant of trip.participants; let i = index"
+      >
+        <agm-marker
+          *ngIf="
+            participant.travelerId == loggedInTraveler.travelerId &&
+            participant.goingStatus == 1
+          "
+          [latitude]="trip.latitude"
+          [longitude]="trip.longtitude"
+          [label]=""
+          [markerDraggable]="false"
+          [iconUrl]="pinIconGreen"
+        >
+        </agm-marker>
+        <agm-marker
+          *ngIf="
+            participant.travelerId == loggedInTraveler.travelerId &&
+            participant.goingStatus == 2
+          "
+          [latitude]="trip.latitude"
+          [longitude]="trip.longtitude"
+          [label]=""
+          [markerDraggable]="false"
+          [iconUrl]="pinIconYellow"
+        >
+        </agm-marker>
+      </ng-container>
+    </ng-container>
 
     <div *ngIf="this.hoverTrip">
       <agm-marker
@@ -26,21 +56,15 @@
         [longitude]="hoverTrip.longtitude"
         [label]=""
         [markerDraggable]="false"
-        [iconUrl]="hoverIcon"
         [animation]="'BOUNCE'"
-      >
-      </agm-marker>
-      <agm-marker
-        [latitude]="hoverTrip.latitude"
-        [longitude]="hoverTrip.longtitude"
-        [label]=""
-        [markerDraggable]="false"
-        [iconUrl]="pinIcon"
       >
       </agm-marker>
     </div>
   </agm-map>
 </div>
+
+<!--  -->
+
 <ng-template #enabledMapTypeControl>
   <agm-map
     [latitude]="lat"
