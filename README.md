@@ -6,6 +6,10 @@ Here is the result. I made a travel app, will do a video on this in the near fut
 
 Google API key in the commit history has been replaced so don't try stealing it ;)
 
+This <a href="Thomas_Dirven-Dossier-Web4-TravelApp-Anti-Social-Social-Traveling.pdf"
+        download="Thomas_Dirven-Dossier-Web4-TravelApp-Anti-Social-Social-Traveling.pdf">pdf</a>
+ is in dutch but can still give you a clear view of what my application can do thanks to the many screenshots.
+
 # Anti-Social-Social-Traveling - Trip APP - Monolithic Repository
 
 ## Prerequisites
